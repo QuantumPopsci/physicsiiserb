@@ -1,0 +1,13 @@
+@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+body {
+  @apply bg-gray-900 text-gray-200 font-sans;
+}
+
+.gradient-text {
+  @apply bg-gradient-to-r from-sky-400 to-cyan-300 bg-clip-text text-transparent;
+}
