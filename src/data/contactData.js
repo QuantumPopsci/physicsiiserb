@@ -11,25 +11,25 @@ export const contacts = [
     }
   },
   {
-    name: 'John Smith',
-    position: 'Data Scientist at Google',
-    field: 'Computational Physics',
-    photo: 'https://i.pravatar.cc/150?u=john',
+    name: 'Richard Feynman',
+    position: 'Nobel Prize Winner in Physics',
+    field: 'Quantum Everything',
+    photo: '/fnnn.jpg',
     socials: {
       linkedin: '/#',
       github: '/#',
-      email: 'john.smith@example.com'
+      email: 'N/A'
     }
   },
   {
-    name: 'Alex Ray',
-    position: 'Postdoc at CERN',
-    field: 'High Energy Physics',
-    photo: 'https://i.pravatar.cc/150?u=alex',
+    name: 'Paul Dirac',
+    position: 'Nobel Prize Winner in Physics',
+    field: 'Father of Quantum Physics',
+    photo: '/dirac,jpeg',
     socials: {
       linkedin: '/#',
       github: '/#',
-      email: 'alex.ray@example.com'
+      email: 'N/A'
     }
   }
 ];
