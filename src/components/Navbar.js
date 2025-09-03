@@ -22,6 +22,7 @@ const Navbar = () => {
               <NavLink to="/courses" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Courses</NavLink>
               <NavLink to="/resources" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Resources</NavLink>
               <NavLink to="/contacts" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Contacts</NavLink>
+              <NavLink to="/submit" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Add Profile</NavLink> {/* Add the link to the new page */}
             </div>
           </div>
         </div>
@@ -30,4 +31,4 @@ const Navbar = () => {
   );
 };
 
-export default Navbar; 
+export default Navbar;
