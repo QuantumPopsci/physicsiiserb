@@ -31,29 +31,30 @@ const Resources = () => {
         </div>
       </section>
 
-      {/* Videos */}
-      <section>
-        <h2 className="text-3xl font-bold text-gray-100 border-l-4 border-cyan-400 pl-4 mb-6">Videos</h2>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {resources.videos.map((video, index) => (
-            <div key={index} className="bg-gray-800/50 rounded-lg overflow-hidden border border-gray-700">
-              <div className="aspect-w-16 aspect-h-9">
-                <iframe
-                  src={`https://www.youtube.com/embed/${video.videoId}`}
-                  title={video.title}
-                  frameBorder="0"
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="w-full h-full"
-                ></iframe>
-              </div>
-              <div className="p-4">
-                <h3 className="font-bold text-lg">{video.title}</h3>
-              </div>
+ {/* Videos */}
+          <section>
+            <h2 className="text-3xl font-bold text-gray-100 border-l-4 border-cyan-400 pl-4 mb-6">Videos</h2>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+              {resources.videos.map((video, index) => (
+                <div key={index} className="bg-gray-800/50 rounded-lg overflow-hidden border border-gray-700">
+                  {/* The aspect ratio has been changed to 4:3 for a taller video frame */}
+                  <div className="aspect-w-4 aspect-h-3">
+                    <iframe
+                      src={`https://www.youtube.com/embed/${video.videoId}`}
+                      title={video.title}
+                      frameBorder="0"
+                      allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                      allowFullScreen
+                      className="w-full h-full"
+                    ></iframe>
+                  </div>
+                  <div className="p-4">
+                    <h3 className="font-bold text-lg">{video.title}</h3>
+                  </div>
+                </div>
+              ))}
             </div>
-          ))}
-        </div>
-      </section>
+          </section>
     </div>
   );
 };
