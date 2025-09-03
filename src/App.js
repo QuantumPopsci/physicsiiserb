@@ -7,6 +7,7 @@ import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
 import Resources from './pages/Resources';
 import Contacts from './pages/Contacts';
+import SubmitContact from './pages/SubmitContact'; // 1. Import the new page component
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/courses/:courseId" element={<CourseDetail />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/contacts" element={<Contacts />} />
+          <Route path="/submit" element={<SubmitContact />} /> {/* 2. Add the route for the new page */}
         </Routes>
       </main>
       <Footer />
