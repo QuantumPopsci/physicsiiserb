@@ -1,13 +1,13 @@
 export const contacts = [
-  {
-    name: 'Jane Doe',
-    position: 'PhD Student at MIT',
-    field: 'Astrophysics',
-    photo: 'https://i.pravatar.cc/150?u=jane',
+{
+    name: 'Samriddha Ganguly',
+    position: '4th Year Physics Major @ IISERB',
+    field: 'Topological Quantum Materials, Topological Magnonics',
+    photo: '/sam.png', // Assumes sam.png is in the /public folder
     socials: {
-      linkedin: '/#',
-      github: '/#',
-      email: 'jane.doe@example.com'
+      linkedin: 'https://linkedin.com/in/samriddha-ganguly-3360bb16a',
+      github: 'https://github.com/QuantumPopsci',
+      email: 'samriddha22@iiserb.ac.in'
     }
   },
   {
