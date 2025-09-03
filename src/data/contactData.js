@@ -25,7 +25,7 @@ export const contacts = [
     name: 'Paul Dirac',
     position: 'Nobel Prize Winner in Physics',
     field: 'Father of Quantum Physics',
-    photo: '/dirac,jpg',
+    photo: '/dirac.jpg',
     socials: {
       linkedin: '/#',
       github: '/#',
