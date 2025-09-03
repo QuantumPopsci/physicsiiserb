@@ -21,7 +21,7 @@ const SubmitContact = () => {
   const [errorMsg, setErrorMsg] = useState('');
   
   // The new, corrected Web App URL you provided.
-  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzshqXxX2HNKZPEe-Q4R_3FUuFvK7ebGfDOTDovrp76m84d4--XE-od9mq0Wc9IlnM4hg/exec";
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxFSQS9uo2vgivOMeLZSzuH6jlucL5nNPJEe32I21LvBONjpNbatoCoYRQPLab1VXBNkA/exec";
 
   // Handles updates for all text input fields.
   const handleChange = (e) => {
