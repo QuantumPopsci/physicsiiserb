@@ -14,13 +14,16 @@ import ParticleBackground from './components/ParticleBackground';
 function App() {
   const [theme, setTheme] = useState('light');
 
+  // This effect runs once on mount to get the saved theme.
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
   }, []);
 
+  // This effect runs whenever the 'theme' state changes.
   useEffect(() => {
-    document.body.className = savedTheme;
+    // THE FIX IS HERE: Use the 'theme' state variable to set the class.
+    document.body.className = theme;
     localStorage.setItem('theme', theme);
   }, [theme]);
 
