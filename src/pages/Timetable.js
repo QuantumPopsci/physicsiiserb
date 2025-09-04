@@ -4,6 +4,11 @@ import { schedule, courses } from '../data/timetableData';
 const Timetable = () => {
   const { days, timeSlots, events } = schedule;
 
+  // A helper function to find an event for a specific day and time
+  const findEvents = (day, time) => {
+    return events.filter(event => event.day === day && event.time === time);
+  };
+
   return (
     <div className="animate-fadeInUp">
       <h1 className="text-4xl font-bold mb-2 gradient-text">Semester Timetable</h1>
@@ -11,19 +16,19 @@ const Timetable = () => {
 
       {/* Timetable Grid */}
       <div className="overflow-x-auto card-base p-4">
-        <div className="min-w-full grid" style={{ gridTemplateColumns: `auto repeat(${days.length}, 1fr)` }}>
+        <div className="min-w-[1000px] grid" style={{ gridTemplateColumns: `auto repeat(${days.length}, 1fr)` }}>
           {/* Header Row */}
-          <div className="font-bold text-text-secondary p-2">Time</div>
+          <div className="font-bold text-text-secondary p-2 sticky left-0 bg-background-secondary/80">Time</div>
           {days.map(day => <div key={day} className="font-bold text-text-primary text-center p-2 border-b border-border-color">{day}</div>)}
 
           {/* Time Slots and Events */}
           {timeSlots.map(time => (
             <React.Fragment key={time}>
-              <div className="font-semibold text-text-secondary p-2 border-r border-border-color">{time}</div>
+              <div className="font-semibold text-text-secondary p-2 border-r border-border-color sticky left-0 bg-background-secondary/80">{time}</div>
               {days.map(day => {
-                const dayEvents = events.filter(e => e.day === day && e.time === time);
+                const dayEvents = findEvents(day, time);
                 return (
-                  <div key={`${day}-${time}`} className="border-b border-r border-border-color p-1 space-y-1">
+                  <div key={`${day}-${time}`} className="border-b border-r border-border-color p-1 space-y-1 min-h-[50px]">
                     {dayEvents.map(event => (
                        <div key={event.courseCode} className={`p-2 rounded-md text-white text-xs font-bold text-center shadow-md`} style={{ backgroundColor: event.color }}>
                         {event.courseCode}
