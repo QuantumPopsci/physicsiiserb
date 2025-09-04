@@ -1,40 +1,41 @@
-@import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* CSS Variables for Theming
-  Light mode is the default (:root)
-*/
+/* --- THEME DEFINITIONS --- */
+/* Light Mode (Default) */
 :root {
-  --background-primary: #ffffff;
-  --background-secondary: #f3f4f6; /* light grey */
-  --text-primary: #111827; /* almost black */
-  --text-secondary: #4b5563; /* medium grey */
-  --border-color: #d1d5db;
+  --background-primary: #f9fafb; /* gray-50 */
+  --background-secondary: #ffffff;
+  --text-primary: #1f2937; /* gray-800 */
+  --text-secondary: #6b7280; /* gray-500 */
+  --border-color: #e5e7eb; /* gray-200 */
   --accent-primary: #0891b2; /* cyan-600 */
   --accent-secondary: #0e7490; /* cyan-700 */
-  --accent-text: #ecfeff; /* cyan-50 */
+  --accent-text: #ffffff;
   --gradient-from: #0ea5e9; /* sky-500 */
-  --gradient-to: #06b6d4; /* cyan-500 */
+  --gradient-to: #0891b2; /* cyan-600 */
+  --particle-color: #9ca3af; /* gray-400 */
 }
 
-/* Dark mode overrides
-*/
+/* Dark Mode Overrides */
 body.dark {
-  --background-primary: #030712; /* rich black */
-  --background-secondary: #111827; /* grey-900 */
-  --text-primary: #f9fafb; /* grey-50 */
-  --text-secondary: #9ca3af; /* grey-400 */
-  --border-color: #374151; /* grey-700 */
+  --background-primary: #111827; /* gray-900 */
+  --background-secondary: #1f2937; /* gray-800 */
+  --text-primary: #f9fafb; /* gray-50 */
+  --text-secondary: #9ca3af; /* gray-400 */
+  --border-color: #374151; /* gray-700 */
   --accent-primary: #22d3ee; /* cyan-400 */
-  --accent-secondary: #0891b2; /* cyan-600 */
+  --accent-secondary: #06b6d4; /* cyan-500 */
   --accent-text: #111827;
   --gradient-from: #38bdf8; /* sky-400 */
   --gradient-to: #22d3ee; /* cyan-400 */
+  --particle-color: #4b5563; /* gray-600 */
 }
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
+/* --- BASE STYLES & ANIMATIONS --- */
 body {
   @apply font-sans antialiased;
   background-color: var(--background-primary);
@@ -42,8 +43,25 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+@layer utilities {
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  .animate-fadeInUp {
+    animation: fadeInUp 0.8s ease-out forwards;
+  }
+}
+
 .gradient-text {
   @apply bg-gradient-to-r bg-clip-text text-transparent;
   --tw-gradient-from: var(--gradient-from);
   --tw-gradient-to: var(--gradient-to);
 }
+
