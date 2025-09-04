@@ -55,7 +55,7 @@ const Timetable = () => {
           </thead>
           <tbody>
             {schedule.timeSlots.map(time => (
-              <tr key={time}>
+              <tr key={time} className="h-24">
                 <td className="font-mono text-xs text-text-secondary text-center p-2 border-r border-t border-border-color">{time}</td>
                 {schedule.days.map(day => {
                   const cellContent = gridLayout[day]?.[time];
@@ -68,11 +68,12 @@ const Timetable = () => {
                     const mainEvent = cellContent[0];
                     return (
                       <td key={`${day}-${time}`} rowSpan={mainEvent.span} className="p-1 border-t border-border-color align-top">
-                        <div className="flex flex-col gap-1">
+                        <div className="flex flex-col gap-1 h-full">
                           {cellContent.map((event, index) => {
                              const course = courseMap.get(event.code);
+                             if (!course) return null; // Failsafe if course not found
                              return (
-                              <div key={index} style={{ backgroundColor: course.color }} className={`p-2 rounded text-white text-sm font-semibold flex flex-col justify-center items-center text-center`}>
+                              <div key={index} style={{ backgroundColor: course.color }} className={`p-1.5 rounded text-white text-sm font-semibold flex flex-col justify-center items-center text-center flex-1`}>
                                 <span>{event.code}</span>
                                 <span className="text-xs font-normal opacity-90 hidden sm:block">{course.name}</span>
                               </div>
