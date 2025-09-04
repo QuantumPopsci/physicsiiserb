@@ -7,7 +7,8 @@ import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
 import Resources from './pages/Resources';
 import Contacts from './pages/Contacts';
-import Timetable from './pages/Timetable'; // Import the new page
+import Timetable from './pages/Timetable';
+import Chat from './pages/Chat'; // 1. Import the new Chat page
 
 function App() {
   return (
@@ -18,9 +19,10 @@ function App() {
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:courseId" element={<CourseDetail />} />
+          <Route path="/timetable" element={<Timetable />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/contacts" element={<Contacts />} />
-          <Route path="/timetable" element={<Timetable />} />
+          <Route path="/chat" element={<Chat />} /> {/* 2. Add the new route for the chat */}
         </Routes>
       </main>
       <Footer />
