@@ -2,58 +2,110 @@ import React from 'react';
 import { schedule, courses } from '../data/timetableData';
 
 const Timetable = () => {
-  const { days, timeSlots, events } = schedule;
+  // A map for quick course lookup by code.
+  const courseMap = React.useMemo(() => {
+    const map = new Map();
+    courses.forEach(course => {
+      const codes = course.code.split('/');
+      codes.forEach(code => map.set(code.trim(), course));
+    });
+    return map;
+  }, []);
 
-  // A helper function to find an event for a specific day and time
-  const findEvents = (day, time) => {
-    return events.filter(event => event.day === day && event.time === time);
-  };
+  // Pre-process the schedule to handle multi-hour spans
+  const gridLayout = React.useMemo(() => {
+    const layout = {};
+    schedule.days.forEach(day => {
+      layout[day] = {};
+      schedule.timeSlots.forEach(time => {
+        const events = schedule.events[day]?.[time];
+        if (events) {
+          layout[day][time] = events;
+          const mainEvent = events[0];
+          if (mainEvent.span > 1) {
+            const startIndex = schedule.timeSlots.indexOf(time);
+            for (let i = 1; i < mainEvent.span; i++) {
+              const nextTimeSlot = schedule.timeSlots[startIndex + i];
+              if (nextTimeSlot) {
+                layout[day][nextTimeSlot] = 'occupied';
+              }
+            }
+          }
+        }
+      });
+    });
+    return layout;
+  }, []);
 
   return (
     <div className="animate-fadeInUp">
       <h1 className="text-4xl font-bold mb-2 gradient-text">Semester Timetable</h1>
-      <p className="text-lg text-text-secondary mb-8">Schedule for the 2025-26 academic year.</p>
+      <p className="text-lg text-text-secondary mb-8">Schedule for the upcoming semester (2025-26 I)</p>
 
       {/* Timetable Grid */}
-      <div className="overflow-x-auto card-base p-4">
-        <div className="min-w-[1000px] grid" style={{ gridTemplateColumns: `auto repeat(${days.length}, 1fr)` }}>
-          {/* Header Row */}
-          <div className="font-bold text-text-secondary p-2 sticky left-0 bg-background-secondary/80">Time</div>
-          {days.map(day => <div key={day} className="font-bold text-text-primary text-center p-2 border-b border-border-color">{day}</div>)}
+      <div className="card-base p-4 overflow-x-auto mb-12">
+        <table className="w-full min-w-[800px] border-collapse">
+          <thead>
+            <tr>
+              <th className="w-24 font-bold text-text-primary text-center p-2 border-b border-r border-border-color">Time</th>
+              {schedule.days.map(day => (
+                <th key={day} className="font-bold text-text-primary text-center p-2 border-b border-border-color">{day}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {schedule.timeSlots.map(time => (
+              <tr key={time}>
+                <td className="font-mono text-xs text-text-secondary text-center p-2 border-r border-t border-border-color">{time}</td>
+                {schedule.days.map(day => {
+                  const cellContent = gridLayout[day]?.[time];
+                  
+                  if (cellContent === 'occupied') {
+                    return null;
+                  }
+                  
+                  if (Array.isArray(cellContent)) {
+                    const mainEvent = cellContent[0];
+                    return (
+                      <td key={`${day}-${time}`} rowSpan={mainEvent.span} className="p-1 border-t border-border-color align-top">
+                        <div className="flex flex-col gap-1">
+                          {cellContent.map((event, index) => {
+                             const course = courseMap.get(event.code);
+                             return (
+                              <div key={index} style={{ backgroundColor: course.color }} className={`p-2 rounded text-white text-sm font-semibold flex flex-col justify-center items-center text-center`}>
+                                <span>{event.code}</span>
+                                <span className="text-xs font-normal opacity-90 hidden sm:block">{course.name}</span>
+                              </div>
+                             )
+                          })}
+                        </div>
+                      </td>
+                    );
+                  }
 
-          {/* Time Slots and Events */}
-          {timeSlots.map(time => (
-            <React.Fragment key={time}>
-              <div className="font-semibold text-text-secondary p-2 border-r border-border-color sticky left-0 bg-background-secondary/80">{time}</div>
-              {days.map(day => {
-                const dayEvents = findEvents(day, time);
-                return (
-                  <div key={`${day}-${time}`} className="border-b border-r border-border-color p-1 space-y-1 min-h-[50px]">
-                    {dayEvents.map(event => (
-                       <div key={event.courseCode} className={`p-2 rounded-md text-white text-xs font-bold text-center shadow-md`} style={{ backgroundColor: event.color }}>
-                        {event.courseCode}
-                      </div>
-                    ))}
-                  </div>
-                );
-              })}
-            </React.Fragment>
-          ))}
-        </div>
+                  return <td key={`${day}-${time}`} className="border-t border-border-color"></td>;
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Course List */}
-      <div className="mt-12">
+      <div>
         <h2 className="text-3xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Course Offerings</h2>
         <div className="space-y-4">
           {courses.map(course => (
-            <div key={course.courseCode} className="card-base p-4 flex items-center gap-4">
-              <div className="w-4 h-12 rounded" style={{ backgroundColor: course.color }}></div>
-              <div>
-                <h3 className="font-bold text-accent-primary">{course.courseCode} - {course.title}</h3>
-                <p className="text-sm text-text-secondary">
-                  <strong>Instructor:</strong> {course.instructor} | <strong>Venue:</strong> {course.hall} | <strong>Type:</strong> {course.type}
-                </p>
+            <div key={course.code} className="card-base p-4 flex items-center gap-4">
+              <div style={{ backgroundColor: course.color }} className={`w-3 h-12 rounded`}></div>
+              <div className="flex-grow grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
+                <div>
+                  <h3 className="font-bold text-lg text-text-primary">{course.name}</h3>
+                  <p className="text-sm text-accent-primary font-mono">{course.code} ({course.type})</p>
+                </div>
+                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Instructor:</span> {course.instructor}</div>
+                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Slot:</span> {course.slot}</div>
+                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Venue:</span> {course.hall}</div>
               </div>
             </div>
           ))}
