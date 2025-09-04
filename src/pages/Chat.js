@@ -15,10 +15,9 @@ const generateConsistentName = (uid) => {
     return anonymousNames[index];
 };
 
-
 // --- Sub-Components ---
 const InitialTermsModal = ({ onAccept }) => (
-    <div className="text-center animate-fade-in-up max-w-2xl mx-auto">
+    <div className="text-center animate-fadeInUp max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-4 gradient-text">Community Guidelines</h1>
         <div className="bg-background-secondary p-6 rounded-lg border border-border-color text-left text-text-primary space-y-4">
             <p className="text-text-secondary">Welcome! To ensure this remains a safe and productive space, please agree to the following terms:</p>
@@ -30,7 +29,7 @@ const InitialTermsModal = ({ onAccept }) => (
             </ul>
             <p className="font-bold text-red-500">Violation of these terms will result in a permanent block of your account. Moderators reserve the right to remove any content or user.</p>
         </div>
-        <button onClick={onAccept} className="mt-6 w-full px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold">
+        <button onClick={onAccept} className="mt-6 w-full px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold transition-colors">
             I Understand and Agree
         </button>
     </div>
@@ -39,10 +38,10 @@ const InitialTermsModal = ({ onAccept }) => (
 const CommunityGuidelines = () => {
     const [isOpen, setIsOpen] = useState(false);
     return (
-        <div className="mb-4 bg-background-secondary rounded-lg border border-border-color">
-            <button onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center p-3 text-left">
+        <div className="mb-4 bg-background-secondary/80 backdrop-blur-sm rounded-lg border border-border-color shadow-sm">
+            <button onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center p-4 text-left">
                 <span className="font-semibold text-text-primary">Community Guidelines</span>
-                <FaChevronDown className={`transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+                <FaChevronDown className={`text-text-secondary transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
             </button>
             {isOpen && (
                 <div className="p-4 border-t border-border-color text-sm text-text-secondary space-y-2">
@@ -57,7 +56,6 @@ const CommunityGuidelines = () => {
 };
 
 
-// --- Main Chat Component ---
 const Chat = () => {
     const [user, setUser] = useState(null);
     const [userProfile, setUserProfile] = useState({ role: 'user', termsAccepted: false });
@@ -68,7 +66,6 @@ const Chat = () => {
     const [userDisplayName, setUserDisplayName] = useState('');
     const messagesEndRef = useRef(null);
 
-    // Main effect for handling user state
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
             if (currentUser) {
@@ -76,7 +73,6 @@ const Chat = () => {
                 if (currentUser.email && currentUser.email.endsWith('@iiserb.ac.in')) {
                     setIsAuthorized(true);
                     setUserDisplayName(generateConsistentName(currentUser.uid));
-                    
                     const blockedDocRef = doc(db, 'blockedUsers', currentUser.uid);
                     const blockedDocSnap = await getDoc(blockedDocRef);
                     if (blockedDocSnap.exists()) {
@@ -84,7 +80,6 @@ const Chat = () => {
                         return;
                     }
                     setIsBlocked(false);
-
                     const userDocRef = doc(db, 'users', currentUser.uid);
                     const docSnap = await getDoc(userDocRef);
                     if (docSnap.exists()) {
@@ -106,7 +101,6 @@ const Chat = () => {
         return () => unsubscribe();
     }, []);
 
-    // Effect for fetching messages
     useEffect(() => {
         if (!isAuthorized || isBlocked || !userProfile.termsAccepted) {
             setMessages([]);
@@ -119,58 +113,58 @@ const Chat = () => {
         return () => unsubscribe();
     }, [isAuthorized, isBlocked, userProfile.termsAccepted]);
 
-    // Effect for auto-scrolling
     useEffect(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    // --- Event Handlers ---
     const handleGoogleSignIn = async () => { /* ... same as before ... */ };
     const handleSignOut = async () => { /* ... same as before ... */ };
     const handleAcceptTerms = async () => { /* ... same as before ... */ };
     const handleSendMessage = async (e) => { /* ... same as before ... */ };
     const handleDeleteMessage = async (messageId) => { /* ... same as before ... */ };
     const handleBlockUser = async (msg) => { /* ... same as before ... */ };
+    
+    // Conditional Rendering...
+    if (!user) {
+        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Discussion Forum</h1><p className="text-text-secondary mb-6">Please sign in with your IISERB Google account to access the chat.</p><button onClick={handleGoogleSignIn} className="inline-flex items-center gap-2 px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold transition-colors"><FaGoogle /> Sign in with Google</button></div>;
+    }
+    if (!isAuthorized) {
+        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 text-red-500">Access Denied</h1><p className="text-text-secondary mb-6">This chat is restricted to users with an <span className="font-bold text-accent-primary">@iiserb.ac.in</span> email address.</p><p className="text-gray-500 mb-6 text-sm">You are signed in as: {user.email}</p><button onClick={handleSignOut} className="inline-flex items-center gap-2 px-6 py-3 bg-background-secondary hover:opacity-80 border border-border-color rounded-md text-text-primary font-semibold transition-colors"><FaSignOutAlt /> Sign Out</button></div>;
+    }
+    if (isBlocked) {
+        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 text-red-500">Account Blocked</h1><p className="text-text-secondary mb-6">Your account has been blocked from accessing this chat due to a violation of the community guidelines.</p><button onClick={handleSignOut} className="inline-flex items-center gap-2 px-6 py-3 bg-background-secondary hover:opacity-80 border border-border-color rounded-md text-text-primary font-semibold transition-colors"><FaSignOutAlt /> Sign Out</button></div>;
+    }
+    if (!userProfile.termsAccepted) {
+        return <InitialTermsModal onAccept={handleAcceptTerms} />;
+    }
 
-    // --- Conditional Rendering Logic (same as before) ---
-    // ...
-
-    // --- Main Chat UI ---
+    // Main Chat UI
     return (
-        <div className="flex flex-col h-[75vh] max-w-3xl mx-auto animate-fade-in-up">
+        <div className="flex flex-col h-[75vh] max-w-3xl mx-auto animate-fadeInUp bg-background-primary/50 p-4 rounded-xl">
             <div className="flex justify-between items-center mb-4">
                 <h1 className="text-3xl font-bold gradient-text">Physics Discussion Forum</h1>
-                <button onClick={handleSignOut} className="text-text-secondary hover:text-text-primary text-sm flex items-center gap-2">
-                    <FaSignOutAlt /> Sign Out
-                </button>
+                <button onClick={handleSignOut} className="text-text-secondary hover:text-text-primary text-sm flex items-center gap-2"><FaSignOutAlt /> Sign Out</button>
             </div>
-
             <CommunityGuidelines />
-            
-            <div className="flex-grow bg-background-secondary rounded-lg p-4 border border-border-color overflow-y-auto mb-4">
+            <div className="flex-grow bg-background-secondary/50 backdrop-blur-sm rounded-lg p-4 border border-border-color overflow-y-auto mb-4">
                 {messages.map(msg => (
                     <div key={msg.id} className={`flex items-end mb-3 group ${msg.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
                         <div className={`flex items-center opacity-0 group-hover:opacity-100 transition-opacity ${msg.uid === user.uid ? 'mr-2' : 'ml-2 order-2'}`}>
-                            {(userProfile.role === 'moderator' || msg.uid === user.uid) && (
-                                <button onClick={() => handleDeleteMessage(msg.id)} className="text-text-secondary hover:text-red-500 p-1"><FaTrash /></button>
-                            )}
-                            {userProfile.role === 'moderator' && msg.uid !== user.uid && (
-                                <button onClick={() => handleBlockUser(msg)} className="text-text-secondary hover:text-yellow-400 p-1"><FaUserShield /></button>
-                            )}
+                            {(userProfile.role === 'moderator' || msg.uid === user.uid) && (<button onClick={() => handleDeleteMessage(msg.id)} className="text-text-secondary hover:text-red-500 p-1"><FaTrash /></button>)}
+                            {userProfile.role === 'moderator' && msg.uid !== user.uid && (<button onClick={() => handleBlockUser(msg)} className="text-text-secondary hover:text-yellow-400 p-1"><FaUserShield /></button>)}
                         </div>
-                        <div className={`p-3 rounded-lg max-w-xs md:max-w-md ${msg.uid === user.uid ? 'bg-accent-secondary text-white' : 'bg-gray-700 text-gray-200'}`}>
-                             <p className={`text-xs font-bold mb-1 ${msg.uid === user.uid ? 'text-accent-text' : 'text-accent-primary'}`}>{msg.uid === user.uid ? 'You' : msg.displayName}</p>
+                        <div className={`p-3 rounded-lg max-w-xs md:max-w-md ${msg.uid === user.uid ? 'bg-accent-primary text-accent-text' : 'bg-background-secondary text-text-primary'}`}>
+                            <p className={`text-xs font-bold mb-1 ${msg.uid === user.uid ? 'text-accent-text/80' : 'text-accent-primary'}`}>{msg.uid === user.uid ? 'You' : msg.displayName}</p>
                             <p className="text-sm break-words">{msg.text}</p>
                         </div>
                     </div>
                 ))}
                 <div ref={messagesEndRef} />
             </div>
-
-            <form onSubmit={handleSendMessage} className="flex gap-2">
+            <form onSubmit={handleSendMessage} className="flex gap-3">
                 <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Ask a question..."
-                    className="flex-grow bg-background-secondary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-accent-primary focus:border-accent-primary"/>
-                <button type="submit" className="px-4 py-2 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold flex items-center gap-2">
+                    className="flex-grow bg-background-secondary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"/>
+                <button type="submit" className="px-4 py-2 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold flex items-center gap-2 transition-colors">
                     <FaPaperPlane /> <span className="hidden sm:inline">Send</span>
                 </button>
             </form>
