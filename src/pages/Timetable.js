@@ -2,31 +2,43 @@ import React from 'react';
 import { schedule, courses } from '../data/timetableData';
 
 const Timetable = () => {
-  const courseMap = courses.reduce((acc, course) => {
-    acc[course.code.split('/')[0].trim()] = course; // Handle codes like PHY 425/625
-    if (course.code.includes('/')) {
-      acc[course.code.split('/')[1].trim()] = course;
-    }
-    return acc;
-  }, {});
-
-  const findEvent = (day, time) => {
-    return schedule.events[day]?.find(event => event.time === time);
-  };
-  
-  // Create an array representing occupied slots to handle multi-hour classes
-  const getOccupiedSlots = (day) => {
-    const occupied = new Set();
-    schedule.events[day]?.forEach(event => {
-      const startIndex = schedule.timeSlots.indexOf(event.time);
-      if (startIndex !== -1) {
-        for (let i = 0; i < event.span; i++) {
-          occupied.add(schedule.timeSlots[startIndex + i]);
-        }
-      }
+  // A map for quick course lookup by code.
+  const courseMap = React.useMemo(() => {
+    const map = new Map();
+    courses.forEach(course => {
+      // Handle codes like "PHY 425/625" by mapping both parts
+      const codes = course.code.split('/');
+      codes.forEach(code => map.set(code.trim(), course));
     });
-    return occupied;
-  };
+    return map;
+  }, []);
+
+  // Pre-process the schedule to handle multi-hour spans
+  const gridLayout = React.useMemo(() => {
+    const layout = {};
+    schedule.days.forEach(day => {
+      layout[day] = {};
+      schedule.timeSlots.forEach(time => {
+        const events = schedule.events[day]?.[time];
+        if (events) {
+          layout[day][time] = events;
+          // Mark subsequent slots as occupied if an event spans multiple hours
+          const mainEvent = events[0]; // Assume span is the same for clashing events
+          if (mainEvent.span > 1) {
+            const startIndex = schedule.timeSlots.indexOf(time);
+            for (let i = 1; i < mainEvent.span; i++) {
+              const nextTimeSlot = schedule.timeSlots[startIndex + i];
+              if (nextTimeSlot) {
+                layout[day][nextTimeSlot] = 'occupied';
+              }
+            }
+          }
+        }
+      });
+    });
+    return layout;
+  }, []);
+
 
   return (
     <div className="animate-fade-in-up">
@@ -35,43 +47,51 @@ const Timetable = () => {
 
       {/* Timetable Grid */}
       <div className="bg-gray-800/50 rounded-lg p-4 border border-gray-700 overflow-x-auto mb-12">
-        <div className="grid grid-cols-[auto,repeat(5,1fr)] min-w-[800px]">
-          {/* Header Row */}
-          <div className="font-bold text-center p-2 border-b border-r border-gray-600">Time</div>
-          {schedule.days.map(day => (
-            <div key={day} className="font-bold text-center p-2 border-b border-gray-600">{day}</div>
-          ))}
+        <table className="w-full min-w-[800px] border-collapse">
+          <thead>
+            <tr>
+              <th className="w-24 font-bold text-center p-2 border-b border-r border-gray-600">Time</th>
+              {schedule.days.map(day => (
+                <th key={day} className="font-bold text-center p-2 border-b border-gray-600">{day}</th>
+              ))}
+            </tr>
+          </thead>
+          <tbody>
+            {schedule.timeSlots.map(time => (
+              <tr key={time}>
+                <td className="font-mono text-xs text-center p-2 border-r border-gray-600 border-t border-gray-700">{time}</td>
+                {schedule.days.map(day => {
+                  const cellContent = gridLayout[day]?.[time];
+                  
+                  if (cellContent === 'occupied') {
+                    return null; // This cell is covered by a multi-hour class
+                  }
+                  
+                  if (Array.isArray(cellContent)) {
+                    const mainEvent = cellContent[0];
+                    return (
+                      <td key={`${day}-${time}`} rowSpan={mainEvent.span} className="p-1 border-t border-gray-700 align-top">
+                        <div className="flex flex-col gap-1">
+                          {cellContent.map((event, index) => {
+                             const course = courseMap.get(event.code);
+                             return (
+                              <div key={index} className={`p-2 rounded text-white text-sm font-semibold flex flex-col justify-center items-center text-center ${course.color}`}>
+                                <span>{event.code}</span>
+                                <span className="text-xs font-normal opacity-90 hidden sm:block">{course.name}</span>
+                              </div>
+                             )
+                          })}
+                        </div>
+                      </td>
+                    );
+                  }
 
-          {/* Time Slots Rows */}
-          {schedule.timeSlots.map(time => {
-            const rowCells = [];
-            for (const day of schedule.days) {
-              const occupiedSlots = getOccupiedSlots(day);
-              if (occupiedSlots.has(time)) {
-                const event = findEvent(day, time);
-                if (event) {
-                  const course = courseMap[event.code];
-                  const sharedCourse = event.shared ? courseMap[event.shared] : null;
-                  rowCells.push(
-                    <div key={`${day}-${time}`} className={`row-span-${event.span} p-2 rounded text-white text-sm font-semibold flex flex-col justify-center items-center text-center ${course.color}`} style={{ gridRow: `span ${event.span} / span ${event.span}` }}>
-                      <span>{event.code}</span>
-                      {sharedCourse && <span className="text-xs opacity-80">/ {event.shared}</span>}
-                      <span className="text-xs font-normal opacity-90 hidden sm:block">{course.name}</span>
-                    </div>
-                  );
-                }
-              } else {
-                 rowCells.push(<div key={`${day}-${time}`} className="border-t border-gray-700"></div>);
-              }
-            }
-            return (
-              <React.Fragment key={time}>
-                <div className="font-mono text-xs text-center p-2 border-r border-gray-600 border-t border-gray-700">{time}</div>
-                {rowCells}
-              </React.Fragment>
-            );
-          })}
-        </div>
+                  return <td key={`${day}-${time}`} className="border-t border-gray-700"></td>; // Empty cell
+                })}
+              </tr>
+            ))}
+          </tbody>
+        </table>
       </div>
 
       {/* Course List */}
@@ -99,3 +119,4 @@ const Timetable = () => {
 };
 
 export default Timetable;
+
