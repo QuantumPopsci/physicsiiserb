@@ -55,7 +55,6 @@ const CommunityGuidelines = () => {
     );
 };
 
-
 const Chat = () => {
     const [user, setUser] = useState(null);
     const [userProfile, setUserProfile] = useState({ role: 'user', termsAccepted: false });
@@ -120,7 +119,18 @@ const Chat = () => {
     const handleGoogleSignIn = async () => { /* ... same as before ... */ };
     const handleSignOut = async () => { /* ... same as before ... */ };
     const handleAcceptTerms = async () => { /* ... same as before ... */ };
-    const handleSendMessage = async (e) => { /* ... same as before ... */ };
+    const handleSendMessage = async (e) => { 
+        e.preventDefault();
+        if (newMessage.trim() === '') return;
+        await addDoc(collection(db, 'messages'), {
+            text: newMessage,
+            timestamp: serverTimestamp(),
+            uid: user.uid,
+            email: user.email,
+            displayName: userDisplayName,
+        });
+        setNewMessage('');
+     };
     const handleDeleteMessage = async (messageId) => { /* ... same as before ... */ };
     const handleBlockUser = async (msg) => { /* ... same as before ... */ };
     
