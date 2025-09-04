@@ -20,6 +20,7 @@ const Navbar = () => {
             <div className="ml-10 flex items-baseline space-x-4">
               <NavLink to="/" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Home</NavLink>
               <NavLink to="/courses" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Courses</NavLink>
+              <NavLink to="/timetable" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Timetable</NavLink> {/* Add Timetable Link */}
               <NavLink to="/resources" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Resources</NavLink>
               <NavLink to="/contacts" className={({ isActive }) => `${linkStyles} ${isActive ? activeLinkStyles : ''}`}>Contacts</NavLink>
             </div>
@@ -31,3 +32,4 @@ const Navbar = () => {
 };
 
 export default Navbar;
+
