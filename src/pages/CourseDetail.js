@@ -22,7 +22,7 @@ const CourseDetail = () => {
         {/* Course Structure and Syllabus */}
         <section>
           <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-4">Course Structure & Syllabus</h2>
-          <div className="prose prose-invert max-w-none bg-background-secondary/50 p-6 rounded-lg border border-border-color text-text-secondary">
+          <div className="prose max-w-none bg-background-secondary/50 p-6 rounded-lg border border-border-color">
               <ul className="text-text-secondary">{course.syllabus.map((item, index) => <li key={index}>{item}</li>)}</ul>
           </div>
         </section>
@@ -69,3 +69,5 @@ const CourseDetail = () => {
 };
 
 export default CourseDetail;
+
+
