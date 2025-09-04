@@ -9,6 +9,7 @@ import Resources from './pages/Resources';
 import Contacts from './pages/Contacts';
 import Chat from './pages/Chat';
 import Timetable from './pages/Timetable';
+import ParticleBackground from './components/ParticleBackground';
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -19,11 +20,7 @@ function App() {
   }, []);
 
   useEffect(() => {
-    if (theme === 'dark') {
-      document.body.classList.add('dark');
-    } else {
-      document.body.classList.remove('dark');
-    }
+    document.body.className = savedTheme;
     localStorage.setItem('theme', theme);
   }, [theme]);
 
@@ -32,9 +29,10 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background-primary">
+    <div className="min-h-screen flex flex-col bg-background-primary text-text-primary">
+      <ParticleBackground />
       <Navbar theme={theme} toggleTheme={toggleTheme} />
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 z-10">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-12 z-10">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
