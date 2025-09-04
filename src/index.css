@@ -1,13 +1,49 @@
 @import url('https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;700&family=Inter:wght@400;600;700&display=swap');
 
+/* CSS Variables for Theming
+  Light mode is the default (:root)
+*/
+:root {
+  --background-primary: #ffffff;
+  --background-secondary: #f3f4f6; /* light grey */
+  --text-primary: #111827; /* almost black */
+  --text-secondary: #4b5563; /* medium grey */
+  --border-color: #d1d5db;
+  --accent-primary: #0891b2; /* cyan-600 */
+  --accent-secondary: #0e7490; /* cyan-700 */
+  --accent-text: #ecfeff; /* cyan-50 */
+  --gradient-from: #0ea5e9; /* sky-500 */
+  --gradient-to: #06b6d4; /* cyan-500 */
+}
+
+/* Dark mode overrides
+*/
+body.dark {
+  --background-primary: #030712; /* rich black */
+  --background-secondary: #111827; /* grey-900 */
+  --text-primary: #f9fafb; /* grey-50 */
+  --text-secondary: #9ca3af; /* grey-400 */
+  --border-color: #374151; /* grey-700 */
+  --accent-primary: #22d3ee; /* cyan-400 */
+  --accent-secondary: #0891b2; /* cyan-600 */
+  --accent-text: #111827;
+  --gradient-from: #38bdf8; /* sky-400 */
+  --gradient-to: #22d3ee; /* cyan-400 */
+}
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 body {
-  @apply bg-gray-900 text-gray-200 font-sans;
+  @apply font-sans antialiased;
+  background-color: var(--background-primary);
+  color: var(--text-primary);
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .gradient-text {
-  @apply bg-gradient-to-r from-sky-400 to-cyan-300 bg-clip-text text-transparent;
+  @apply bg-gradient-to-r bg-clip-text text-transparent;
+  --tw-gradient-from: var(--gradient-from);
+  --tw-gradient-to: var(--gradient-to);
 }
