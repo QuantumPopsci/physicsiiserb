@@ -1,41 +1,39 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
 /* --- THEME DEFINITIONS --- */
-/* Light Mode (Default) */
 :root {
-  --background-primary: #f9fafb; /* gray-50 */
+  --background-primary: #f9fafb;
   --background-secondary: #ffffff;
-  --text-primary: #1f2937; /* gray-800 */
-  --text-secondary: #6b7280; /* gray-500 */
-  --border-color: #e5e7eb; /* gray-200 */
-  --accent-primary: #0891b2; /* cyan-600 */
-  --accent-secondary: #0e7490; /* cyan-700 */
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --border-color: #e5e7eb;
+  --accent-primary: #0891b2;
+  --accent-secondary: #0e7490;
   --accent-text: #ffffff;
-  --gradient-from: #0ea5e9; /* sky-500 */
-  --gradient-to: #0891b2; /* cyan-600 */
-  --particle-color: #9ca3af; /* gray-400 */
+  --gradient-from: #0ea5e9;
+  --gradient-to: #0891b2;
+  --particle-color: #9ca3af;
 }
 
-/* Dark Mode Overrides */
 body.dark {
-  --background-primary: #111827; /* gray-900 */
-  --background-secondary: #1f2937; /* gray-800 */
-  --text-primary: #f9fafb; /* gray-50 */
-  --text-secondary: #9ca3af; /* gray-400 */
-  --border-color: #374151; /* gray-700 */
-  --accent-primary: #22d3ee; /* cyan-400 */
-  --accent-secondary: #06b6d4; /* cyan-500 */
+  --background-primary: #111827;
+  --background-secondary: #1f2937;
+  --text-primary: #f9fafb;
+  --text-secondary: #9ca3af;
+  --border-color: #374151;
+  --accent-primary: #22d3ee;
+  --accent-secondary: #06b6d4;
   --accent-text: #111827;
-  --gradient-from: #38bdf8; /* sky-400 */
-  --gradient-to: #22d3ee; /* cyan-400 */
-  --particle-color: #4b5563; /* gray-600 */
+  --gradient-from: #38bdf8;
+  --gradient-to: #22d3ee;
+  --particle-color: #4b5563;
 }
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* --- BASE STYLES & ANIMATIONS --- */
+/* --- BASE STYLES & TRANSITIONS --- */
 body {
   @apply font-sans antialiased;
   background-color: var(--background-primary);
@@ -43,20 +41,16 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
+/* Apply smooth transitions to common components */
+@layer components {
+  .card-base {
+    @apply bg-background-secondary/80 backdrop-blur-sm border border-border-color rounded-xl shadow-lg transition-colors duration-300;
+  }
+}
+
 @layer utilities {
-  @keyframes fadeInUp {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  .animate-fadeInUp {
-    animation: fadeInUp 0.8s ease-out forwards;
-  }
+  @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+  .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
 }
 
 .gradient-text {
