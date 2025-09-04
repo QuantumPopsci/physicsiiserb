@@ -44,7 +44,9 @@ body {
 /* Apply smooth transitions to common components */
 @layer components {
   .card-base {
-    @apply bg-background-secondary/80 backdrop-blur-sm border border-border-color rounded-xl shadow-lg transition-colors duration-300;
+    /* FIX: Apply background with opacity using a standard CSS rule */
+    background-color: var(--background-secondary);
+    @apply bg-opacity-80 backdrop-blur-sm border border-border-color rounded-xl shadow-lg transition-colors duration-300;
   }
 }
 
@@ -58,4 +60,5 @@ body {
   --tw-gradient-from: var(--gradient-from);
   --tw-gradient-to: var(--gradient-to);
 }
+
 
