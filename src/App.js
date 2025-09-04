@@ -6,7 +6,8 @@ import Home from './pages/Home';
 import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
 import Resources from './pages/Resources';
-import Contacts from './pages/Contacts'; // 1. Import the new page component
+import Contacts from './pages/Contacts';
+import Timetable from './pages/Timetable'; // Import the new page
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
           <Route path="/courses/:courseId" element={<CourseDetail />} />
           <Route path="/resources" element={<Resources />} />
           <Route path="/contacts" element={<Contacts />} />
+          <Route path="/timetable" element={<Timetable />} />
         </Routes>
       </main>
       <Footer />
@@ -27,3 +29,4 @@ function App() {
 }
 
 export default App;
+
