@@ -1,21 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { Routes, Route } from 'react-router-dom';
-import Navbar from './components/Navbar';
-import Footer from './components/Footer';
-import Home from './pages/Home';
-import Courses from './pages/Courses';
-import CourseDetail from './pages/CourseDetail';
-import Resources from './pages/Resources';
-import Contacts from './pages/Contacts';
-import Chat from './pages/Chat';
+// ... other imports
 import Timetable from './pages/Timetable';
 
 function App() {
-  const [theme, setTheme] = useState('dark');
+  const [theme, setTheme] = useState('light'); // Default theme is now 'light'
 
   useEffect(() => {
-    // Check for saved theme in localStorage or default to dark
-    const savedTheme = localStorage.getItem('theme') || 'dark';
+    const savedTheme = localStorage.getItem('theme') || 'light';
     setTheme(savedTheme);
   }, []);
 
@@ -35,7 +26,7 @@ function App() {
   return (
     <div className="min-h-screen flex flex-col bg-background-primary">
       <Navbar theme={theme} toggleTheme={toggleTheme} />
-      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+      <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8 z-10">
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/courses" element={<Courses />} />
