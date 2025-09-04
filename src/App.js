@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-// ... other imports
+import { Routes, Route } from 'react-router-dom';
+import Navbar from './components/Navbar';
+import Footer from './components/Footer';
+import Home from './pages/Home';
+import Courses from './pages/Courses';
+import CourseDetail from './pages/CourseDetail';
+import Resources from './pages/Resources';
+import Contacts from './pages/Contacts';
+import Chat from './pages/Chat';
 import Timetable from './pages/Timetable';
 
 function App() {
-  const [theme, setTheme] = useState('light'); // Default theme is now 'light'
+  const [theme, setTheme] = useState('light');
 
   useEffect(() => {
     const savedTheme = localStorage.getItem('theme') || 'light';
