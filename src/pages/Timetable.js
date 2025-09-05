@@ -2,129 +2,122 @@ import React from 'react';
 import { schedule, courses } from '../data/timetableData';
 
 const Timetable = () => {
-  // A map for quick course lookup by code.
-  const courseMap = React.useMemo(() => {
-    const map = new Map();
-    courses.forEach(course => {
-      // FIX: Use 'course.code' to match the data structure provided.
-      const codes = course.code?.split('/') || [course.code];
-      codes.forEach(code => {
-        if (code) {
-          map.set(code.trim(), course)
-        }
-      });
-    });
-    return map;
-  }, []);
+    const { days, timeSlots, events } = schedule;
 
-  // Pre-process the schedule to handle multi-hour spans
-  const gridLayout = React.useMemo(() => {
-    const layout = {};
-    if (!schedule || !schedule.days || !schedule.timeSlots || !schedule.events) {
-        return {}; // Failsafe for malformed schedule data
-    }
-    schedule.days.forEach(day => {
-      layout[day] = {};
-      schedule.timeSlots.forEach(time => {
-        const events = schedule.events[day]?.[time];
-        if (events) {
-          layout[day][time] = events;
-          const mainEvent = events[0];
-          if (mainEvent.span > 1) {
-            const startIndex = schedule.timeSlots.indexOf(time);
-            for (let i = 1; i < mainEvent.span; i++) {
-              const nextTimeSlot = schedule.timeSlots[startIndex + i];
-              if (nextTimeSlot) {
-                layout[day][nextTimeSlot] = 'occupied';
-              }
-            }
-          }
-        }
-      });
-    });
-    return layout;
-  }, []);
+    // A map for quick course lookup by code.
+    const courseMap = React.useMemo(() => {
+        const map = new Map();
+        courses.forEach(course => {
+            const codes = course.courseCode?.split('/') || [course.courseCode];
+            codes.forEach(code => {
+                if (code) map.set(code.trim(), course);
+            });
+        });
+        return map;
+    }, []);
 
-  return (
-    <div className="animate-fadeInUp">
-      <h1 className="text-4xl font-bold mb-2 gradient-text">Semester Timetable</h1>
-      <p className="text-lg text-text-secondary mb-8">Schedule for the upcoming semester (2025-26 I)</p>
+    return (
+        <div className="animate-fadeInUp">
+            <h1 className="text-4xl font-bold mb-2 gradient-text">Semester Timetable</h1>
+            <p className="text-lg text-text-secondary mb-8">Schedule for the upcoming semester (2025-26 I)</p>
 
-      {/* Timetable Grid */}
-      <div className="card-base p-4 overflow-x-auto mb-12">
-        <table className="w-full min-w-[900px] border-collapse">
-          <thead>
-            <tr>
-              <th className="w-28 font-bold text-text-primary text-center p-2 border-b border-r border-border-color">Time</th>
-              {schedule.days.map(day => (
-                <th key={day} className="font-bold text-text-primary text-center p-2 border-b border-border-color">{day}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {schedule.timeSlots.map(time => (
-              <tr key={time} className="h-28">
-                <td className="font-mono text-xs text-text-secondary text-center p-2 border-r border-t border-border-color">{time}</td>
-                {schedule.days.map(day => {
-                  const cellContent = gridLayout[day]?.[time];
-                  if (cellContent === 'occupied') return null;
-
-                  if (Array.isArray(cellContent)) {
-                    const mainEvent = cellContent[0];
-                    return (
-                      <td key={`${day}-${time}`} rowSpan={mainEvent.span} className="p-1 border-t border-border-color align-top">
-                        <div className="flex flex-col gap-1 h-full">
-                          {cellContent.map((event, index) => {
-                            const course = courseMap.get(event.code);
-                            if (!course) return <div key={index} className="flex-1"></div>;
-                            return (
-                              <div 
-                                key={index} 
-                                className={`p-1.5 rounded text-xs font-semibold flex flex-col justify-center items-center text-center flex-1 ${course.color}`}
-                                style={{ textShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)' }} 
-                              >
-                                <span>{event.code}</span>
-                                {/* FIX: Use 'course.name' to match the data structure provided. */}
-                                <span className="font-normal opacity-90 hidden sm:block">{course.name}</span>
-                              </div>
-                            )
-                          })}
-                          {Array.from({ length: 3 - cellContent.length }).map((_, i) => <div key={`fill-${i}`} className="flex-1"></div>)}
+            {/* Timetable Grid */}
+            <div className="card-base p-4 overflow-x-auto mb-12">
+                <div className="min-w-[1000px] grid" style={{
+                    gridTemplateColumns: `auto repeat(${days.length}, 1fr)`,
+                    gridTemplateRows: `auto repeat(${timeSlots.length}, 1fr)`
+                }}>
+                    {/* Top-left empty cell */}
+                    <div className="sticky top-0 left-0 z-20"></div>
+                    
+                    {/* Day Headers */}
+                    {days.map((day) => (
+                        <div key={day} className="font-bold text-text-primary text-center p-2 border-b border-border-color sticky top-0 bg-background-secondary/80 z-10">
+                            {day}
                         </div>
-                      </td>
-                    );
-                  }
-                  return <td key={`${day}-${time}`} className="border-t border-border-color"></td>;
-                })}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+                    ))}
 
-      {/* Course List */}
-      <div>
-        <h2 className="text-3xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Course Offerings</h2>
-        <div className="space-y-4">
-          {courses.map(course => (
-            <div key={course.code} className="card-base p-4 flex items-center gap-4">
-              <div className={`w-3 h-12 rounded ${course.color}`}></div>
-              <div className="flex-grow grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
-                <div>
-                  {/* FIX: Use 'course.name' and 'course.code' */}
-                  <h3 className="font-bold text-lg text-text-primary">{course.name}</h3>
-                  <p className="text-sm text-accent-primary font-mono">{course.code} ({course.type})</p>
+                    {/* Time Slot Headers */}
+                    {timeSlots.map((time, index) => (
+                        <div key={time} className="font-semibold text-text-secondary p-2 border-r border-border-color sticky left-0 bg-background-secondary/80 flex items-center justify-center" style={{ gridRow: index + 2 }}>
+                            {time}
+                        </div>
+                    ))}
+
+                    {/* Grid Cells for Background */}
+                    {days.map((day, dayIndex) => (
+                        timeSlots.map((time, timeIndex) => (
+                            <div key={`${day}-${time}`} className="border-b border-r border-border-color" style={{
+                                gridColumn: dayIndex + 2,
+                                gridRow: timeIndex + 2,
+                            }}></div>
+                        ))
+                    ))}
+
+                    {/* Event Blocks */}
+                    {days.map((day, dayIndex) => (
+                        Object.entries(events[day] || {}).map(([time, dayEvents]) => {
+                            const timeIndex = timeSlots.indexOf(time);
+                            if (timeIndex === -1) return null;
+
+                            return (
+                                <div
+                                    key={`${day}-${time}`}
+                                    className="p-1 relative"
+                                    style={{
+                                        gridColumn: dayIndex + 2,
+                                        gridRow: `${timeIndex + 2} / span ${dayEvents[0].span}`
+                                    }}
+                                >
+                                    {dayEvents.map((event, index) => {
+                                        const course = courseMap.get(event.code);
+                                        if (!course) return null;
+                                        return (
+                                            <div
+                                                key={index}
+                                                style={{
+                                                    backgroundColor: course.color,
+                                                    textShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)',
+                                                    // Overlap clashing courses
+                                                    top: `${index * 1}rem`, 
+                                                    left: `${index * 1}rem`,
+                                                }}
+                                                className="absolute w-[calc(100%-1.5rem)] h-[calc(100%-0.5rem)] p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center shadow-lg"
+                                            >
+                                                <span>{event.code}</span>
+                                                <span className="font-normal opacity-90 hidden sm:block">{course.title}</span>
+                                            </div>
+                                        );
+                                    })}
+                                </div>
+                            );
+                        })
+                    ))}
                 </div>
-                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Instructor:</span> {course.instructor}</div>
-                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Slot:</span> {course.slot}</div>
-                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Venue:</span> {course.hall}</div>
-              </div>
             </div>
-          ))}
+
+            {/* Course List */}
+            <div>
+                <h2 className="text-3xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Course Offerings</h2>
+                <div className="space-y-4">
+                    {courses.map(course => (
+                        <div key={course.courseCode} className="card-base p-4 flex items-center gap-4">
+                            <div style={{ backgroundColor: course.color }} className={`w-3 h-12 rounded`}></div>
+                            <div className="flex-grow grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
+                                <div>
+                                    <h3 className="font-bold text-lg text-text-primary">{course.title}</h3>
+                                    <p className="text-sm text-accent-primary font-mono">{course.courseCode} ({course.type})</p>
+                                </div>
+                                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Instructor:</span> {course.instructor}</div>
+                                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Slot:</span> {course.slot}</div>
+                                <div className="text-text-primary"><span className="font-semibold text-text-secondary">Venue:</span> {course.hall}</div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
         </div>
-      </div>
-    </div>
-  );
+    );
 };
 
 export default Timetable;
