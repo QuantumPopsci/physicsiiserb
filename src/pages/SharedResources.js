@@ -68,17 +68,15 @@ const ResourceRequestsView = ({ user }) => {
         setStatus({ type: 'submitting', message: 'Posting...' });
         
         try {
+            // FIX: Removed mode: 'no-cors' and changed Content-Type to text/plain
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
-                // FIX: Removed mode: 'no-cors' and set correct headers
-                headers: { 'Content-Type': 'application/json' },
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ action: 'postRequest', text: newRequest, userEmail: user.email }),
             });
-
+            
             const result = await response.json();
-            if (result.result !== 'success') {
-                throw new Error(result.error || 'The script returned an error.');
-            }
+            if (result.result !== 'success') throw new Error(result.error);
 
             setStatus({ type: 'success', message: 'Your request has been posted!' });
             setNewRequest('');
@@ -127,10 +125,10 @@ const SubmitResourceView = ({ user }) => {
         reader.onload = async (e) => {
             const fileData = e.target.result;
             try {
+                // FIX: Removed mode: 'no-cors' and changed Content-Type to text/plain
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    // FIX: Removed mode: 'no-cors' and set correct headers
-                    headers: { 'Content-Type': 'application/json' },
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: 'submitResource',
                         caption: caption,
@@ -142,15 +140,13 @@ const SubmitResourceView = ({ user }) => {
                 });
 
                 const result = await response.json();
-                if (result.result !== 'success') {
-                    throw new Error(result.error || 'The script returned an error.');
-                }
+                if (result.result !== 'success') throw new Error(result.error);
 
                 setStatus({type: 'success', message: 'File submitted for review!'});
                 setCaption('');
                 setFile(null);
                 setAgreed(false);
-                document.getElementById('file').value = null; // Reset file input
+                document.getElementById('file').value = null;
             } catch (error) {
                 setStatus({type: 'error', message: 'Upload failed. Please try again.'});
                 console.error("Fetch Error:", error);
