@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* --- THEME DEFINITIONS --- */
+/* ... (theme definitions remain the same) ... */
 :root {
   --background-primary: #f9fafb;
   --background-secondary: #ffffff;
@@ -29,11 +29,12 @@ body.dark {
   --particle-color: #4b5563;
 }
 
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
-/* --- BASE STYLES & TRANSITIONS --- */
+/* ... (body styles and other components remain the same) ... */
 body {
   @apply font-sans antialiased;
   background-color: var(--background-primary);
@@ -41,8 +42,8 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* --- THEME CLASS DEFINITIONS --- */
 @layer components {
+  /* ... (other theme classes remain the same) ... */
   .bg-background-primary { background-color: var(--background-primary); }
   .bg-background-secondary { background-color: var(--background-secondary); }
   .text-text-primary { color: var(--text-primary); }
@@ -59,22 +60,21 @@ body {
     border-color: var(--border-color);
     @apply bg-opacity-80 backdrop-blur-sm border rounded-xl shadow-lg transition-colors duration-300;
   }
-
-  /* FIX: A more robust definition for gradient-text */
   .gradient-text {
     background-image: linear-gradient(to right, var(--gradient-from), var(--gradient-to));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-}
-/* FIX: Added form input styles */
+
+  /* FIX: Added form input styles */
   .form-input {
     @apply w-full bg-background-primary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent;
   }
   .form-file-input {
      @apply block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent-primary file:text-white hover:file:bg-accent-secondary;
   }
+}
 
 @layer utilities {
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
