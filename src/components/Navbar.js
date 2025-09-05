@@ -12,6 +12,7 @@ const Navbar = ({ theme, toggleTheme }) => {
     { to: "/", text: "Home" },
     { to: "/courses", text: "Courses" },
     { to: "/timetable", text: "Timetable" },
+    { to: "/research", text: "Research" },
     { to: "/shared-resources", text: "Shared Resources" },
     { to: "/resources", text: "Resources" },
     { to: "/contacts", text: "Contacts" },
