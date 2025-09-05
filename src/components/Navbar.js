@@ -17,6 +17,7 @@ const Navbar = ({ theme, toggleTheme }) => {
     { to: "/resources", text: "Resources" },
     { to: "/contacts", text: "Contacts" },
     { to: "/chat", text: "Discussion Forum" },
+    { to: "/contact-us", text: "Contact Us" }, // New link
   ];
 
   return (
