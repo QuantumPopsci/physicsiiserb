@@ -6,7 +6,7 @@ const Timetable = () => {
     const courseMap = React.useMemo(() => {
         const map = new Map();
         courses.forEach(course => {
-            const codes = course.code?.split('/') || [course.code];
+            const codes = course.courseCode?.split('/') || [course.courseCode];
             codes.forEach(code => {
                 if (code) map.set(code.trim(), course);
             });
