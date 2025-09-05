@@ -19,7 +19,6 @@ const CourseDetail = () => {
       <p className="text-lg text-text-secondary font-mono mb-8">{course.code}</p>
       
       <div className="space-y-10">
-        {/* Course Structure and Syllabus */}
         <section>
           <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-4">Course Structure & Syllabus</h2>
           <div className="prose max-w-none bg-background-secondary/50 p-6 rounded-lg border border-border-color">
@@ -27,7 +26,6 @@ const CourseDetail = () => {
           </div>
         </section>
 
-        {/* Course Texts */}
         <section>
           <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-4">Course Texts</h2>
           <ul className="space-y-4">
@@ -44,15 +42,13 @@ const CourseDetail = () => {
           </ul>
         </section>
 
-        {/* Notes */}
         <section>
           <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-4">Notes</h2>
-          <a href={course.notesLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md transition-colors text-white font-semibold">
+          <a href={course.notesLink} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md transition-colors text-accent-text font-semibold">
             <FaLink /> Access Drive Folder
           </a>
         </section>
 
-        {/* Relevant Fields */}
         <section>
           <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-4">Relevant For</h2>
           <div className="flex flex-wrap gap-3">
