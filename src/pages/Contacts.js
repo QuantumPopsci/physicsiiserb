@@ -9,16 +9,15 @@ const ContactCard = ({ person }) => (
             src={person.photo} 
             alt={person.name} 
             className="w-32 h-32 rounded-full mb-4 object-cover border-4 border-accent-primary"
-            // Use a fallback image if the provided one fails
             onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/150x150/1f2937/9ca3af?text=Photo' }}
         />
         <h2 className="text-xl font-bold text-text-primary">{person.name}</h2>
         <p className="text-accent-primary mb-2 text-sm">{person.position}</p>
         <p className="text-sm text-text-secondary mb-4 flex-grow">{person.field}</p>
         <div className="flex space-x-4 mt-auto">
-            {person.linkedin && <SocialLink href={person.linkedin} icon={<FaLinkedin className="text-2xl" />} />}
-            {person.github && <SocialLink href={person.github} icon={<FaGithub className="text-2xl" />} />}
-            {person.email && <SocialLink href={`mailto:${person.email}`} icon={<FaEnvelope className="text-2xl" />} />}
+            {person.socials.linkedin && <SocialLink href={person.socials.linkedin} icon={<FaLinkedin className="text-2xl" />} />}
+            {person.socials.github && <SocialLink href={person.socials.github} icon={<FaGithub className="text-2xl" />} />}
+            {person.socials.email && <SocialLink href={`mailto:${person.socials.email}`} icon={<FaEnvelope className="text-2xl" />} />}
         </div>
     </div>
 );
@@ -29,12 +28,11 @@ const SocialLink = ({ href, icon }) => (
     </a>
 );
 
-const SubmissionForm = () => {
+// FIX: The form now accepts the script URL as a prop.
+const SubmissionForm = ({ scriptUrl }) => {
     const [formData, setFormData] = useState({ name: '', position: '', field: '', linkedin: '', github: '', email: '' });
     const [photo, setPhoto] = useState(null);
     const [status, setStatus] = useState({ type: '', message: '' });
-    // IMPORTANT: Replace this with the URL you get after deploying the new Apps Script.
-    const SCRIPT_URL = "YOUR_NEW_APPS_SCRIPT_URL_HERE";
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -59,10 +57,11 @@ const SubmissionForm = () => {
         reader.readAsDataURL(photo);
         reader.onload = async (event) => {
             try {
-                const response = await fetch(SCRIPT_URL, {
+                const response = await fetch(scriptUrl, { // FIX: Use the passed-in URL
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ ...formData, photoData: event.target.result, photoName: photo.name, photoType: photo.type }),
+                    redirect: 'follow'
                 });
                 const result = await response.json();
                 if (result.result !== 'success') throw new Error(result.error);
@@ -107,6 +106,7 @@ const Contacts = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showForm, setShowForm] = useState(false);
+    // This is the single source of truth for the URL
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec";
 
     useEffect(() => {
@@ -115,7 +115,6 @@ const Contacts = () => {
                 const response = await fetch(SCRIPT_URL);
                 const result = await response.json();
                 if (result.result !== 'success') throw new Error(result.error);
-                // Map sheet headers to component props
                 const formattedContacts = result.data.map(contact => ({
                     name: contact.Name,
                     position: contact.Position,
@@ -169,7 +168,8 @@ const Contacts = () => {
                     </button>
                 ) : (
                     <div className="mt-6 text-left">
-                        <SubmissionForm />
+                        {/* FIX: Pass the correct URL to the form */}
+                        <SubmissionForm scriptUrl={SCRIPT_URL} />
                     </div>
                 )}
             </div>
