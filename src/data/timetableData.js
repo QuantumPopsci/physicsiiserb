@@ -31,7 +31,7 @@ export const schedule = {
     "Tuesday": {
       "8:00 AM": [{ code: "PHY 425", span: 1 }],
       "10:00 AM": [{ code: "PHY 639", span: 1 }],
-      "11:00 AM": [{ code: "PHY 435", span: 1 }, { code: "PHY 416", span: 1 }], // Clash
+      "11:00 AM": [{ code: "PHY 435", span: 1 }], // Clash
       "12:00 PM": [{ code: "PHY 416", span: 1 }], // Lab
       "2:00 PM": [{ code: "PHY 405", span: 3 }], // Clash
       "4:00 PM": [{ code: "PHY 601", span: 1 }],
