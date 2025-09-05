@@ -6,7 +6,6 @@ const Timetable = () => {
   const courseMap = React.useMemo(() => {
     const map = new Map();
     courses.forEach(course => {
-      // FIX: Use 'course.courseCode' to match the data structure
       const codes = course.courseCode.split('/');
       codes.forEach(code => map.set(code.trim(), course));
     });
@@ -75,13 +74,12 @@ const Timetable = () => {
                                 key={index} 
                                 style={{ 
                                   backgroundColor: course.color,
-                                  // FIX: Add text shadow for visibility on light backgrounds
                                   textShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)' 
                                 }} 
                                 className={`p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center flex-1`}
                               >
                                 <span>{event.code}</span>
-                                {/* FIX: Use 'course.title' to match the data structure */}
+                                {/* FIX: Changed 'course.name' to 'course.title' to match the data structure */}
                                 <span className="font-normal opacity-90 hidden sm:block">{course.title}</span>
                               </div>
                             )
@@ -108,7 +106,6 @@ const Timetable = () => {
               <div style={{ backgroundColor: course.color }} className={`w-3 h-12 rounded`}></div>
               <div className="flex-grow grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
                 <div>
-                  {/* FIX: Use 'course.title' and 'course.courseCode' */}
                   <h3 className="font-bold text-lg text-text-primary">{course.title}</h3>
                   <p className="text-sm text-accent-primary font-mono">{course.courseCode} ({course.type})</p>
                 </div>
