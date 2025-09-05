@@ -6,6 +6,7 @@ const Timetable = () => {
   const courseMap = React.useMemo(() => {
     const map = new Map();
     courses.forEach(course => {
+      // FIX: Use 'course.courseCode' to match the data structure
       const codes = course.courseCode.split('/');
       codes.forEach(code => map.set(code.trim(), course));
     });
@@ -79,7 +80,6 @@ const Timetable = () => {
                                 className={`p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center flex-1`}
                               >
                                 <span>{event.code}</span>
-                                {/* FIX: Changed 'course.name' to 'course.title' to match the data structure */}
                                 <span className="font-normal opacity-90 hidden sm:block">{course.title}</span>
                               </div>
                             )
