@@ -6,9 +6,13 @@ const Timetable = () => {
   const courseMap = React.useMemo(() => {
     const map = new Map();
     courses.forEach(course => {
-      // FIX: Use 'course.courseCode' to match the data structure
-      const codes = course.courseCode.split('/');
-      codes.forEach(code => map.set(code.trim(), course));
+      // FIX: Added optional chaining (?.) and a fallback to prevent crashing on malformed data.
+      const codes = course.courseCode?.split('/') || [course.courseCode];
+      codes.forEach(code => {
+        if (code) {
+          map.set(code.trim(), course)
+        }
+      });
     });
     return map;
   }, []);
@@ -16,6 +20,9 @@ const Timetable = () => {
   // Pre-process the schedule to handle multi-hour spans
   const gridLayout = React.useMemo(() => {
     const layout = {};
+    if (!schedule || !schedule.days || !schedule.timeSlots || !schedule.events) {
+        return {}; // Failsafe for malformed schedule data
+    }
     schedule.days.forEach(day => {
       layout[day] = {};
       schedule.timeSlots.forEach(time => {
