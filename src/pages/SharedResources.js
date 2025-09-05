@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
-import { FaFileUpload, FaQuestionCircle } from 'react-icons/fa';
+import { FaFileUpload, FaQuestionCircle, FaFileAlt } from 'react-icons/fa';
 
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtG4XtpwjYXPjRD5elwTvdausBioL3G33mHhaloeMW2UN_dOnboMbpQSyBH2EbIvd/exec";
 
@@ -90,9 +90,17 @@ const ApprovedResourcesView = ({ resources }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {resources.map((res, index) => (
-                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 block hover:border-accent-primary transform hover:-translate-y-1 transition-all">
-                    <p className="font-semibold text-text-primary">{res.Caption}</p>
-                    <p className="text-xs text-text-secondary mt-2">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
+                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 flex flex-col justify-between hover:border-accent-primary transform hover:-translate-y-1 transition-all">
+                    <div>
+                        <p className="font-semibold text-text-primary mb-4">{res.Caption}</p>
+                    </div>
+                    <div className="mt-auto">
+                        <div className="flex items-center gap-2 bg-background-primary p-2 rounded-md border border-border-color">
+                            <FaFileAlt className="text-accent-primary flex-shrink-0" />
+                            <span className="text-xs text-text-secondary truncate">{res.FileName}</span>
+                        </div>
+                         <p className="text-xs text-text-secondary mt-3">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
+                    </div>
                 </a>
             ))}
         </div>
