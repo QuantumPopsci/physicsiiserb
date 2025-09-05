@@ -37,7 +37,7 @@ const SubmissionForm = ({ scriptUrl }) => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file && file.size > 2 * 1024 * 1024) {
+        if (file && file.size > 2 * 1024 * 1024) { // 2MB limit
             setStatus({ type: 'error', message: 'Photo is too large. Please select an image under 2MB.' });
             setPhoto(null);
         } else {
@@ -57,13 +57,19 @@ const SubmissionForm = ({ scriptUrl }) => {
         reader.readAsDataURL(photo);
         reader.onload = async (event) => {
             try {
+                // FIX: Use a standard fetch that can read the response
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
-                    mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ ...formData, photoData: event.target.result, photoName: photo.name, photoType: photo.type }),
+                    redirect: 'follow'
                 });
                 
+                if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
+                
+                const result = await response.json();
+                if (result.result !== 'success') throw new Error(result.error);
+
                 setStatus({ type: 'success', message: 'Thank you! Your profile has been submitted for review.' });
                 setFormData({ name: '', position: '', field: '', linkedin: '', github: '', email: '' });
                 setPhoto(null);
@@ -73,9 +79,6 @@ const SubmissionForm = ({ scriptUrl }) => {
                 console.error("Submission Error:", error);
             }
         };
-        reader.onerror = () => {
-             setStatus({ type: 'error', message: 'Error reading file.' });
-        }
     };
 
     return (
@@ -107,11 +110,11 @@ const Contacts = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showForm, setShowForm] = useState(false);
-    // The placeholder has been replaced with your new script URL.
+    // IMPORTANT: Replace this with the URL from your LATEST script deployment.
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec"; 
 
     useEffect(() => {
-        // The check for the placeholder URL has been removed to allow fetching.
+        // FIX: Remove the placeholder check to allow fetching
         const fetchContacts = async () => {
             try {
                 const response = await fetch(SCRIPT_URL);
@@ -131,7 +134,7 @@ const Contacts = () => {
                 }));
                 setCommunityContacts(formattedContacts);
             } catch (err) {
-                setError("Could not load community contacts.");
+                setError("Could not load community contacts. Please ensure the SCRIPT_URL is correct and the script is deployed.");
                 console.error("Fetch error:", err);
             } finally {
                 setLoading(false);
