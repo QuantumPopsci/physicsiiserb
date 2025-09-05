@@ -110,10 +110,10 @@ const Contacts = () => {
     const [error, setError] = useState(null);
     const [showForm, setShowForm] = useState(false);
     // IMPORTANT: Replace this with the URL from your LATEST script deployment.
-    const SCRIPT_URL = "YOUR_NEW_APPS_SCRIPT_URL_HERE"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec"; 
 
     useEffect(() => {
-        if (!SCRIPT_URL.includes("YOUR_NEW_APPS_SCRIPT_URL_HERE")) {
+        if (!SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec")) {
             const fetchContacts = async () => {
                 try {
                     const response = await fetch(SCRIPT_URL);
