@@ -11,9 +11,18 @@ const Research = () => {
             <div className="space-y-16">
                 {researchTopics.map((topic, index) => (
                     <div key={index} className="card-base p-6 md:p-8 grid grid-cols-1 md:grid-cols-5 gap-8 items-center">
-                        {/* Image Section */}
+                        {/* Video Section */}
                         <div className={`md:col-span-2 ${index % 2 === 0 ? 'md:order-1' : 'md:order-2'}`}>
-                            <img src={topic.imageUrl} alt={topic.title} className="rounded-lg shadow-lg w-full h-auto object-cover"/>
+                            <div className="relative pt-[56.25%] rounded-lg overflow-hidden shadow-lg">
+                                <iframe
+                                    src={`https://www.youtube.com/embed/${topic.videoId}`}
+                                    title={topic.title}
+                                    frameBorder="0"
+                                    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                                    allowFullScreen
+                                    className="absolute top-0 left-0 w-full h-full"
+                                ></iframe>
+                            </div>
                         </div>
                         
                         {/* Text Content Section */}
@@ -56,3 +65,4 @@ const Research = () => {
 };
 
 export default Research;
+
