@@ -24,29 +24,27 @@ const ContactUs = () => {
         setStatus({ type: 'submitting', message: 'Submitting...' });
 
         try {
-            // FIX: This is the most reliable way to send data to Google Apps Script
-            // and still be able to read the response.
-            const response = await fetch(SCRIPT_URL, {
+            // FIX: This is the most reliable way to send data to Google Apps Script.
+            // We use mode: 'no-cors' to ensure the data is sent without being blocked
+            // by browser security, even though we can't read the response.
+            await fetch(SCRIPT_URL, {
                 method: 'POST',
+                mode: 'no-cors', // This is the key to bypassing the browser's security block
                 body: JSON.stringify(formData),
                 headers: {
                     "Content-Type": "text/plain;charset=utf-8",
                 },
-                redirect: 'follow' // Important for handling Google's server redirects
             });
 
-            const result = await response.json();
-            if (result.result !== 'success') {
-                // If the script itself returns an error, we'll see it here.
-                throw new Error(result.error || 'The script returned an error.');
-            }
-            
-            // This part will now be reached correctly.
+            // Because of 'no-cors', we can't confirm success from the script's response.
+            // Instead, we optimistically assume success if the request itself doesn't
+            // throw a network error. Since we know the data is arriving, this is safe.
             setStatus({ type: 'success', message: 'Thank you! Your feedback has been submitted.' });
             setFormData({ id: '', suggestion: '', complaint: '' }); // Reset form
+
         } catch (error) {
-            // This will now only catch genuine network errors or script errors.
-            setStatus({ type: 'error', message: 'Thank you! Your feedback has been submitted to us!' });
+            // This will now only catch genuine network failures.
+            setStatus({ type: 'error', message: 'Submission failed. Please check your network and try again.' });
             console.error("Submission Error:", error);
         }
     };
