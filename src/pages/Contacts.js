@@ -1,4 +1,4 @@
-import React, 'useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { contacts as staticContacts } from '../data/contactData';
 import { FaLinkedin, FaGithub, FaEnvelope, FaPlusCircle } from 'react-icons/fa';
 
@@ -37,7 +37,7 @@ const SubmissionForm = ({ scriptUrl }) => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file && file.size > 2 * 1024 * 1024) {
+        if (file && file.size > 2 * 1024 * 1024) { // 2MB limit
             setStatus({ type: 'error', message: 'Photo is too large. Please select an image under 2MB.' });
             setPhoto(null);
         } else {
@@ -57,27 +57,25 @@ const SubmissionForm = ({ scriptUrl }) => {
         reader.readAsDataURL(photo);
         reader.onload = async (event) => {
             try {
-                const response = await fetch(scriptUrl, {
+                await fetch(scriptUrl, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ ...formData, photoData: event.target.result, photoName: photo.name, photoType: photo.type }),
-                    redirect: 'follow'
                 });
                 
-                if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
-                
-                const result = await response.json();
-                if (result.result !== 'success') throw new Error(result.error);
-
                 setStatus({ type: 'success', message: 'Thank you! Your profile has been submitted for review.' });
                 setFormData({ name: '', position: '', field: '', linkedin: '', github: '', email: '' });
                 setPhoto(null);
                 document.getElementById('photo-input').value = null;
+
             } catch (error) {
-                setStatus({ type: 'error', message: 'Submission failed. Please try again.' });
-                console.error("Submission Error:", error);
+                setStatus({ type: 'error', message: 'Submission failed. Please check your network connection.' });
             }
         };
+        reader.onerror = () => {
+             setStatus({ type: 'error', message: 'Error reading file.' });
+        }
     };
 
     return (
@@ -104,55 +102,54 @@ const SubmissionForm = ({ scriptUrl }) => {
     );
 };
 
+
+// --- Main Contacts Page Component ---
 const Contacts = () => {
     const [communityContacts, setCommunityContacts] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showForm, setShowForm] = useState(false);
-    // IMPORTANT: Replace this with the URL from your LATEST script deployment.
-    const SCRIPT_URL = "YOUR_NEW_APPS_SCRIPT_URL_HERE"; 
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec";
 
     useEffect(() => {
-        if (!SCRIPT_URL.includes("YOUR_NEW_APPS_SCRIPT_URL_HERE")) {
-            const fetchContacts = async () => {
-                try {
-                    const response = await fetch(SCRIPT_URL);
-                    if (!response.ok) throw new Error(`Network error: ${response.statusText}`);
-                    const result = await response.json();
-                    if (result.result !== 'success') throw new Error(result.error);
-                    const formattedContacts = result.data.map(contact => ({
-                        name: contact.Name,
-                        position: contact.Position,
-                        field: contact.Field,
-                        photo: contact.PhotoURL,
-                        socials: {
-                            linkedin: contact.LinkedIn,
-                            github: contact.GitHub,
-                            email: contact.Email,
-                        }
-                    }));
-                    setCommunityContacts(formattedContacts);
-                } catch (err) {
-                    setError("Could not load community contacts.");
-                    console.error("Fetch error:", err);
-                } finally {
-                    setLoading(false);
-                }
-            };
-            fetchContacts();
-        } else {
-            setLoading(false);
-        }
+        const fetchContacts = async () => {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                if (!response.ok) throw new Error("Network error fetching contacts.");
+                const result = await response.json();
+                if (result.result !== 'success') throw new Error(result.error);
+                const formattedContacts = result.data.map(contact => ({
+                    name: contact.Name,
+                    position: contact.Position,
+                    field: contact.Field,
+                    photo: contact.PhotoURL,
+                    socials: {
+                        linkedin: contact.LinkedIn,
+                        github: contact.GitHub,
+                        email: contact.Email,
+                    }
+                }));
+                setCommunityContacts(formattedContacts);
+            } catch (err) {
+                setError("Could not load community contacts.");
+                console.error("Fetch error:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchContacts();
     }, [SCRIPT_URL]);
 
     return (
         <div className="animate-fadeInUp">
             <h1 className="text-4xl font-bold mb-2 gradient-text">Contacts</h1>
             <p className="text-lg text-text-secondary mb-8">Connect with alumni, peers, and the wider physics community.</p>
+
             <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Featured Contacts</h2>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
                 {staticContacts.map((person, index) => <ContactCard key={index} person={person} />)}
             </div>
+
             <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Community Directory</h2>
             {loading && <p className="text-text-secondary">Loading community contacts...</p>}
             {error && <p className="text-red-500">{error}</p>}
@@ -164,6 +161,7 @@ const Contacts = () => {
              {!loading && communityContacts.length === 0 && !error && (
                 <p className="text-text-secondary mb-16">No community submissions yet. Be the first to contribute!</p>
             )}
+
             <div className="card-base p-6 text-center">
                 <h3 className="text-xl font-bold text-text-primary mb-2">Want to be featured here?</h3>
                 <p className="text-text-secondary mb-4">Submit your profile to be added to the community directory after a brief review.</p>
