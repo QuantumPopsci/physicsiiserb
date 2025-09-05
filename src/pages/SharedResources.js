@@ -3,10 +3,16 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import { FaFileUpload, FaQuestionCircle } from 'react-icons/fa';
 
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtG4XtpwjYXPjRD5elwTvdausBioL3G33mHhaloeMW2UN_dOnboMbpQSyBH2EbIvd/exec";
+
 // --- Main Component ---
 const SharedResources = () => {
     const [user, setUser] = useState(null);
     const [activeTab, setActiveTab] = useState('resources'); 
+    const [approvedResources, setApprovedResources] = useState([]);
+    const [resourceRequests, setResourceRequests] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
 
     useEffect(() => {
         const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -18,6 +24,29 @@ const SharedResources = () => {
         });
         return () => unsubscribe();
     }, []);
+
+    // Effect to fetch all data from the Google Sheet
+    useEffect(() => {
+        const fetchData = async () => {
+            if (!user) return; // Don't fetch if not logged in
+            setLoading(true);
+            setError(null);
+            try {
+                const response = await fetch(SCRIPT_URL);
+                if (!response.ok) throw new Error("Network response was not ok.");
+                const result = await response.json();
+                if (result.result !== 'success') throw new Error(result.error || "Script returned an error.");
+                setApprovedResources(result.data.approvedResources || []);
+                setResourceRequests(result.data.resourceRequests || []);
+            } catch (err) {
+                setError(err.message);
+                console.error("Error fetching sheet data:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchData();
+    }, [user]); // Refetch data when user logs in
 
     if (!user) {
         return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Access Restricted</h1><p className="text-text-secondary">You must be signed in with an @iiserb.ac.in account to access this feature.</p></div>;
@@ -35,9 +64,15 @@ const SharedResources = () => {
             </div>
 
             <div>
-                {activeTab === 'resources' && <ApprovedResourcesView />}
-                {activeTab === 'requests' && <ResourceRequestsView user={user} />}
-                {activeTab === 'submit' && <SubmitResourceView user={user} />}
+                {loading && <p className="text-text-secondary text-center">Loading resources...</p>}
+                {error && <p className="text-red-500 text-center">Error: {error}</p>}
+                {!loading && !error && (
+                    <>
+                        {activeTab === 'resources' && <ApprovedResourcesView resources={approvedResources} />}
+                        {activeTab === 'requests' && <ResourceRequestsView user={user} requests={resourceRequests} />}
+                        {activeTab === 'submit' && <SubmitResourceView user={user} />}
+                    </>
+                )}
             </div>
         </div>
     );
@@ -50,17 +85,23 @@ const TabButton = ({ name, activeTab, setActiveTab, label }) => (
     </button>
 );
 
-const ApprovedResourcesView = () => (
-    <div className="card-base p-6">
-        <h2 className="text-2xl font-bold text-text-primary mb-4">Approved Resources</h2>
-        <p className="text-text-secondary">This section will display resources approved by moderators. Currently, moderators can view and approve submissions directly in the Google Sheet named "Resource Submissions".</p>
-    </div>
-);
+const ApprovedResourcesView = ({ resources }) => {
+    if (resources.length === 0) return <p className="text-text-secondary text-center card-base p-6">No approved resources yet. Be the first to contribute!</p>;
+    return (
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {resources.map((res, index) => (
+                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 block hover:border-accent-primary transform hover:-translate-y-1 transition-all">
+                    <p className="font-semibold text-text-primary">{res.Caption}</p>
+                    <p className="text-xs text-text-secondary mt-2">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
+                </a>
+            ))}
+        </div>
+    );
+};
 
-const ResourceRequestsView = ({ user }) => {
+const ResourceRequestsView = ({ user, requests }) => {
     const [newRequest, setNewRequest] = useState('');
     const [status, setStatus] = useState({ type: '', message: '' });
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtG4XtpwjYXPjRD5elwTvdausBioL3G33mHhaloeMW2UN_dOnboMbpQSyBH2EbIvd/exec";
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -68,17 +109,15 @@ const ResourceRequestsView = ({ user }) => {
         setStatus({ type: 'submitting', message: 'Posting...' });
         
         try {
-            // FIX: Removed mode: 'no-cors' and changed Content-Type to text/plain
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ action: 'postRequest', text: newRequest, userEmail: user.email }),
             });
-            
             const result = await response.json();
             if (result.result !== 'success') throw new Error(result.error);
 
-            setStatus({ type: 'success', message: 'Your request has been posted!' });
+            setStatus({ type: 'success', message: 'Your request has been posted! Please refresh to see the updated list.' });
             setNewRequest('');
         } catch (error) {
             setStatus({ type: 'error', message: 'Failed to post request.' });
@@ -87,17 +126,27 @@ const ResourceRequestsView = ({ user }) => {
     };
     
     return (
-         <div className="card-base p-6">
-            <h2 className="text-2xl font-bold text-text-primary mb-4">Request a Resource</h2>
-            <form onSubmit={handleSubmit} className="flex gap-3">
-                <input type="text" value={newRequest} onChange={(e) => setNewRequest(e.target.value)} placeholder="What resource are you looking for?"
-                    className="flex-grow bg-background-primary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"/>
-                <button type="submit" disabled={status.type === 'submitting'} className="px-4 py-2 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold flex items-center gap-2 transition-colors disabled:bg-gray-500">
-                    Post
-                </button>
-            </form>
-            {status.message && <p className={`mt-4 text-sm ${status.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>{status.message}</p>}
-            <p className="text-text-secondary mt-4 text-sm">This section will also display a live list of all requests once the display functionality is built.</p>
+        <div>
+            <div className="card-base p-6 mb-8">
+                <h2 className="text-2xl font-bold text-text-primary mb-4">Post a New Request</h2>
+                <form onSubmit={handleSubmit} className="flex gap-3">
+                    <input type="text" value={newRequest} onChange={(e) => setNewRequest(e.target.value)} placeholder="What resource are you looking for?"
+                        className="flex-grow bg-background-primary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"/>
+                    <button type="submit" disabled={status.type === 'submitting'} className="px-4 py-2 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold flex items-center gap-2 transition-colors disabled:bg-gray-500">
+                        Post
+                    </button>
+                </form>
+                {status.message && <p className={`mt-4 text-sm ${status.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>{status.message}</p>}
+            </div>
+            <div className="space-y-4">
+                <h2 className="text-2xl font-bold text-text-primary mb-4">Current Requests</h2>
+                {requests.length > 0 ? requests.map((req, index) => (
+                    <div key={index} className="card-base p-4">
+                        <p className="text-text-primary">{req.RequestText}</p>
+                        <p className="text-sm text-text-secondary mt-2">Requested by a user on {new Date(req.Timestamp).toLocaleDateString()}</p>
+                    </div>
+                )) : <p className="text-text-secondary text-center">No active resource requests.</p>}
+            </div>
         </div>
     );
 };
@@ -107,7 +156,6 @@ const SubmitResourceView = ({ user }) => {
     const [file, setFile] = useState(null);
     const [agreed, setAgreed] = useState(false);
     const [status, setStatus] = useState({ type: '', message: ''});
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtG4XtpwjYXPjRD5elwTvdausBioL3G33mHhaloeMW2UN_dOnboMbpQSyBH2EbIvd/exec";
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -115,34 +163,31 @@ const SubmitResourceView = ({ user }) => {
             setStatus({type: 'error', message: 'Please fill all fields and agree to the terms.'});
             return;
         }
-        if (file.size > 5 * 1024 * 1024) { // 5MB limit
+        if (file.size > 5 * 1024 * 1024) {
             setStatus({type: 'error', message: 'File is too large. Please select a file under 5MB.'});
             return;
         }
         setStatus({ type: 'uploading', message: 'Preparing file...'});
         const reader = new FileReader();
         reader.readAsDataURL(file);
-        reader.onload = async (e) => {
-            const fileData = e.target.result;
+        reader.onload = async (event) => {
             try {
-                // FIX: Removed mode: 'no-cors' and changed Content-Type to text/plain
                 const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({
                         action: 'submitResource',
                         caption: caption,
-                        fileData: fileData,
+                        fileData: event.target.result,
                         fileName: file.name,
                         fileType: file.type,
                         userEmail: user.email,
                     }),
                 });
-
                 const result = await response.json();
                 if (result.result !== 'success') throw new Error(result.error);
 
-                setStatus({type: 'success', message: 'File submitted for review!'});
+                setStatus({type: 'success', message: 'File submitted successfully! It is now pending review.'});
                 setCaption('');
                 setFile(null);
                 setAgreed(false);
