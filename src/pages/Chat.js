@@ -55,6 +55,7 @@ const CommunityGuidelines = () => {
     );
 };
 
+
 const Chat = () => {
     const [user, setUser] = useState(null);
     const [userProfile, setUserProfile] = useState({ role: 'user', termsAccepted: false });
@@ -116,12 +117,35 @@ const Chat = () => {
         messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    const handleGoogleSignIn = async () => { /* ... same as before ... */ };
-    const handleSignOut = async () => { /* ... same as before ... */ };
-    const handleAcceptTerms = async () => { /* ... same as before ... */ };
-    const handleSendMessage = async (e) => { 
+    // --- FIX: Implemented all event handlers ---
+    const handleGoogleSignIn = async () => {
+        const provider = new GoogleAuthProvider();
+        try {
+            await signInWithPopup(auth, provider);
+        } catch (error) {
+            console.error("Sign-in error:", error);
+        }
+    };
+
+    const handleSignOut = async () => {
+        try {
+            await signOut(auth);
+        } catch (error) {
+            console.error("Sign-out error:", error);
+        }
+    };
+
+    const handleAcceptTerms = async () => {
+        if (user) {
+            const userDocRef = doc(db, 'users', user.uid);
+            await setDoc(userDocRef, { termsAccepted: true }, { merge: true });
+            setUserProfile(prev => ({ ...prev, termsAccepted: true }));
+        }
+    };
+
+    const handleSendMessage = async (e) => {
         e.preventDefault();
-        if (newMessage.trim() === '') return;
+        if (newMessage.trim() === '' || !user) return;
         await addDoc(collection(db, 'messages'), {
             text: newMessage,
             timestamp: serverTimestamp(),
@@ -130,10 +154,26 @@ const Chat = () => {
             displayName: userDisplayName,
         });
         setNewMessage('');
-     };
-    const handleDeleteMessage = async (messageId) => { /* ... same as before ... */ };
-    const handleBlockUser = async (msg) => { /* ... same as before ... */ };
-    
+    };
+
+    const handleDeleteMessage = async (messageId) => {
+        if (window.confirm("Are you sure you want to delete this message?")) {
+            await deleteDoc(doc(db, 'messages', messageId));
+        }
+    };
+
+    const handleBlockUser = async (msg) => {
+        if (window.confirm(`Are you sure you want to permanently block this user (${msg.displayName} - ${msg.email})? This action cannot be undone.`)) {
+            const blockedDocRef = doc(db, 'blockedUsers', msg.uid);
+            await setDoc(blockedDocRef, {
+                email: msg.email,
+                blockedBy: user.email,
+                timestamp: serverTimestamp()
+            });
+            await deleteDoc(doc(db, 'messages', msg.id));
+        }
+    };
+
     // Conditional Rendering...
     if (!user) {
         return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Discussion Forum</h1><p className="text-text-secondary mb-6">Please sign in with your IISERB Google account to access the chat.</p><button onClick={handleGoogleSignIn} className="inline-flex items-center gap-2 px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold transition-colors"><FaGoogle /> Sign in with Google</button></div>;
