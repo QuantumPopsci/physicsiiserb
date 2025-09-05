@@ -12,6 +12,8 @@ import Timetable from './pages/Timetable';
 import ParticleBackground from './components/ParticleBackground';
 import SharedResources from './pages/SharedResources';
 import Research from './pages/Research'; // 1. Import the new page
+import Terms from './pages/Terms'; // 1. Import the new page
+
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -48,6 +50,7 @@ function App() {
           <Route path="/resources" element={<Resources />} />
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/chat" element={<Chat />} />
+          <Route path="/terms" element={<Terms />} /> {/* 2. Add the new route */}
         </Routes>
       </main>
       <Footer />
