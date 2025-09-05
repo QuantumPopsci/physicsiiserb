@@ -3,6 +3,7 @@ import { db, auth } from '../firebase';
 import { collection, doc, addDoc, getDoc, setDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
 import { FaPaperPlane, FaGoogle, FaSignOutAlt, FaTrash, FaUserShield, FaChevronDown } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
 
 // --- Helper Functions ---
 const anonymousNames = ["Curious Quark", "Anonymous Atom", "Clever Photon", "Bold Boson", "Wise Wavefunction"];
