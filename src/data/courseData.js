@@ -20,7 +20,7 @@ export const courses = [
       { title: 'Physics, Vol 1, 5th Ed.', author: 'D. Resnick, R. Halliday and K. S. Krane', link: '/#' },
       { title: 'Introduction to Mechanics', author: 'M. K. Verma', link: '/#' }
     ],
-    notesLink: '/#',
+    notesLink: 'https://drive.google.com/drive/folders/1S9rBnJ9D2_Ujy6FAJiz7vb62zW9REfJG?usp=sharing',
     relevantFields: ['Astrophysics', 'Engineering Physics', 'Classical Systems']
   },
   {
