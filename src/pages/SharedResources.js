@@ -168,7 +168,7 @@ const SubmitResourceView = ({ user }) => {
     const handleSubmit = (e) => {
         e.preventDefault();
         if (!file || !caption || !agreed) {
-            setStatus({type: 'error', message: 'Please fill all fields and agree to the terms.'});
+            setStatus({type: 'error', message: 'Please fill all fields and agree to the terms. Please name the file as per the contents.'});
             return;
         }
         if (file.size > 5 * 1024 * 1024) {
