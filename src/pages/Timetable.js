@@ -6,7 +6,8 @@ const Timetable = () => {
   const courseMap = React.useMemo(() => {
     const map = new Map();
     courses.forEach(course => {
-      const codes = course.code.split('/');
+      // FIX: Use 'course.courseCode' to match the data structure
+      const codes = course.courseCode.split('/');
       codes.forEach(code => map.set(code.trim(), course));
     });
     return map;
@@ -44,10 +45,10 @@ const Timetable = () => {
 
       {/* Timetable Grid */}
       <div className="card-base p-4 overflow-x-auto mb-12">
-        <table className="w-full min-w-[800px] border-collapse">
+        <table className="w-full min-w-[900px] border-collapse">
           <thead>
             <tr>
-              <th className="w-24 font-bold text-text-primary text-center p-2 border-b border-r border-border-color">Time</th>
+              <th className="w-28 font-bold text-text-primary text-center p-2 border-b border-r border-border-color">Time</th>
               {schedule.days.map(day => (
                 <th key={day} className="font-bold text-text-primary text-center p-2 border-b border-border-color">{day}</th>
               ))}
@@ -55,35 +56,34 @@ const Timetable = () => {
           </thead>
           <tbody>
             {schedule.timeSlots.map(time => (
-              <tr key={time} className="h-24">
+              <tr key={time} className="h-28">
                 <td className="font-mono text-xs text-text-secondary text-center p-2 border-r border-t border-border-color">{time}</td>
                 {schedule.days.map(day => {
                   const cellContent = gridLayout[day]?.[time];
-                  
-                  if (cellContent === 'occupied') {
-                    return null;
-                  }
-                  
+                  if (cellContent === 'occupied') return null;
+
                   if (Array.isArray(cellContent)) {
                     const mainEvent = cellContent[0];
                     return (
                       <td key={`${day}-${time}`} rowSpan={mainEvent.span} className="p-1 border-t border-border-color align-top">
                         <div className="flex flex-col gap-1 h-full">
                           {cellContent.map((event, index) => {
-                             const course = courseMap.get(event.code);
-                             if (!course) return null; // Failsafe if course not found
-                             return (
-                              <div key={index} style={{ backgroundColor: course.color }} className={`p-1.5 rounded text-white text-sm font-semibold flex flex-col justify-center items-center text-center flex-1`}>
+                            const course = courseMap.get(event.code);
+                            if (!course) return <div key={index} className="flex-1"></div>;
+                            return (
+                              <div key={index} style={{ backgroundColor: course.color }} className={`p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center flex-1`}>
                                 <span>{event.code}</span>
-                                <span className="text-xs font-normal opacity-90 hidden sm:block">{course.name}</span>
+                                {/* FIX: Use 'course.title' to match the data structure */}
+                                <span className="font-normal opacity-90 hidden sm:block">{course.title}</span>
                               </div>
-                             )
+                            )
                           })}
+                          {/* Fill remaining space if fewer than 3 courses clash */}
+                          {Array.from({ length: 3 - cellContent.length }).map((_, i) => <div key={`fill-${i}`} className="flex-1"></div>)}
                         </div>
                       </td>
                     );
                   }
-
                   return <td key={`${day}-${time}`} className="border-t border-border-color"></td>;
                 })}
               </tr>
@@ -97,12 +97,13 @@ const Timetable = () => {
         <h2 className="text-3xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Course Offerings</h2>
         <div className="space-y-4">
           {courses.map(course => (
-            <div key={course.code} className="card-base p-4 flex items-center gap-4">
+            <div key={course.courseCode} className="card-base p-4 flex items-center gap-4">
               <div style={{ backgroundColor: course.color }} className={`w-3 h-12 rounded`}></div>
               <div className="flex-grow grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
                 <div>
-                  <h3 className="font-bold text-lg text-text-primary">{course.name}</h3>
-                  <p className="text-sm text-accent-primary font-mono">{course.code} ({course.type})</p>
+                  {/* FIX: Use 'course.title' and 'course.courseCode' */}
+                  <h3 className="font-bold text-lg text-text-primary">{course.title}</h3>
+                  <p className="text-sm text-accent-primary font-mono">{course.courseCode} ({course.type})</p>
                 </div>
                 <div className="text-text-primary"><span className="font-semibold text-text-secondary">Instructor:</span> {course.instructor}</div>
                 <div className="text-text-primary"><span className="font-semibold text-text-secondary">Slot:</span> {course.slot}</div>
@@ -117,4 +118,3 @@ const Timetable = () => {
 };
 
 export default Timetable;
-
