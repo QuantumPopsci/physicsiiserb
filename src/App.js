@@ -13,6 +13,7 @@ import ParticleBackground from './components/ParticleBackground';
 import SharedResources from './pages/SharedResources';
 import Research from './pages/Research'; // 1. Import the new page
 import Terms from './pages/Terms'; // 1. Import the new page
+import ContactUs from './pages/ContactUs';
 
 
 function App() {
@@ -51,6 +52,7 @@ function App() {
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/chat" element={<Chat />} />
           <Route path="/terms" element={<Terms />} /> {/* 2. Add the new route */}
+          <Route path="/contact-us" element={<ContactUs />} /> {/* 2. Add new route */}
         </Routes>
       </main>
       <Footer />
