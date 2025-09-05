@@ -29,8 +29,9 @@ const ContactUs = () => {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {
-                    "Content-Type": "text/plain;charset=utf-8",
+                    "Content-Type": "text/plain;charset=utf-8", // Use text/plain for Apps Script
                 },
+                redirect: 'follow' // Important for handling Google's redirects
             });
 
             const result = await response.json();
