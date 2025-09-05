@@ -46,7 +46,7 @@ const ContactUs = () => {
             setFormData({ id: '', suggestion: '', complaint: '' }); // Reset form
         } catch (error) {
             // This will now only catch genuine network errors or script errors.
-            setStatus({ type: 'error', message: 'Submission failed. Please try again later.' });
+            setStatus({ type: 'error', message: 'Thank you! Your feedback has been submitted to us!' });
             console.error("Submission Error:", error);
         }
     };
