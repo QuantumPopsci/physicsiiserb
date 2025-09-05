@@ -2,13 +2,10 @@ import React from 'react';
 import { schedule, courses } from '../data/timetableData';
 
 const Timetable = () => {
-    const { days, timeSlots, events } = schedule;
-
     // A map for quick course lookup by code.
     const courseMap = React.useMemo(() => {
         const map = new Map();
         courses.forEach(course => {
-            // FIX: Use 'courseCode' and 'title' from the corrected data file
             const codes = course.code?.split('/') || [course.code];
             codes.forEach(code => {
                 if (code) map.set(code.trim(), course);
@@ -17,84 +14,99 @@ const Timetable = () => {
         return map;
     }, []);
 
+    // Pre-process the schedule to unroll multi-hour events and find max clashes
+    const processedLayout = React.useMemo(() => {
+        const layout = {};
+        const maxClashesByTime = {};
+
+        schedule.timeSlots.forEach(time => {
+            maxClashesByTime[time] = 1; // Default to 1 row
+        });
+
+        schedule.days.forEach(day => {
+            layout[day] = {};
+            // Unroll spanned events first
+            Object.entries(schedule.events[day] || {}).forEach(([time, dayEvents]) => {
+                const mainEvent = dayEvents[0];
+                if (mainEvent.span > 1) {
+                    const startIndex = schedule.timeSlots.indexOf(time);
+                    for (let i = 0; i < mainEvent.span; i++) {
+                        const currentTimeSlot = schedule.timeSlots[startIndex + i];
+                        if (currentTimeSlot) {
+                            if (!layout[day][currentTimeSlot]) layout[day][currentTimeSlot] = [];
+                            layout[day][currentTimeSlot].push({ ...mainEvent, isContinuation: i > 0 });
+                        }
+                    }
+                } else {
+                    if (!layout[day][time]) layout[day][time] = [];
+                    layout[day][time].push(...dayEvents);
+                }
+            });
+
+            // Calculate max clashes for each time slot
+            Object.entries(layout[day]).forEach(([time, events]) => {
+                if (events.length > maxClashesByTime[time]) {
+                    maxClashesByTime[time] = events.length;
+                }
+            });
+        });
+
+        return { layout, maxClashesByTime };
+    }, []);
+    
+    const { layout, maxClashesByTime } = processedLayout;
+
     return (
         <div className="animate-fadeInUp">
             <h1 className="text-4xl font-bold mb-2 gradient-text">Semester Timetable</h1>
             <p className="text-lg text-text-secondary mb-8">Schedule for the upcoming semester (2025-26 I)</p>
 
-            {/* Timetable Grid */}
             <div className="card-base p-4 overflow-x-auto mb-12">
-                <div className="min-w-[1000px] grid" style={{
-                    gridTemplateColumns: `auto repeat(${days.length}, 1fr)`,
-                    gridTemplateRows: `auto repeat(${timeSlots.length}, 1fr)`
-                }}>
-                    {/* Top-left empty cell */}
-                    <div className="sticky top-0 left-0 z-20"></div>
-                    
-                    {/* Day Headers */}
-                    {days.map((day) => (
-                        <div key={day} className="font-bold text-text-primary text-center p-2 border-b border-border-color sticky top-0 bg-background-secondary/80 z-10">
-                            {day}
-                        </div>
-                    ))}
-
-                    {/* Time Slot Headers */}
-                    {timeSlots.map((time, index) => (
-                        <div key={time} className="font-semibold text-text-secondary p-2 border-r border-border-color sticky left-0 bg-background-secondary/80 flex items-center justify-center" style={{ gridRow: index + 2 }}>
-                            {time}
-                        </div>
-                    ))}
-
-                    {/* Grid Cells for Background */}
-                    {days.map((day, dayIndex) => (
-                        timeSlots.map((time, timeIndex) => (
-                            <div key={`${day}-${time}`} className="border-b border-r border-border-color" style={{
-                                gridColumn: dayIndex + 2,
-                                gridRow: timeIndex + 2,
-                            }}></div>
-                        ))
-                    ))}
-
-                    {/* Event Blocks */}
-                    {days.map((day, dayIndex) => (
-                        Object.entries(events[day] || {}).map(([time, dayEvents]) => {
-                            const timeIndex = timeSlots.indexOf(time);
-                            if (timeIndex === -1) return null;
-
-                            return (
-                                <div
-                                    key={`${day}-${time}`}
-                                    className="p-1 relative"
-                                    style={{
-                                        gridColumn: dayIndex + 2,
-                                        gridRow: `${timeIndex + 2} / span ${dayEvents[0].span}`
-                                    }}
-                                >
-                                    {dayEvents.map((event, index) => {
+                <table className="w-full min-w-[1000px] border-collapse">
+                    <thead>
+                        <tr>
+                            <th className="w-28 font-bold text-text-primary text-center p-2 border-b border-r border-border-color">Time</th>
+                            {schedule.days.map(day => (
+                                <th key={day} className="font-bold text-text-primary text-center p-2 border-b border-border-color">{day}</th>
+                            ))}
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {schedule.timeSlots.map(time => {
+                            const numRowsForTime = maxClashesByTime[time];
+                            return Array.from({ length: numRowsForTime }).map((_, rowIndex) => (
+                                <tr key={`${time}-${rowIndex}`}>
+                                    {rowIndex === 0 && (
+                                        <td rowSpan={numRowsForTime} className="font-mono text-xs text-text-secondary text-center p-2 border-r border-t border-border-color align-middle">
+                                            {time}
+                                        </td>
+                                    )}
+                                    {schedule.days.map(day => {
+                                        const eventsForSlot = layout[day]?.[time] || [];
+                                        const event = eventsForSlot[rowIndex];
+                                        if (!event) {
+                                            return <td key={`${day}-${time}-${rowIndex}`} className="border-t border-border-color"></td>;
+                                        }
                                         const course = courseMap.get(event.code);
-                                        if (!course) return null;
+                                        if (!course) return <td key={`${day}-${time}-${rowIndex}`} className="border-t border-border-color"></td>;
+                                        
                                         return (
-                                            <div
-                                                key={index}
-                                                style={{
-                                                    backgroundColor: course.color,
-                                                    textShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)',
-                                                    // Overlap clashing courses
-                                                    top: `${index * 1}rem`, 
-                                                    left: `${index * 1}rem`,
-                                                }}
-                                                className="absolute w-[calc(100%-1.5rem)] h-[calc(100%-0.5rem)] p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center shadow-lg"
-                                            >
-                                                <span>{event.code}</span>
-                                                <span className="font-normal opacity-90 hidden sm:block">{course.title}</span>
-                                            </div>
+                                            <td key={`${day}-${time}-${rowIndex}`} className="p-1 border-t border-border-color">
+                                                <div
+                                                    style={{ backgroundColor: course.color, textShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)' }}
+                                                    className="p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center h-12"
+                                                >
+                                                    <span>{event.code}</span>
+                                                    <span className="font-normal opacity-90 hidden sm:block">{course.title}</span>
+                                                </div>
+                                            </td>
                                         );
                                     })}
-                                </div>
-                            );
-                        })
-                    ))}
-                </div>
+                                </tr>
+                            ));
+                        })}
+                    </tbody>
+                </table>
             </div>
 
             {/* Course List */}
