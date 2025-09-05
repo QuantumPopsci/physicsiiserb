@@ -5,7 +5,7 @@ export const researchTopics = [
   {
     title: "Quantum Computing & Information",
     description: "Quantum computing harnesses the principles of quantum mechanics, like superposition and entanglement, to process information in fundamentally new ways. Unlike classical bits, qubits can exist in multiple states at once, allowing for a massive increase in computational power for specific problems, such as drug discovery, materials science, and cryptography.",
-    videoId: "DxL2HoqLbyA",
+    videoId: "-UlxHPIEVqA",
     references: [
       { name: "Review Paper: Quantum Computation", link: "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.75.715" },
       { name: "Nielsen & Chuang (Textbook)", link: "#" },
