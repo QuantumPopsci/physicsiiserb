@@ -49,7 +49,7 @@ const SharedResources = () => {
     }, [user]);
 
     if (!user) {
-        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Access Restricted</h1><p className="text-text-secondary">You must be signed in with an @iiserb.ac.in account to access this feature.</p></div>;
+        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Access Restricted</h1><p className="text-text-secondary">You must be signed in with an @iiserb.ac.in account in Discussions Forum to access this feature.</p></div>;
     }
 
     return (
