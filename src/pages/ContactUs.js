@@ -7,6 +7,7 @@ const ContactUs = () => {
         complaint: ''
     });
     const [status, setStatus] = useState({ type: '', message: '' });
+    // IMPORTANT: Make sure this URL is from your LATEST deployment.
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz80oaJFOfamGZKiowRBBJvpnCz_Q-NO0QlUCsf6ACb0bLEmSOw1cAHrt9O5xebVTouOA/exec";
 
     const handleChange = (e) => {
@@ -23,16 +24,14 @@ const ContactUs = () => {
         setStatus({ type: 'submitting', message: 'Submitting...' });
 
         try {
-            // FIX: Sending the request with the standard 'application/json' header.
+            // FIX: This is the most reliable way to send data to Google Apps Script.
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
+                headers: {
+                    "Content-Type": "text/plain;charset=utf-8",
+                },
             });
-            
-            if (!response.ok) {
-                throw new Error(`HTTP error! status: ${response.status}`);
-            }
 
             const result = await response.json();
             if (result.result !== 'success') {
