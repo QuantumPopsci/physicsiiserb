@@ -68,7 +68,14 @@ body {
     color: transparent;
   }
 }
-
+/* FIX: Added form input styles */
+  .form-input {
+    @apply w-full bg-background-primary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent;
+  }
+  .form-file-input {
+     @apply block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent-primary file:text-white hover:file:bg-accent-secondary;
+  }
+}
 @layer utilities {
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
