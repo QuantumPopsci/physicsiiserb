@@ -41,7 +41,7 @@ export const schedule = {
       "9:00 AM": [{ code: "PHY 442", span: 1 }],
       "10:00 AM": [{ code: "PHY 403", span: 1 }],
       "11:00 AM": [{ code: "PHY 639", span: 1 }],// Clash
-      "12:00 AM": [{ code: "PHY 416", span: 1 }],
+      "12:00 PM": [{ code: "PHY 416", span: 1 }],
       "2:00 PM": [{ code: "PHY 419", span: 1 }],// Clash
       "4:00 PM": [{ code: "PHY 601", span: 1 }],
       "5:00 PM": [{ code: "PHY 634", span: 1 }],
@@ -50,7 +50,7 @@ export const schedule = {
     "Thursday": {
       "10:00 AM": [{ code: "PHY 403", span: 1 }],
       "11:00 AM": [{ code: "PHY 435", span: 1 }], // Clash
-      "12:00 AM": [{ code: "PHY 416", span: 1 }],
+      "12:00 PM": [{ code: "PHY 416", span: 1 }],
       "2:00 PM": [{ code: "PHY 419", span: 1 }],
       "3:00 PM": [{ code: "PHY 415", span: 1 }],
       "4:00 PM": [{ code: "PHY 407", span: 1 }],
@@ -61,7 +61,7 @@ export const schedule = {
       "9:00 AM": [{ code: "PHY 442", span: 1 }],
       "10:00 AM": [{ code: "PHY 403", span: 1 }],
       "11:00 AM": [{ code: "PHY 435", span: 1 }],
-      "12:00 AM": [{ code: "PHY 419", span: 1 }],
+      "12:00 PM": [{ code: "PHY 419", span: 1 }],
       "2:00 PM": [{ code: "PHY 415", span: 1 }],
       "4:00 PM": [{ code: "PHY 407", span: 1 }],
       "5:00 PM": [{ code: "PHY 634", span: 1 }],
