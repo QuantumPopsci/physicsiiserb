@@ -16,18 +16,21 @@ const generateConsistentName = (uid) => {
 };
 
 // --- Sub-Components ---
+// --- Sub-Components ---
 const InitialTermsModal = ({ onAccept }) => (
     <div className="text-center animate-fadeInUp max-w-2xl mx-auto">
         <h1 className="text-3xl font-bold mb-4 gradient-text">Community Guidelines</h1>
         <div className="bg-background-secondary p-6 rounded-lg border border-border-color text-left text-text-primary space-y-4">
             <p className="text-text-secondary">Welcome! To ensure this remains a safe and productive space, please agree to the following terms:</p>
             <ul className="list-disc list-inside space-y-2 text-text-secondary">
-                <li><strong>Be Respectful:</strong> Harassment, hate speech, and bullying will not be tolerated.</li>
-                <li><strong>Stay On Topic:</strong> This forum is for academic doubts and constructive physics discussions.</li>
-                <li><strong>No Inappropriate Content:</strong> Do not share offensive, illegal, or spam content.</li>
-                <li><strong>Anonymity is a Privilege:</strong> Your display name is anonymous, but your authenticated email is logged for moderation.</li>
+                {/* ... list items ... */}
             </ul>
             <p className="font-bold text-red-500">Violation of these terms will result in a permanent block of your account. Moderators reserve the right to remove any content or user.</p>
+            {/* --- NEWLY ADDED LINK --- */}
+            <p className="text-xs text-text-secondary mt-4">
+                By clicking "I Understand and Agree", you also confirm you have read and accept the full 
+                <Link to="/terms" className="text-accent-primary hover:underline ml-1">Terms of Use & Disclaimer</Link>.
+            </p>
         </div>
         <button onClick={onAccept} className="mt-6 w-full px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold transition-colors">
             I Understand and Agree
