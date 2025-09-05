@@ -10,6 +10,7 @@ import Contacts from './pages/Contacts';
 import Chat from './pages/Chat';
 import Timetable from './pages/Timetable';
 import ParticleBackground from './components/ParticleBackground';
+import SharedResources from './pages/SharedResources';
 
 function App() {
   const [theme, setTheme] = useState('light');
@@ -41,6 +42,7 @@ function App() {
           <Route path="/courses" element={<Courses />} />
           <Route path="/courses/:courseId" element={<CourseDetail />} />
           <Route path="/timetable" element={<Timetable />} />
+          <Route path="/shared-resources" element={<SharedResources />} /> {/* 2. Add the new route */}
           <Route path="/resources" element={<Resources />} />
           <Route path="/contacts" element={<Contacts />} />
           <Route path="/chat" element={<Chat />} />
