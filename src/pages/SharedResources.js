@@ -28,7 +28,7 @@ const SharedResources = () => {
     // Effect to fetch all data from the Google Sheet
     useEffect(() => {
         const fetchData = async () => {
-            if (!user) return; // Don't fetch if not logged in
+            if (!user) return;
             setLoading(true);
             setError(null);
             try {
@@ -46,7 +46,7 @@ const SharedResources = () => {
             }
         };
         fetchData();
-    }, [user]); // Refetch data when user logs in
+    }, [user]);
 
     if (!user) {
         return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Access Restricted</h1><p className="text-text-secondary">You must be signed in with an @iiserb.ac.in account to access this feature.</p></div>;
@@ -90,16 +90,17 @@ const ApprovedResourcesView = ({ resources }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {resources.map((res, index) => (
-                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 flex flex-col justify-between hover:border-accent-primary transform hover:-translate-y-1 transition-all">
-                    <div>
-                        <p className="font-semibold text-text-primary mb-4">{res.Caption}</p>
-                    </div>
-                    <div className="mt-auto">
+                // FIX: Redesigned card layout
+                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 flex flex-col hover:border-accent-primary transform hover:-translate-y-1 transition-all">
+                    <div className="flex-grow">
+                        <p className="font-semibold text-text-primary mb-3">{res.Caption}</p>
                         <div className="flex items-center gap-2 bg-background-primary p-2 rounded-md border border-border-color">
                             <FaFileAlt className="text-accent-primary flex-shrink-0" />
                             <span className="text-xs text-text-secondary truncate">{res.FileName}</span>
                         </div>
-                         <p className="text-xs text-text-secondary mt-3">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
+                    </div>
+                    <div className="mt-4 pt-4 border-t border-border-color">
+                         <p className="text-xs text-text-secondary">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
                     </div>
                 </a>
             ))}
@@ -129,7 +130,6 @@ const ResourceRequestsView = ({ user, requests }) => {
             setNewRequest('');
         } catch (error) {
             setStatus({ type: 'error', message: 'Failed to post request.' });
-            console.error("Fetch Error:", error);
         }
     };
     
@@ -202,7 +202,6 @@ const SubmitResourceView = ({ user }) => {
                 document.getElementById('file').value = null;
             } catch (error) {
                 setStatus({type: 'error', message: 'Upload failed. Please try again.'});
-                console.error("Fetch Error:", error);
             }
         };
         reader.onerror = () => {
