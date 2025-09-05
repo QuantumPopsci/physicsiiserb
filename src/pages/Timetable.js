@@ -6,8 +6,8 @@ const Timetable = () => {
   const courseMap = React.useMemo(() => {
     const map = new Map();
     courses.forEach(course => {
-      // FIX: Added optional chaining (?.) and a fallback to prevent crashing on malformed data.
-      const codes = course.courseCode?.split('/') || [course.courseCode];
+      // FIX: Use 'course.code' to match the data structure provided.
+      const codes = course.code?.split('/') || [course.code];
       codes.forEach(code => {
         if (code) {
           map.set(code.trim(), course)
@@ -80,14 +80,12 @@ const Timetable = () => {
                             return (
                               <div 
                                 key={index} 
-                                style={{ 
-                                  backgroundColor: course.color,
-                                  textShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)' 
-                                }} 
-                                className={`p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center flex-1`}
+                                className={`p-1.5 rounded text-xs font-semibold flex flex-col justify-center items-center text-center flex-1 ${course.color}`}
+                                style={{ textShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)' }} 
                               >
                                 <span>{event.code}</span>
-                                <span className="font-normal opacity-90 hidden sm:block">{course.title}</span>
+                                {/* FIX: Use 'course.name' to match the data structure provided. */}
+                                <span className="font-normal opacity-90 hidden sm:block">{course.name}</span>
                               </div>
                             )
                           })}
@@ -109,12 +107,13 @@ const Timetable = () => {
         <h2 className="text-3xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Course Offerings</h2>
         <div className="space-y-4">
           {courses.map(course => (
-            <div key={course.courseCode} className="card-base p-4 flex items-center gap-4">
-              <div style={{ backgroundColor: course.color }} className={`w-3 h-12 rounded`}></div>
+            <div key={course.code} className="card-base p-4 flex items-center gap-4">
+              <div className={`w-3 h-12 rounded ${course.color}`}></div>
               <div className="flex-grow grid grid-cols-2 md:grid-cols-4 gap-4 items-center">
                 <div>
-                  <h3 className="font-bold text-lg text-text-primary">{course.title}</h3>
-                  <p className="text-sm text-accent-primary font-mono">{course.courseCode} ({course.type})</p>
+                  {/* FIX: Use 'course.name' and 'course.code' */}
+                  <h3 className="font-bold text-lg text-text-primary">{course.name}</h3>
+                  <p className="text-sm text-accent-primary font-mono">{course.code} ({course.type})</p>
                 </div>
                 <div className="text-text-primary"><span className="font-semibold text-text-secondary">Instructor:</span> {course.instructor}</div>
                 <div className="text-text-primary"><span className="font-semibold text-text-secondary">Slot:</span> {course.slot}</div>
