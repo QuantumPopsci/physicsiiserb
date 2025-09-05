@@ -50,7 +50,6 @@ const TabButton = ({ name, activeTab, setActiveTab, label }) => (
     </button>
 );
 
-// NOTE: This component is a placeholder. To make it functional, a new Apps Script function would be needed to read and return data from the Google Sheet.
 const ApprovedResourcesView = () => (
     <div className="card-base p-6">
         <h2 className="text-2xl font-bold text-text-primary mb-4">Approved Resources</h2>
@@ -61,7 +60,6 @@ const ApprovedResourcesView = () => (
 const ResourceRequestsView = ({ user }) => {
     const [newRequest, setNewRequest] = useState('');
     const [status, setStatus] = useState({ type: '', message: '' });
-    // URL has been updated
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtG4XtpwjYXPjRD5elwTvdausBioL3G33mHhaloeMW2UN_dOnboMbpQSyBH2EbIvd/exec";
 
     const handleSubmit = async (e) => {
@@ -70,12 +68,18 @@ const ResourceRequestsView = ({ user }) => {
         setStatus({ type: 'submitting', message: 'Posting...' });
         
         try {
-            await fetch(SCRIPT_URL, {
+            const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/x-www-form-urlencoded' }, // Required for Apps Script
+                // FIX: Removed mode: 'no-cors' and set correct headers
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ action: 'postRequest', text: newRequest, userEmail: user.email }),
             });
+
+            const result = await response.json();
+            if (result.result !== 'success') {
+                throw new Error(result.error || 'The script returned an error.');
+            }
+
             setStatus({ type: 'success', message: 'Your request has been posted!' });
             setNewRequest('');
         } catch (error) {
@@ -105,7 +109,6 @@ const SubmitResourceView = ({ user }) => {
     const [file, setFile] = useState(null);
     const [agreed, setAgreed] = useState(false);
     const [status, setStatus] = useState({ type: '', message: ''});
-    // URL has been updated
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtG4XtpwjYXPjRD5elwTvdausBioL3G33mHhaloeMW2UN_dOnboMbpQSyBH2EbIvd/exec";
 
     const handleSubmit = (e) => {
@@ -124,10 +127,10 @@ const SubmitResourceView = ({ user }) => {
         reader.onload = async (e) => {
             const fileData = e.target.result;
             try {
-                await fetch(SCRIPT_URL, {
+                const response = await fetch(SCRIPT_URL, {
                     method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                    // FIX: Removed mode: 'no-cors' and set correct headers
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
                         action: 'submitResource',
                         caption: caption,
@@ -137,6 +140,12 @@ const SubmitResourceView = ({ user }) => {
                         userEmail: user.email,
                     }),
                 });
+
+                const result = await response.json();
+                if (result.result !== 'success') {
+                    throw new Error(result.error || 'The script returned an error.');
+                }
+
                 setStatus({type: 'success', message: 'File submitted for review!'});
                 setCaption('');
                 setFile(null);
