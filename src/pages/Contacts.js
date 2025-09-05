@@ -37,7 +37,7 @@ const SubmissionForm = ({ scriptUrl }) => {
 
     const handleFileChange = (e) => {
         const file = e.target.files[0];
-        if (file && file.size > 2 * 1024 * 1024) { // 2MB limit
+        if (file && file.size > 2 * 1024 * 1024) {
             setStatus({ type: 'error', message: 'Photo is too large. Please select an image under 2MB.' });
             setPhoto(null);
         } else {
@@ -57,7 +57,6 @@ const SubmissionForm = ({ scriptUrl }) => {
         reader.readAsDataURL(photo);
         reader.onload = async (event) => {
             try {
-                // FIX: Use a standard fetch that can read the response
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
@@ -114,7 +113,6 @@ const Contacts = () => {
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec"; 
 
     useEffect(() => {
-        // FIX: Remove the placeholder check to allow fetching
         const fetchContacts = async () => {
             try {
                 const response = await fetch(SCRIPT_URL);
