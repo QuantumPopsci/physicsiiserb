@@ -18,10 +18,10 @@ export const researchTopics = [
   {
     title: "Condensed Matter Physics",
     description: "This vast field explores the macroscopic and microscopic physical properties of matter. It focuses on the 'condensed' phases that appear whenever the number of constituents in a system is large and their interactions are strong. Research includes everything from developing new semiconductors and superconductors to understanding exotic states of matter like topological insulators.",
-    videoId: "DxL2HoqLbyA",
+    videoId: "GJHhnr9R_ZM",
     references: [
       { name: "Review: Topological Insulators", link: "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.82.3045" },
-      { name: "Ashcroft & Mermin (Textbook)", link: "#" },
+      { name: "Ashcroft & Mermin (Textbook)", link: "https://drive.google.com/file/d/1AFj53MwFC5i1GEz4l0niRCaHq7Iyg1NS/view?usp=drive_link" },
     ],
     labs: [
       { name: "Max Planck Institute for Solid State Research", link: "https://www.fkf.mpg.de/en" },
@@ -31,10 +31,10 @@ export const researchTopics = [
   {
     title: "Astrophysics & Cosmology",
     description: "Astrophysics applies the laws of physics to understand the universe and our place in it. Researchers study the birth, life, and death of stars, planets, and galaxies. Cosmology focuses on the origin and evolution of the universe itself, investigating cosmic mysteries like dark matter, dark energy, and the nature of the Big Bang.",
-    videoId: "DxL2HoqLbyA",
+    videoId: "yPVQtvbiS4Y",
     references: [
       { name: "Review: Dark Matter", link: "https://www.nature.com/articles/nature11072" },
-      { name: "Carroll & Ostlie (Textbook)", link: "#" },
+      { name: "Carroll & Ostlie (Textbook)", link: "https://www.cambridge.org/highereducation/books/an-introduction-to-modern-astrophysics/140DDF8A480C3841DCCD76D66984D858" },
     ],
     labs: [
       { name: "NASA Hubble Space Telescope", link: "https://www.nasa.gov/mission_pages/hubble/main/index.html" },
@@ -44,10 +44,10 @@ export const researchTopics = [
   {
     title: "High Energy & Particle Physics",
     description: "This field explores the fundamental constituents of matter and radiation. Using particle accelerators like the Large Hadron Collider, physicists study the interactions of subatomic particles to test and extend the Standard Model, which describes the quantum world. Key research areas include the Higgs boson, neutrinos, and the search for new physics beyond the Standard Model.",
-    videoId: "DxL2HoqLbyA",
+    videoId: "mYcLuWHzfmE",
     references: [
       { name: "Review: The Standard Model", link: "https://pdg.lbl.gov/2021/reviews/rpp2021-rev-standard-model.pdf" },
-      { name: "Griffiths (Textbook)", link: "#" },
+      { name: "Griffiths (Textbook)", link: "https://archive.org/details/GriffithsD.IntroductiontoelementaryparticlesWiley1987" },
     ],
     labs: [
       { name: "CERN", link: "https://home.cern/" },
@@ -57,7 +57,7 @@ export const researchTopics = [
   {
     title: "Soft Matter & Biophysics",
     description: "Soft matter physics studies materials that are easily deformed by thermal stresses or fluctuations, such as liquids, polymers, foams, and gels. A major subfield is biophysics, which applies the approaches of physics to understand biological systems. This includes studying the mechanics of DNA, the folding of proteins, and the behavior of cell membranes.",
-    videoId: "DxL2HoqLbyA",
+    videoId: "bpjuXSF5kNU",
     references: [
       { name: "Review: Physics of Proteins", link: "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.81.1665" },
     ],
@@ -68,7 +68,7 @@ export const researchTopics = [
   {
     title: "Quantum Optics & AMO Physics",
     description: "Atomic, Molecular, and Optical (AMO) physics is the study of matter-matter and light-matter interactions. Quantum optics focuses on the quantum mechanical properties of light. This research has led to technologies like lasers, atomic clocks, and Bose-Einstein condensates, and it forms the foundation for many quantum technologies.",
-    videoId: "DxL2HoqLbyA",
+    videoId: "Tn17SNNVZRs",
     references: [
       { name: "Review: Ultracold Atoms", link: "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.71.S253" },
     ],
@@ -80,9 +80,9 @@ export const researchTopics = [
   {
     title: "Nonlinear Dynamics & Chaos Theory",
     description: "This field studies systems whose behavior is highly sensitive to initial conditions—a phenomenon popularly known as the 'butterfly effect.' It has applications across science, from modeling fluid turbulence and weather patterns to understanding population dynamics and the behavior of neural networks. Researchers explore concepts like attractors, bifurcations, and fractals.",
-    videoId: "DxL2HoqLbyA",
+    videoId: "qz6gXyfzV9A",
     references: [
-      { name: "Strogatz (Textbook)", link: "#" },
+      { name: "Strogatz (Textbook)", link: "https://github.com/kmarulab/nonlinear-dynamics-chaos/blob/main/Nonlinear_Dynamics_and_Chaos_2018_Steven_H._Strogatz.pdf" },
     ],
     labs: [
       { name: "MPI for Dynamics and Self-Organization", link: "https://www.ds.mpg.de/en" },
