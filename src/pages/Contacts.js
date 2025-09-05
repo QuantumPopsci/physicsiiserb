@@ -1,41 +1,181 @@
-import React from 'react';
-import { contacts } from '../data/contactData';
-import { FaLinkedin, FaGithub, FaEnvelope } from 'react-icons/fa';
+import React, { useState, useEffect } from 'react';
+import { contacts as staticContacts } from '../data/contactData';
+import { FaLinkedin, FaGithub, FaEnvelope, FaPlusCircle } from 'react-icons/fa';
 
-const Contacts = () => {
-  return (
-    <div className="animate-fadeInUp">
-      <h1 className="text-4xl font-bold mb-2 gradient-text">Contacts</h1>
-      <p className="text-lg text-text-secondary mb-8">Alumni and current students from various fields.</p>
-
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
-        {contacts.map((person, index) => (
-          <div key={index} className="card-base p-6 text-center flex flex-col items-center">
-            <img 
-              src={person.photo} 
-              alt={person.name} 
-              className="w-32 h-32 rounded-full mb-4 object-cover border-4 border-accent-primary"
-            />
-            <h2 className="text-xl font-bold text-text-primary">{person.name}</h2>
-            <p className="text-accent-primary mb-2">{person.position}</p>
-            <p className="text-sm text-text-secondary mb-4">{person.field}</p>
-
-            <div className="flex space-x-4 mt-auto">
-              <a href={person.socials.linkedin} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-primary transition-colors">
-                <FaLinkedin className="text-2xl" />
-              </a>
-              <a href={person.socials.github} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-primary transition-colors">
-                <FaGithub className="text-2xl" />
-              </a>
-              <a href={`mailto:${person.socials.email}`} className="text-text-secondary hover:text-accent-primary transition-colors">
-                <FaEnvelope className="text-2xl" />
-              </a>
-            </div>
-          </div>
-        ))}
-      </div>
+// --- Reusable Components ---
+const ContactCard = ({ person }) => (
+    <div className="card-base p-6 text-center flex flex-col items-center">
+        <img 
+            src={person.photo} 
+            alt={person.name} 
+            className="w-32 h-32 rounded-full mb-4 object-cover border-4 border-accent-primary"
+            // Use a fallback image if the provided one fails
+            onError={(e) => { e.target.onerror = null; e.target.src='https://placehold.co/150x150/1f2937/9ca3af?text=Photo' }}
+        />
+        <h2 className="text-xl font-bold text-text-primary">{person.name}</h2>
+        <p className="text-accent-primary mb-2 text-sm">{person.position}</p>
+        <p className="text-sm text-text-secondary mb-4 flex-grow">{person.field}</p>
+        <div className="flex space-x-4 mt-auto">
+            {person.linkedin && <SocialLink href={person.linkedin} icon={<FaLinkedin className="text-2xl" />} />}
+            {person.github && <SocialLink href={person.github} icon={<FaGithub className="text-2xl" />} />}
+            {person.email && <SocialLink href={`mailto:${person.email}`} icon={<FaEnvelope className="text-2xl" />} />}
+        </div>
     </div>
-  );
+);
+
+const SocialLink = ({ href, icon }) => (
+    <a href={href} target="_blank" rel="noopener noreferrer" className="text-text-secondary hover:text-accent-primary transition-colors">
+        {icon}
+    </a>
+);
+
+const SubmissionForm = () => {
+    const [formData, setFormData] = useState({ name: '', position: '', field: '', linkedin: '', github: '', email: '' });
+    const [photo, setPhoto] = useState(null);
+    const [status, setStatus] = useState({ type: '', message: '' });
+    // IMPORTANT: Replace this with the URL you get after deploying the new Apps Script.
+    const SCRIPT_URL = "YOUR_NEW_APPS_SCRIPT_URL_HERE";
+
+    const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
+
+    const handleFileChange = (e) => {
+        const file = e.target.files[0];
+        if (file && file.size > 2 * 1024 * 1024) { // 2MB limit
+            setStatus({ type: 'error', message: 'Photo is too large. Please select an image under 2MB.' });
+            setPhoto(null);
+        } else {
+            setPhoto(file);
+        }
+    };
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        if (!photo) {
+            setStatus({ type: 'error', message: 'Please upload a photo.' });
+            return;
+        }
+        setStatus({ type: 'submitting', message: 'Submitting...' });
+        const reader = new FileReader();
+        reader.readAsDataURL(photo);
+        reader.onload = async (event) => {
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({ ...formData, photoData: event.target.result, photoName: photo.name, photoType: photo.type }),
+                });
+                const result = await response.json();
+                if (result.result !== 'success') throw new Error(result.error);
+                setStatus({ type: 'success', message: 'Thank you! Your profile has been submitted for review.' });
+                setFormData({ name: '', position: '', field: '', linkedin: '', github: '', email: '' });
+                setPhoto(null);
+                document.getElementById('photo-input').value = null;
+            } catch (error) {
+                setStatus({ type: 'error', message: 'Submission failed. Please try again.' });
+            }
+        };
+    };
+
+    return (
+        <form onSubmit={handleSubmit} className="space-y-4">
+             <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input name="name" value={formData.name} onChange={handleChange} placeholder="Name *" required className="form-input" />
+                <input name="position" value={formData.position} onChange={handleChange} placeholder="Current Position *" required className="form-input" />
+            </div>
+            <input name="field" value={formData.field} onChange={handleChange} placeholder="Field of Interest *" required className="form-input w-full" />
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <input name="linkedin" value={formData.linkedin} onChange={handleChange} placeholder="LinkedIn URL" className="form-input" />
+                <input name="github" value={formData.github} onChange={handleChange} placeholder="GitHub URL" className="form-input" />
+            </div>
+            <input type="email" name="email" value={formData.email} onChange={handleChange} placeholder="Email Address *" required className="form-input w-full" />
+            <div>
+                <label htmlFor="photo-input" className="block text-sm font-medium text-text-secondary mb-1">Profile Photo (max 2MB) *</label>
+                <input id="photo-input" type="file" onChange={handleFileChange} required accept="image/png, image/jpeg" className="form-file-input" />
+            </div>
+            <button type="submit" disabled={status.type === 'submitting'} className="w-full px-4 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold transition-colors disabled:bg-gray-500">
+                {status.type === 'submitting' ? 'Submitting...' : 'Submit for Review'}
+            </button>
+            {status.message && <p className={`mt-4 text-center text-sm ${status.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>{status.message}</p>}
+        </form>
+    );
+};
+
+
+// --- Main Contacts Page Component ---
+const Contacts = () => {
+    const [communityContacts, setCommunityContacts] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState(null);
+    const [showForm, setShowForm] = useState(false);
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec";
+
+    useEffect(() => {
+        const fetchContacts = async () => {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                const result = await response.json();
+                if (result.result !== 'success') throw new Error(result.error);
+                // Map sheet headers to component props
+                const formattedContacts = result.data.map(contact => ({
+                    name: contact.Name,
+                    position: contact.Position,
+                    field: contact.Field,
+                    photo: contact.PhotoURL,
+                    socials: {
+                        linkedin: contact.LinkedIn,
+                        github: contact.GitHub,
+                        email: contact.Email,
+                    }
+                }));
+                setCommunityContacts(formattedContacts);
+            } catch (err) {
+                setError("Could not load community contacts.");
+                console.error("Fetch error:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchContacts();
+    }, [SCRIPT_URL]);
+
+    return (
+        <div className="animate-fadeInUp">
+            <h1 className="text-4xl font-bold mb-2 gradient-text">Contacts</h1>
+            <p className="text-lg text-text-secondary mb-8">Connect with alumni, peers, and the wider physics community.</p>
+
+            <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Featured Contacts</h2>
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
+                {staticContacts.map((person, index) => <ContactCard key={index} person={person} />)}
+            </div>
+
+            <h2 className="text-2xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-6">Community Directory</h2>
+            {loading && <p className="text-text-secondary">Loading community contacts...</p>}
+            {error && <p className="text-red-500">{error}</p>}
+            {!loading && communityContacts.length > 0 && (
+                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8 mb-16">
+                    {communityContacts.map((person, index) => <ContactCard key={index} person={person} />)}
+                </div>
+            )}
+             {!loading && communityContacts.length === 0 && !error && (
+                <p className="text-text-secondary mb-16">No community submissions yet. Be the first to contribute!</p>
+            )}
+
+            <div className="card-base p-6 text-center">
+                <h3 className="text-xl font-bold text-text-primary mb-2">Want to be featured here?</h3>
+                <p className="text-text-secondary mb-4">Submit your profile to be added to the community directory after a brief review.</p>
+                {!showForm ? (
+                    <button onClick={() => setShowForm(true)} className="inline-flex items-center gap-2 px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold transition-colors">
+                        <FaPlusCircle /> Add Your Profile
+                    </button>
+                ) : (
+                    <div className="mt-6 text-left">
+                        <SubmissionForm />
+                    </div>
+                )}
+            </div>
+        </div>
+    );
 };
 
 export default Contacts;
+
