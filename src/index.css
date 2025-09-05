@@ -1,6 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-/* ... (theme definitions remain the same) ... */
+/* --- THEME DEFINITIONS --- */
 :root {
   --background-primary: #f9fafb;
   --background-secondary: #ffffff;
@@ -34,7 +34,7 @@ body.dark {
 @tailwind components;
 @tailwind utilities;
 
-/* ... (body styles and other components remain the same) ... */
+/* --- BASE STYLES & TRANSITIONS --- */
 body {
   @apply font-sans antialiased;
   background-color: var(--background-primary);
@@ -43,7 +43,7 @@ body {
 }
 
 @layer components {
-  /* ... (other theme classes remain the same) ... */
+  /* ... (other theme classes) ... */
   .bg-background-primary { background-color: var(--background-primary); }
   .bg-background-secondary { background-color: var(--background-secondary); }
   .text-text-primary { color: var(--text-primary); }
@@ -51,7 +51,7 @@ body {
   .border-border-color { border-color: var(--border-color); }
   .bg-accent-primary { background-color: var(--accent-primary); }
   .bg-accent-secondary { background-color: var(--accent-secondary); }
-  .text-accent-primary { color: var(--accent-primary); }
+  .text-accent-primary { color: var(--text-primary); }
   .text-accent-secondary { color: var(--accent-secondary); }
   .text-accent-text { color: var(--accent-text); }
   
@@ -67,9 +67,16 @@ body {
     color: transparent;
   }
 
-  /* FIX: Added form input styles */
+  /* Form Input Styles */
   .form-input {
-    @apply w-full bg-background-primary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent;
+    background-color: var(--background-primary);
+    border-color: var(--border-color);
+    color: var(--text-primary);
+    @apply w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:border-transparent;
+  }
+  /* FIX: Apply the focus ring color using a standard CSS rule */
+  .form-input:focus {
+    --tw-ring-color: var(--accent-primary);
   }
   .form-file-input {
      @apply block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent-primary file:text-white hover:file:bg-accent-secondary;
