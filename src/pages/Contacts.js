@@ -59,16 +59,11 @@ const SubmissionForm = ({ scriptUrl }) => {
             try {
                 const response = await fetch(scriptUrl, {
                     method: 'POST',
+                    mode: 'no-cors',
                     headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                     body: JSON.stringify({ ...formData, photoData: event.target.result, photoName: photo.name, photoType: photo.type }),
-                    redirect: 'follow'
                 });
                 
-                if (!response.ok) throw new Error(`Network response was not ok: ${response.statusText}`);
-                
-                const result = await response.json();
-                if (result.result !== 'success') throw new Error(result.error);
-
                 setStatus({ type: 'success', message: 'Thank you! Your profile has been submitted for review.' });
                 setFormData({ name: '', position: '', field: '', linkedin: '', github: '', email: '' });
                 setPhoto(null);
@@ -78,6 +73,9 @@ const SubmissionForm = ({ scriptUrl }) => {
                 console.error("Submission Error:", error);
             }
         };
+        reader.onerror = () => {
+             setStatus({ type: 'error', message: 'Error reading file.' });
+        }
     };
 
     return (
@@ -109,41 +107,37 @@ const Contacts = () => {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
     const [showForm, setShowForm] = useState(false);
-    // IMPORTANT: Replace this with the URL from your LATEST script deployment.
+    // The placeholder has been replaced with your new script URL.
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec"; 
 
     useEffect(() => {
-        if (!SCRIPT_URL.includes("https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec")) {
-            const fetchContacts = async () => {
-                try {
-                    const response = await fetch(SCRIPT_URL);
-                    if (!response.ok) throw new Error(`Network error: ${response.statusText}`);
-                    const result = await response.json();
-                    if (result.result !== 'success') throw new Error(result.error);
-                    const formattedContacts = result.data.map(contact => ({
-                        name: contact.Name,
-                        position: contact.Position,
-                        field: contact.Field,
-                        photo: contact.PhotoURL,
-                        socials: {
-                            linkedin: contact.LinkedIn,
-                            github: contact.GitHub,
-                            email: contact.Email,
-                        }
-                    }));
-                    setCommunityContacts(formattedContacts);
-                } catch (err) {
-                    setError("Could not load community contacts.");
-                    console.error("Fetch error:", err);
-                } finally {
-                    setLoading(false);
-                }
-            };
-            fetchContacts();
-        } else {
-            setLoading(false);
-            setError("Please update the SCRIPT_URL in Contacts.js with your new Apps Script deployment URL.");
-        }
+        // The check for the placeholder URL has been removed to allow fetching.
+        const fetchContacts = async () => {
+            try {
+                const response = await fetch(SCRIPT_URL);
+                if (!response.ok) throw new Error(`Network error: ${response.statusText}`);
+                const result = await response.json();
+                if (result.result !== 'success') throw new Error(result.error);
+                const formattedContacts = result.data.map(contact => ({
+                    name: contact.Name,
+                    position: contact.Position,
+                    field: contact.Field,
+                    photo: contact.PhotoURL,
+                    socials: {
+                        linkedin: contact.LinkedIn,
+                        github: contact.GitHub,
+                        email: contact.Email,
+                    }
+                }));
+                setCommunityContacts(formattedContacts);
+            } catch (err) {
+                setError("Could not load community contacts.");
+                console.error("Fetch error:", err);
+            } finally {
+                setLoading(false);
+            }
+        };
+        fetchContacts();
     }, [SCRIPT_URL]);
 
     return (
