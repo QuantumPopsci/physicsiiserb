@@ -13,12 +13,8 @@ export const courses = [
       'Brief introduction to motion under central force.'
     ],
     texts: [
-      { title: 'An Introduction to Mechanics', author: 'D. Kleppner and R. Kolenkow', link: '/#' },
-      { title: 'Fundamentals of Physics', author: 'R. Shankar', link: '/#' },
-      { title: 'Introduction to Classical Mechanics', author: 'David Morin', link: '/#' },
-      { title: 'Mechanics (Berkeley Physics Course) Vol 1', author: 'C. Kittel, W. D. Knight, et al.', link: '/#' },
-      { title: 'Physics, Vol 1, 5th Ed.', author: 'D. Resnick, R. Halliday and K. S. Krane', link: '/#' },
-      { title: 'Introduction to Mechanics', author: 'M. K. Verma', link: '/#' }
+      { title: 'An Introduction to Mechanics', author: 'D. Kleppner and R. Kolenkow', link: 'https://drive.google.com/file/d/1gr8xiR44D8lST6FD6ZtSYj_4Yph7nNwj/view?usp=sharing' },
+      { title: 'Introduction to Classical Mechanics', author: 'David Morin', link: 'https://irp-cdn.multiscreensite.com/721e955d/files/uploaded/classicaltextbook.pdf' },
     ],
     notesLink: 'https://drive.google.com/drive/folders/1S9rBnJ9D2_Ujy6FAJiz7vb62zW9REfJG?usp=sharing',
     relevantFields: ['Astrophysics', 'Engineering Physics', 'Classical Systems']
@@ -39,11 +35,7 @@ export const courses = [
       'Molecules: molecular bond, electron sharing, hydrogen ion, hydrogen molecule, rotational and vibrational spectra.'
     ],
     texts: [
-      { title: 'Concept of Modern Physics', author: 'A. Beiser', link: '/#' },
-      { title: 'Quantum Physics', author: 'H. C. Verma', link: '/#' },
-      { title: 'The Feynman Lecture of Physics Vol 3', author: 'R. P. Feynman, R. B. Leighton and M. Sands', link: '/#' },
-      { title: 'Introduction to Modern Physics', author: 'H. S. Mani and G. K. Mehta', link: '/#' },
-      { title: 'Fundamentals of Physics II', author: 'R. Shankar', link: '/#' }
+      { title: 'Concept of Modern Physics', author: 'A. Beiser', link: 'https://drive.google.com/file/d/1ZQWcpUGVhKmbtYIosQzrx_lvHYbtErE9/view?usp=drive_link' },
     ],
     notesLink: '/#',
     relevantFields: ['Particle Physics', 'Condensed Matter', 'Quantum Information']
@@ -69,12 +61,12 @@ export const courses = [
         { title: 'Optics', author: 'A. K. Ghatak', link: '/#' },
         { title: 'Fundamentals of Optics', author: 'F. A. Jenkins and H. E. White', link: '/#' }
     ],
-    notesLink: '/#',
+    notesLink: 'https://drive.google.com/drive/folders/1NSntfV5OwwdPvAjevafhg-oDDhRClHfb?usp=drive_link',
     relevantFields: ['Optical Physics', 'Photonics', 'Signal Processing']
   },
   {
-    id: 'phy203',
-    code: 'PHY 203',
+    id: 'phy209',
+    code: 'PHY 209',
     title: 'Electromagnetism',
     description: "Learn the properties of electric and magnetic fields with static charges and currents, and the dynamics of these fields governed by Maxwell's equations.",
     syllabus: [
@@ -84,9 +76,9 @@ export const courses = [
         'Electrodynamics: Electromagnetic induction, motional emf and Faraday\'s law, inductance and energy in a magnetic field, the displacement current, Maxwell\'s equations.'
     ],
     texts: [
-        { title: 'Introduction to Electrodynamics 4th Ed.', author: 'D. J. Griffiths', link: '/#' },
-        { title: 'Electricity and Magnetism (Berkeley Physics course) 2nd Ed.', author: 'E. M. Purcell', link: '/#' },
-        { title: 'The Feynman Lectures on Physics Vol 2', author: 'R. P. Feynman, R. B. Leighton and M. Sands', link: '/#' }
+        { title: 'Introduction to Electrodynamics 4th Ed.', author: 'D. J. Griffiths', link: 'https://drive.google.com/file/d/1bFHGMt4lXD7AevxRiq9_4J6J61mUlSwF/view?usp=drive_link' },
+        { title: 'Electricity and Magnetism (Berkeley Physics course) 2nd Ed.', author: 'E. M. Purcell', link: 'https://drive.google.com/file/d/1zX0AsI3fE2w4hpnZ66rRmLIvc98zni1p/view?usp=drive_link' },
+        { title: 'The Feynman Lectures on Physics Vol 2', author: 'R. P. Feynman, R. B. Leighton and M. Sands', link: 'https://www.feynmanlectures.caltech.edu/II_toc.html' }
     ],
     notesLink: '/#',
     relevantFields: ['Plasma Physics', 'Optics', 'Particle Physics']
@@ -105,11 +97,10 @@ export const courses = [
         'Ordinary differential equations of second order: Frobenius method for solving Bessel, Legendre, Laguerre, Hermite differential equations.'
     ],
     texts: [
-        { title: 'Finite Dimensional Vector Spaces', author: 'P. R. Halmos', link: '/#' },
-        { title: 'Mathematical Methods for Physicists, 6th Ed', author: 'B. Arfken and H. J. Weber', link: '/#' },
-        { title: 'Mathematical Methods in Physical Sciences', author: 'M. L. Boas', link: '/#' }
+        { title: 'Mathematical Methods for Physicists, 6th Ed', author: 'B. Arfken and H. J. Weber', link: 'https://drive.google.com/file/d/1i7Y2m5KnTpuPEAI7AsbQY5XzT_98Nb9w/view?usp=drive_link' },
+        { title: 'Mathematical Methods in Physical Sciences', author: 'M. L. Boas', link: 'https://drive.google.com/file/d/1HFIkQPSh2l9LO5duZ-IdgLeGo57ANL-v/view?usp=drive_link' }
     ],
-    notesLink: '/#',
+    notesLink: 'https://drive.google.com/drive/folders/1zWCWLJ5uG15ynsmKc2xe2EoKbKZ0LBXw?usp=drive_link',
     relevantFields: ['Theoretical Physics', 'Quantum Mechanics', 'Electrodynamics']
   },
   {
@@ -150,12 +141,12 @@ export const courses = [
       'Hamilton\'s equations, phase space and phase trajectories, Poisson brackets, canonical transformations, Hamilton-Jacobi theory.'
     ],
     texts: [
-      { title: 'Classical Mechanics', author: 'H. Goldstein', link: '/#' },
-      { title: 'Mechanics', author: 'L. D. Landau and E. M. Lifshitz', link: '/#' },
-      { title: 'Classical Dynamics of Particles and Systems', author: 'S. T. Thronton and J. B. Marion', link: '/#' },
-      { title: 'Classical Mechanics', author: 'D. Morin', link: '/#' }
+      { title: 'Classical Mechanics', author: 'H. Goldstein', link: 'https://drive.google.com/file/d/1KUwL5vvOV3t6soUCGV6Og-dUOaQ1FFmq/view?usp=drive_link' },
+      { title: 'Variational Principles in Classical Mechanics', author: 'D. Cline', link: 'https://drive.google.com/file/d/1WYMbGXJ4u4PYeuPRpv8mgwjWDKhj5pQ0/view?usp=sharing' },
+      { title: 'Classical Dynamics of Particles and Systems', author: 'S. T. Thronton and J. B. Marion', link: 'https://drive.google.com/file/d/1Db4Z6EheqT7biapgSI3lGrwjOpKJo5i0/view?usp=drive_link' },
+      { title: 'Classical Mechanics', author: 'D. Morin', link: 'https://irp-cdn.multiscreensite.com/721e955d/files/uploaded/classicaltextbook.pdf' }
     ],
-    notesLink: '/#',
+    notesLink: 'https://drive.google.com/drive/folders/1DUqWWZFaowc_n3477wCC_SBgMtGu04Co?usp=drive_link',
     relevantFields: ['High Energy Physics', 'Cosmology', 'Dynamical Systems']
   },
   {
@@ -177,7 +168,7 @@ export const courses = [
       { title: 'Classical Electrodynamics', author: 'J. D. Jackson', link: '/#' },
       { title: 'Classical Theory of Fields', author: 'L. D. Landau and E. M. Lifshitz', link: '/#' }
     ],
-    notesLink: '/#',
+    notesLink: 'https://drive.google.com/drive/folders/1AZWWCybjjWw7QrEz4DG9YrFWzh4BwoM5?usp=drive_link',
     relevantFields: ['Particle Physics', 'Astrophysics', 'Accelerator Physics']
   },
   {
