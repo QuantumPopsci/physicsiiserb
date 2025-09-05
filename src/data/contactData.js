@@ -1,15 +1,15 @@
 export const contacts = [
-{
-    name: 'Samriddha Ganguly',
-    position: '4th Year Physics Major @ IISERB',
-    field: 'Topological Quantum Materials, Topological Magnonics',
-    photo: '/sam.jpeg', // Assumes sam.png is in the /public folder
-    socials: {
-      linkedin: 'https://linkedin.com/in/samriddha-ganguly-3360bb16a',
-      github: 'https://github.com/QuantumPopsci',
-      email: 'samriddha22@iiserb.ac.in'
-    }
-  },
+//{
+    //name: 'Samriddha Ganguly',
+    //position: '4th Year Physics Major @ IISERB',
+    //field: 'Topological Quantum Materials, Topological Magnonics',
+    //photo: '/sam.jpeg', // Assumes sam.png is in the /public folder
+    //socials: {
+      //linkedin: 'https://linkedin.com/in/samriddha-ganguly-3360bb16a',
+      //github: 'https://github.com/QuantumPopsci',
+      //email: 'samriddha22@iiserb.ac.in'
+    //}
+  //},
   {
     name: 'Richard Feynman',
     position: 'Nobel Prize Winner in Physics',
