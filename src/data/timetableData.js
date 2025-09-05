@@ -21,7 +21,7 @@ export const schedule = {
   timeSlots: ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"],
   events: {
     "Monday": {
-      "10:00 AM": [{ code: "PHY 405", span: 3 }],
+      "9:00 AM": [{ code: "PHY 405", span: 4 }],
       "11:00 AM": [{ code: "PHY 639", span: 1 }],
       "3:00 PM": [{ code: "PHY 407", span: 1 }],
       "4:00 PM": [{ code: "PHY 601", span: 1 }],
@@ -33,7 +33,7 @@ export const schedule = {
       "10:00 AM": [{ code: "PHY 639", span: 1 }],
       "11:00 AM": [{ code: "PHY 435", span: 1 }], // Clash
       "12:00 PM": [{ code: "PHY 416", span: 1 }], // Lab
-      "2:00 PM": [{ code: "PHY 405", span: 3 }], // Clash
+      "2:00 PM": [{ code: "PHY 405", span: 4 }], // Clash
       "4:00 PM": [{ code: "PHY 601", span: 1 }],
     },
     "Wednesday": {
