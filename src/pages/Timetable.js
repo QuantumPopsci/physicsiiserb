@@ -9,7 +9,7 @@ const Timetable = () => {
         const map = new Map();
         courses.forEach(course => {
             // FIX: Use 'courseCode' and 'title' from the corrected data file
-            const codes = course.courseCode?.split('/') || [course.courseCode];
+            const codes = course.code?.split('/') || [course.code];
             codes.forEach(code => {
                 if (code) map.set(code.trim(), course);
             });
