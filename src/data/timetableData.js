@@ -2,18 +2,18 @@
 // The data structure has been updated to handle clashing time slots.
 
 export const courses = [
-  { type: 'Mandatory', name: 'Condensed Matter Physics', code: 'PHY 403', slot: 'B', hall: 'A1', instructor: 'Dhanvir Singh Rana', color: 'bg-green-600' },
-  { type: 'Mandatory', name: 'Electrodynamics', code: 'PHY 407', slot: 'L', hall: 'A1', instructor: 'Adarsh Bhaskar Vasista', color: 'bg-lime-500' },
-  { type: 'Mandatory', name: 'Condensed Matter Physics Lab', code: 'PHY 405', slot: 'XYK', hall: 'LAB', instructor: 'Arnab Khan', color: 'bg-cyan-600' },
-  { type: 'Elective', name: 'Quantum Information Theory', code: 'PHY 425', slot: 'A', hall: 'A1', instructor: 'Phani Kumar Peddibhotla', color: 'bg-purple-600' },
-  { type: 'Elective', name: 'Decoherence and Open Quantum Systems', code: 'PHY 435', slot: 'E', hall: 'A1', instructor: 'Subhash Chaturvedi', color: 'bg-orange-500' },
-  { type: 'Elective', name: 'General Relativity', code: 'PHY 416', slot: 'F', hall: 'A1', instructor: 'Ritam Mallick', color: 'bg-teal-500' },
-  { type: 'Elective', name: 'Experimental Techniques', code: 'PHY 419', slot: 'M', hall: 'A1', instructor: 'Ravi Prakash Singh', color: 'bg-pink-600' },
-  { type: 'Elective', name: 'Advanced Mathematical Methods', code: 'PHY 601', slot: 'J', hall: 'A1', instructor: 'Arnab Rudra', color: 'bg-red-600' },
-  { type: 'Elective', name: 'Advanced Statistical Mechanics', code: 'PHY 634', slot: 'K', hall: 'ABL 108', instructor: 'Auditya Sharma', color: 'bg-gray-500' },
-  { type: 'Elective', name: 'Quantum Field Theory I', code: 'PHY 415', slot: 'K', hall: 'A1', instructor: 'Subhendra Mohanty', color: 'bg-indigo-600' },
-  { type: 'Elective', name: 'Special Topics in Quantum Mechanics', code: 'PHY 442', slot: 'C', hall: 'A1', instructor: 'Suvankar Dutta', color: 'bg-amber-400' },
-  { type: '(5TH YEAR)', name: 'Standard Model of Physics', code: 'PHY 639', slot: 'D', hall: 'A1', instructor: 'Rahul Srivastava', color: 'bg-blue-600' },
+  { type: 'Mandatory', title: 'Condensed Matter Physics', courseCode: 'PHY 403', slot: 'B', hall: 'A1', instructor: 'Dhanvir Singh Rana', color: '#16a34a' },
+  { type: 'Mandatory', title: 'Electrodynamics', courseCode: 'PHY 407', slot: 'L', hall: 'A1', instructor: 'Adarsh Bhaskar Vasista', color: '#84cc16' },
+  { type: 'Mandatory', title: 'Condensed Matter Physics Lab', courseCode: 'PHY 405', slot: 'XYK', hall: 'LAB', instructor: 'Arnab Khan', color: '#0891b2' },
+  { type: 'Elective', title: 'Quantum Information Theory', courseCode: 'PHY 425', slot: 'A', hall: 'A1', instructor: 'Phani Kumar Peddibhotla', color: '#9333ea' },
+  { type: 'Elective', title: 'Decoherence and Open Quantum Systems', courseCode: 'PHY 435', slot: 'E', hall: 'A1', instructor: 'Subhash Chaturvedi', color: '#f97316' },
+  { type: 'Elective', title: 'General Relativity', courseCode: 'PHY 416', slot: 'F', hall: 'A1', instructor: 'Ritam Mallick', color: '#0d9488' },
+  { type: 'Elective', title: 'Experimental Techniques', courseCode: 'PHY 419', slot: 'M', hall: 'A1', instructor: 'Ravi Prakash Singh', color: '#db2777' },
+  { type: 'Elective', title: 'Advanced Mathematical Methods', courseCode: 'PHY 601', slot: 'J', hall: 'A1', instructor: 'Arnab Rudra', color: '#dc2626' },
+  { type: 'Elective', title: 'Advanced Statistical Mechanics', courseCode: 'PHY 634', slot: 'K', hall: 'ABL 108', instructor: 'Auditya Sharma', color: '#6b7280' },
+  { type: 'Elective', title: 'Quantum Field Theory I', courseCode: 'PHY 415', slot: 'K', hall: 'A1', instructor: 'Subhendra Mohanty', color: '#4f46e5' },
+  { type: 'Elective', title: 'Special Topics in Quantum Mechanics', courseCode: 'PHY 442', slot: 'C', hall: 'A1', instructor: 'Suvankar Dutta', color: '#f59e0b' },
+  { type: '(5TH YEAR)', title: 'Standard Model of Physics', courseCode: 'PHY 639', slot: 'D', hall: 'A1', instructor: 'Rahul Srivastava', color: '#2563eb' },
 ];
 
 export const schedule = {
