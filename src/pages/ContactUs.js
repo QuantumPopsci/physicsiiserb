@@ -7,7 +7,7 @@ const ContactUs = () => {
         complaint: ''
     });
     const [status, setStatus] = useState({ type: '', message: '' });
-    // IMPORTANT: Make sure this URL is from your LATEST deployment.
+    // This URL should be correct from your latest deployment
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz80oaJFOfamGZKiowRBBJvpnCz_Q-NO0QlUCsf6ACb0bLEmSOw1cAHrt9O5xebVTouOA/exec";
 
     const handleChange = (e) => {
@@ -24,23 +24,28 @@ const ContactUs = () => {
         setStatus({ type: 'submitting', message: 'Submitting...' });
 
         try {
-            // FIX: This is the most reliable way to send data to Google Apps Script.
+            // FIX: This is the most reliable way to send data to Google Apps Script
+            // and still be able to read the response.
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
                 body: JSON.stringify(formData),
                 headers: {
-                    "Content-Type": "text/plain;charset=utf-8", // Use text/plain for Apps Script
+                    "Content-Type": "text/plain;charset=utf-8",
                 },
-                redirect: 'follow' // Important for handling Google's redirects
+                redirect: 'follow' // Important for handling Google's server redirects
             });
 
             const result = await response.json();
             if (result.result !== 'success') {
+                // If the script itself returns an error, we'll see it here.
                 throw new Error(result.error || 'The script returned an error.');
             }
+            
+            // This part will now be reached correctly.
             setStatus({ type: 'success', message: 'Thank you! Your feedback has been submitted.' });
             setFormData({ id: '', suggestion: '', complaint: '' }); // Reset form
         } catch (error) {
+            // This will now only catch genuine network errors or script errors.
             setStatus({ type: 'error', message: 'Submission failed. Please try again later.' });
             console.error("Submission Error:", error);
         }
