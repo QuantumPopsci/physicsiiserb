@@ -7,7 +7,6 @@ const ContactUs = () => {
         complaint: ''
     });
     const [status, setStatus] = useState({ type: '', message: '' });
-    // IMPORTANT: Replace this with the URL you get after deploying the new Apps Script.
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz80oaJFOfamGZKiowRBBJvpnCz_Q-NO0QlUCsf6ACb0bLEmSOw1cAHrt9O5xebVTouOA/exec";
 
     const handleChange = (e) => {
@@ -24,11 +23,17 @@ const ContactUs = () => {
         setStatus({ type: 'submitting', message: 'Submitting...' });
 
         try {
+            // FIX: Sending the request with the standard 'application/json' header.
             const response = await fetch(SCRIPT_URL, {
                 method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),
             });
+            
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+
             const result = await response.json();
             if (result.result !== 'success') {
                 throw new Error(result.error || 'The script returned an error.');
@@ -77,3 +82,4 @@ const ContactUs = () => {
 };
 
 export default ContactUs;
+
