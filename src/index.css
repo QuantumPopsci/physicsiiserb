@@ -75,7 +75,7 @@ body {
   .form-file-input {
      @apply block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent-primary file:text-white hover:file:bg-accent-secondary;
   }
-}
+
 @layer utilities {
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
