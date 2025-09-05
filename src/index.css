@@ -41,10 +41,20 @@ body {
   transition: background-color 0.3s ease, color 0.3s ease;
 }
 
-/* Apply smooth transitions to common components */
+/* --- THEME CLASS DEFINITIONS --- */
 @layer components {
+  .bg-background-primary { background-color: var(--background-primary); }
+  .bg-background-secondary { background-color: var(--background-secondary); }
+  .text-text-primary { color: var(--text-primary); }
+  .text-text-secondary { color: var(--text-secondary); }
+  .border-border-color { border-color: var(--border-color); }
+  .bg-accent-primary { background-color: var(--accent-primary); }
+  .bg-accent-secondary { background-color: var(--accent-secondary); }
+  .text-accent-primary { color: var(--accent-primary); }
+  .text-accent-secondary { color: var(--accent-secondary); }
+  .text-accent-text { color: var(--accent-text); }
+  
   .card-base {
-    /* FIX: Apply background and border colors using standard CSS rules */
     background-color: var(--background-secondary);
     border-color: var(--border-color);
     @apply bg-opacity-80 backdrop-blur-sm border rounded-xl shadow-lg transition-colors duration-300;
