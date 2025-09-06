@@ -1,7 +1,27 @@
 export const courses = [
 
   
+   { type: 'Core', title: 'Mechanics', courseCode: 'PHY101', slot: 'X', hall: 'L-5', instructor: 'Suhas Gangadharaiah, Mayuresh Surnis', color: '#ff6347' },
 
+  { type: 'Core', title: 'General Physics Laboratory I', courseCode: 'PHY103', slot: 'N/A', hall: 'UG Lab', instructor: 'Ravi Shankar Singh, Sukanta Panda', color: '#4682b4' },
+
+  { type: 'PreMajor', title: 'Waves and Optics', courseCode: 'PHY201X', slot: 'C', hall: 'L1', instructor: 'Adarsh K V', color: '#32cd32' },
+
+  { type: 'PreMajor', title: 'General Physics Laboratory II', courseCode: 'PHY205', slot: 'N/A', hall: 'UG Lab', instructor: 'Surajit Saha', color: '#ffd700' },
+
+  { type: 'PreMajor', title: 'Electromagnetism', courseCode: 'PHY209', slot: 'X', hall: 'L1', instructor: 'Sunil Pratap Singh', color: '#ff4500' },
+
+  { type: 'Mandatory', title: 'Mathematical Methods I', courseCode: 'PHY301N', slot: 'C', hall: 'A2', instructor: 'Nirmal Ganguli', color: '#da70d6' },
+
+  { type: 'Mandatory', title: 'Introduction to Quantum Mechanics', courseCode: 'PHY303N', slot: 'A', hall: 'A2', instructor: 'Nabamita Banerjee', color: '#00ced1' },
+
+  { type: 'Mandatory', title: 'Classical Mechanics', courseCode: 'PHY305', slot: 'J', hall: 'A2', instructor: 'Chandan Samanta', color: '#8a2be2' },
+
+  { type: 'Mandatory', title: 'Physics Laboratory I', courseCode: 'PHY307N', slot: 'N/A', hall: 'PG Lab', instructor: 'Rohan Singh', color: '#ff1493' },
+
+  { type: 'Elective', title: 'Thermal Physics', courseCode: 'PHY309', slot: 'D', hall: 'A2', instructor: 'Snigdha Thakur', color: '#20b2aa' },
+
+  { type: 'Mandatory', title: 'Basic Electronics', courseCode: 'PHY311', slot: 'I', hall: 'L-4', instructor: 'Pydi Ganga Mamba Bahubalindruni', color: '#778899' },
   { type: 'Mandatory', title: 'Condensed Matter Physics', courseCode: 'PHY 403', slot: 'B', hall: 'A1', instructor: 'Dhanvir Singh Rana', color: '#16a34a' },
 
   { type: 'Mandatory', title: 'Electrodynamics', courseCode: 'PHY 407', slot: 'L', hall: 'A1', instructor: 'Adarsh Bhaskar Vasista', color: '#84cc16' },
@@ -24,29 +44,7 @@ export const courses = [
 
   { type: 'Elective', title: 'Special Topics in Quantum Mechanics', courseCode: 'PHY 442', slot: 'C', hall: 'A1', instructor: 'Suvankar Dutta', color: '#f59e0b' },
 
-  { type: '(5TH YEAR)', title: 'Standard Model of Physics', courseCode: 'PHY 639', slot: 'D', hall: 'A1', instructor: 'Rahul Srivastava', color: '#2563eb' },
-
-  { type: 'Core', title: 'Mechanics', courseCode: 'PHY101', slot: 'X', hall: 'L-5', instructor: 'Suhas Gangadharaiah, Mayuresh Surnis', color: '#ff6347' },
-
-  { type: 'Core', title: 'General Physics Laboratory I', courseCode: 'PHY103', slot: 'N/A', hall: 'UG Lab', instructor: 'Ravi Shankar Singh, Sukanta Panda', color: '#4682b4' },
-
-  { type: 'PreMajor', title: 'Waves and Optics', courseCode: 'PHY201X', slot: 'C', hall: 'L1', instructor: 'Adarsh K V', color: '#32cd32' },
-
-  { type: 'PreMajor', title: 'General Physics Laboratory II', courseCode: 'PHY205', slot: 'N/A', hall: 'UG Lab', instructor: 'Surajit Saha', color: '#ffd700' },
-
-  { type: 'PreMajor', title: 'Electromagnetism', courseCode: 'PHY209', slot: 'X', hall: 'L1', instructor: 'Sunil Pratap Singh', color: '#ff4500' },
-
-  { type: 'Mandatory', title: 'Mathematical Methods I', courseCode: 'PHY301N', slot: 'C', hall: 'A2', instructor: 'Nirmal Ganguli', color: '#da70d6' },
-
-  { type: 'Mandatory', title: 'Introduction to Quantum Mechanics', courseCode: 'PHY303N', slot: 'A', hall: 'A2', instructor: 'Nabamita Banerjee', color: '#00ced1' },
-
-  { type: 'Mandatory', title: 'Classical Mechanics', courseCode: 'PHY305', slot: 'J', hall: 'A2', instructor: 'Chandan Samanta', color: '#8a2be2' },
-
-  { type: 'Mandatory', title: 'Physics Laboratory I', courseCode: 'PHY307N', slot: 'N/A', hall: 'PG Lab', instructor: 'Rohan Singh', color: '#ff1493' },
-
-  { type: 'Elective', title: 'Thermal Physics', courseCode: 'PHY309', slot: 'D', hall: 'A2', instructor: 'Snigdha Thakur', color: '#20b2aa' },
-
-  { type: 'Mandatory', title: 'Basic Electronics', courseCode: 'PHY311', slot: 'I', hall: 'L-4', instructor: 'Pydi Ganga Mamba Bahubalindruni', color: '#778899' },
+  { type: '5th Year Elective', title: 'Standard Model of Physics', courseCode: 'PHY 639', slot: 'D', hall: 'A1', instructor: 'Rahul Srivastava', color: '#2563eb' },
 
 ];
 
