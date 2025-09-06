@@ -18,8 +18,38 @@ export const resources = {
       link: 'https://quantum.cloud.ibm.com/learning/en',
       type: 'web'
     },
-    
+    {
+      title: 'Quanta Magazine | Physics',
+      description: 'In-depth, beautifully written articles on the latest research in fundamental physics and more.',
+      link: 'https://www.quantamagazine.org/physics/',
+      type: 'web'
+    },
+    {
+      title: 'Symmetry Magazine',
+      description: 'A joint Fermilab/SLAC publication about particle physics and its connections to life and the universe.',
+      link: 'https://www.symmetrymagazine.org/',
+      type: 'web'
+    },
+    {
+      title: 'Physics Today',
+      description: 'The flagship publication of the American Institute of Physics, covering news and research.',
+      link: 'https://physicstoday.scitation.org/',
+      type: 'web'
+    },
+    {
+      title: 'arXiv.org | Physics',
+      description: 'The definitive open-access archive for pre-print research papers in physics and related fields.',
+      link: 'https://arxiv.org/archive/physics',
+      type: 'pdf'
+    },
+    {
+      title: 'HyperPhysics Concepts',
+      description: 'An educational resource that uses concept maps to navigate a wide range of physics topics.',
+      link: 'http://hyperphysics.phy-astr.gsu.edu/hbase/index.html',
+      type: 'web'
+    },
   ],
+
   videos: [
     {
       title: 'Something strange happens when you trust Quantum Mechanics',
