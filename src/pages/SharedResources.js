@@ -3,6 +3,7 @@ import { onAuthStateChanged } from 'firebase/auth';
 import { auth } from '../firebase';
 import { FaFileUpload, FaQuestionCircle, FaFileAlt } from 'react-icons/fa';
 
+// IMPORTANT: Make sure this is the URL from your LATEST script deployment
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtG4XtpwjYXPjRD5elwTvdausBioL3G33mHhaloeMW2UN_dOnboMbpQSyBH2EbIvd/exec";
 
 // --- Main Component ---
@@ -90,24 +91,22 @@ const ApprovedResourcesView = ({ resources }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {resources.map((res, index) => (
-                <div key={index} className="card-base p-6 flex flex-col justify-between hover:border-accent-primary transform hover:-translate-y-1 transition-all">
-                    {/* FIX: Redesigned card layout to group caption and file info together */}
+                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 flex flex-col justify-between hover:border-accent-primary transform hover:-translate-y-1 transition-all">
                     <div className="flex-grow">
                         <p className="font-semibold text-text-primary mb-3">{res.Caption}</p>
                     </div>
                     <div className="mt-4">
-                         <a href={res.FileURL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-background-primary p-3 rounded-md border border-border-color hover:bg-opacity-80">
+                         <div className="flex items-center gap-2 bg-background-primary p-3 rounded-md border border-border-color">
                             <FaFileAlt className="text-accent-primary flex-shrink-0" />
                             <span className="text-xs text-text-secondary truncate">{res.FileName}</span>
-                        </a>
+                        </div>
                          <p className="text-xs text-text-secondary mt-3">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
                     </div>
-                </div>
+                </a>
             ))}
         </div>
     );
 };
-
 
 const ResourceRequestsView = ({ user, requests }) => {
     const [newRequest, setNewRequest] = useState('');
@@ -123,6 +122,7 @@ const ResourceRequestsView = ({ user, requests }) => {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ action: 'postRequest', text: newRequest, userEmail: user.email }),
+                redirect: 'follow'
             });
             const result = await response.json();
             if (result.result !== 'success') throw new Error(result.error);
@@ -192,6 +192,7 @@ const SubmitResourceView = ({ user }) => {
                         fileType: file.type,
                         userEmail: user.email,
                     }),
+                    redirect: 'follow'
                 });
                 const result = await response.json();
                 if (result.result !== 'success') throw new Error(result.error);
