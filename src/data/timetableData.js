@@ -56,9 +56,9 @@ export const schedule = {
   events: {
     "Monday": {
       "9:00 AM": [{ code: "PHY 405", span: 4 }, { code: "PHY101", span: 1 },  { code: "PHY303", span: 1 }],
-      "10:00 AM": [{ code: "PHY 201", span: 1 },  { code: "PHY301", span: 1 }],
+      "10:00 AM": [{ code: "PHY201", span: 1 },  { code: "PHY301", span: 1 }],
       "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY309", span: 1 }],
-      "2:00 PM": [{ code: "PHY 205", span: 3 }],
+      "2:00 PM": [{ code: "PHY205", span: 3 }],
       "3:00 PM": [{ code: "PHY 407", span: 1 }, { code: "PHY311", span: 1 }],
       "4:00 PM": [{ code: "PHY 601", span: 1 }, { code: "PHY305", span: 1 }],
       "5:00 PM": [{ code: "PHY 415", span: 1 }], // Clash
