@@ -2,7 +2,6 @@
 // The data structure has been updated to handle clashing time slots.
 
 export const courses = [
-  
   { type: 'Mandatory', title: 'Condensed Matter Physics', courseCode: 'PHY 403', slot: 'B', hall: 'A1', instructor: 'Dhanvir Singh Rana', color: '#16a34a' },
   { type: 'Mandatory', title: 'Electrodynamics', courseCode: 'PHY 407', slot: 'L', hall: 'A1', instructor: 'Adarsh Bhaskar Vasista', color: '#84cc16' },
   { type: 'Mandatory', title: 'Condensed Matter Physics Lab', courseCode: 'PHY 405', slot: 'XYK', hall: 'LAB', instructor: 'Arnab Khan', color: '#0891b2' },
@@ -34,7 +33,7 @@ export const schedule = {
   events: {
     "Monday": {
       "9:00 AM": [{ code: "PHY101", span: 1 }, { code: "PHY301N", span: 1 }, { code: "PHY303N", span: 1 }],
-      "10:00 AM": [{ code: "PHY 207", span: 1 }],
+      "10:00 AM": [],
       "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY 309", span: 1 }],
       "2:00 PM": [{ code: "PHY 205", span: 3 }],
       "3:00 PM": [{ code: "PHY 407", span: 1 }, { code: "PHY 311", span: 1 }],
@@ -54,7 +53,7 @@ export const schedule = {
     },
     "Wednesday": {
       "8:00 AM": [{ code: "PHY 425", span: 1 }],
-      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY101", span: 1 }, { code: "PHY 207", span: 1 }],
+      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY101", span: 1 }],
       "10:00 AM": [{ code: "PHY 403", span: 1 }],
       "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY 309", span: 1 }],
       "12:00 PM": [{ code: "PHY 416", span: 1 }],
@@ -66,7 +65,7 @@ export const schedule = {
     "Thursday": {
       "8:00 AM": [{ code: "PHY 209", span: 1 }],
       "9:00 AM": [{ code: "PHY301N", span: 1 }, { code: "PHY303N", span: 1 }],
-      "10:00 AM": [{ code: "PHY 403", span: 1 }, { code: "PHY 207", span: 1 }],
+      "10:00 AM": [{ code: "PHY 403", span: 1 }],
       "11:00 AM": [{ code: "PHY 435", span: 1 }],
       "12:00 PM": [{ code: "PHY 416", span: 1 }, { code: "PHY101", span: 1 }],
       "2:00 PM": [{ code: "PHY 103", span: 3 }, { code: "PHY 307N", span: 3 }],
@@ -76,7 +75,7 @@ export const schedule = {
     },
     "Friday": {
       "8:00 AM": [{ code: "PHY 425", span: 1 }],
-      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY 207", span: 1 }],
+      "9:00 AM": [{ code: "PHY 442", span: 1 }],
       "10:00 AM": [{ code: "PHY 403", span: 1 }],
       "11:00 AM": [{ code: "PHY 435", span: 1 }, { code: "PHY 209", span: 1 }],
       "12:00 PM": [{ code: "PHY 419", span: 1 }],
@@ -86,3 +85,4 @@ export const schedule = {
     }
   }
 };
+
