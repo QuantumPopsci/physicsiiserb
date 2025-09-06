@@ -53,117 +53,55 @@ export const courses = [
 
 
 export const schedule = {
-
-  days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
-
-  timeSlots: ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"],
-
-  events: {
-
-    "Monday": {
-
-      "9:00 AM": [{ code: "PHY101", span: 1 }, { code: "PHY301N", span: 1 }, { code: "PHY303N", span: 1 }],
-
-      "10:00 AM": [{ code: "PHY 207", span: 1 }],
-
-      "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY 309", span: 1 }],
-
-      "2:00 PM": [{ code: "PHY 205", span: 3 }],
-
-      "3:00 PM": [{ code: "PHY 407", span: 1 }, { code: "PHY 311", span: 1 }],
-
-      "4:00 PM": [{ code: "PHY 601", span: 1 }],
-
-      "5:00 PM": [{ code: "PHY 415", span: 1 }],
-
-      "6:00 PM": [{ code: "PHY 442", span: 1 }],
-
-    },
-
-    "Tuesday": {
-
-      "8:00 AM": [{ code: "PHY 425", span: 1 }, { code: "PHY 209", span: 1 }],
-
-      "9:00 AM": [{ code: "PHY301N", span: 1 }, { code: "PHY303N", span: 1 }],
-
-      "10:00 AM": [{ code: "PHY 639", span: 1 }],
-
-      "11:00 AM": [{ code: "PHY 435", span: 1 }],
-
-      "12:00 PM": [{ code: "PHY 416", span: 1 }],
-
-      "2:00 PM": [{ code: "PHY 103", span: 3 }, { code: "PHY 205", span: 3 }],
-
-      "3:00 PM": [{ code: "PHY 311", span: 1 }],
-
-      "4:00 PM": [{ code: "PHY 601", span: 1 }],
-
-    },
-
-    "Wednesday": {
-
-      "8:00 AM": [{ code: "PHY 425", span: 1 }],
-
-      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY101", span: 1 }, { code: "PHY 207", span: 1 }],
-
-      "10:00 AM": [{ code: "PHY 403", span: 1 }],
-
-      "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY 309", span: 1 }],
-
-      "12:00 PM": [{ code: "PHY 416", span: 1 }],
-
-      "2:00 PM": [{ code: "PHY 103", span: 3 }],
-
-      "3:00 PM": [{ code: "PHY 311", span: 1 }],
-
-      "4:00 PM": [{ code: "PHY 601", span: 1 }],
-
-      "5:00 PM": [{ code: "PHY 634", span: 1 }],
-
-    },
-
-    "Thursday": {
-
-      "8:00 AM": [{ code: "PHY 209", span: 1 }],
-
-      "9:00 AM": [{ code: "PHY301N", span: 1 }, { code: "PHY303N", span: 1 }],
-
-      "10:00 AM": [{ code: "PHY 403", span: 1 }, { code: "PHY 207", span: 1 }],
-
-      "11:00 AM": [{ code: "PHY 435", span: 1 }],
-
-      "12:00 PM": [{ code: "PHY 416", span: 1 }, { code: "PHY101", span: 1 }],
-
-      "2:00 PM": [{ code: "PHY 103", span: 3 }, { code: "PHY 307N", span: 3 }],
-
-      "3:00 PM": [{ code: "PHY 415", span: 1 }],
-
-      "4:00 PM": [{ code: "PHY 407", span: 1 }],
-
-      "5:00 PM": [{ code: "PHY 634", span: 1 }],
-
-    },
-
-    "Friday": {
-
-      "8:00 AM": [{ code: "PHY 425", span: 1 }],
-
-      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY 207", span: 1 }],
-
-      "10:00 AM": [{ code: "PHY 403", span: 1 }],
-
-      "11:00 AM": [{ code: "PHY 435", span: 1 }, { code: "PHY 209", span: 1 }],
-
-      "12:00 PM": [{ code: "PHY 419", span: 1 }],
-
-      "2:00 PM": [{ code: "PHY 307N", span: 3 }],
-
-      "4:00 PM": [{ code: "PHY 407", span: 1 }, { code: "PHY301N", span: 1 }],
-
-      "5:00 PM": [{ code: "PHY 634", span: 1 }],
-
-    }
-
-  }
-
+  days: ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
+  timeSlots: ["8:00 AM", "9:00 AM", "10:00 AM", "11:00 AM", "12:00 PM", "1:00 PM", "2:00 PM", "3:00 PM", "4:00 PM", "5:00 PM", "6:00 PM"],
+  events: {
+    "Monday": {
+      "9:00 AM": [{ code: "PHY 405", span: 4 }, { code: "PHY101", span: 1 }],
+      
+      "11:00 AM": [{ code: "PHY 639", span: 1 }],
+      "3:00 PM": [{ code: "PHY 407", span: 1 }],
+      "4:00 PM": [{ code: "PHY 601", span: 1 }],
+      "5:00 PM": [{ code: "PHY 415", span: 1 }], // Clash
+      "6:00 PM": [{ code: "PHY 442", span: 1 }],
+    },
+    "Tuesday": {
+      "8:00 AM": [{ code: "PHY 425", span: 1 }],
+      "10:00 AM": [{ code: "PHY 639", span: 1 }],
+      "11:00 AM": [{ code: "PHY 435", span: 1 }], // Clash
+      "12:00 PM": [{ code: "PHY 416", span: 1 }], // Lab
+      "2:00 PM": [{ code: "PHY 405", span: 4 }], // Clash
+      "4:00 PM": [{ code: "PHY 601", span: 1 }],
+    },
+    "Wednesday": {
+      "8:00 AM": [{ code: "PHY 425", span: 1 }],
+      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY101", span: 1 }],
+      "10:00 AM": [{ code: "PHY 403", span: 1 }],
+      "11:00 AM": [{ code: "PHY 639", span: 1 }],// Clash
+      "12:00 PM": [{ code: "PHY 416", span: 1 }],
+      "2:00 PM": [{ code: "PHY 419", span: 1 }],// Clash
+      "4:00 PM": [{ code: "PHY 601", span: 1 }],
+      "5:00 PM": [{ code: "PHY 634", span: 1 }],
+      
+    },
+    "Thursday": {
+      "10:00 AM": [{ code: "PHY 403", span: 1 }],
+      "11:00 AM": [{ code: "PHY 435", span: 1 }], // Clash
+      "12:00 PM": [{ code: "PHY 416", span: 1 }, { code: "PHY101", span: 1 }],
+      "2:00 PM": [{ code: "PHY 419", span: 1 }],
+      "3:00 PM": [{ code: "PHY 415", span: 1 }],
+      "4:00 PM": [{ code: "PHY 407", span: 1 }],
+      "5:00 PM": [{ code: "PHY 634", span: 1 }],
+    },
+    "Friday": {
+      "8:00 AM": [{ code: "PHY 425", span: 1 }],
+      "9:00 AM": [{ code: "PHY 442", span: 1 }],
+      "10:00 AM": [{ code: "PHY 403", span: 1 }],
+      "11:00 AM": [{ code: "PHY 435", span: 1 }],
+      "12:00 PM": [{ code: "PHY 419", span: 1 }],
+      "2:00 PM": [{ code: "PHY 415", span: 1 }],
+      "4:00 PM": [{ code: "PHY 407", span: 1 }],
+      "5:00 PM": [{ code: "PHY 634", span: 1 }],
+    }
+  }
 };
