@@ -17,7 +17,6 @@ const Timetable = () => {
         });
     };
 
-    // A map for quick course lookup by code.
     const courseMap = useMemo(() => {
         const map = new Map();
         courses.forEach(course => {
@@ -29,53 +28,54 @@ const Timetable = () => {
         return map;
     }, []);
 
-    // Pre-process the schedule based on selected courses
+    // Rebuilt logic to correctly handle labs and clashes
     const processedLayout = useMemo(() => {
-        const layout = {};
-        const maxClashesByTime = {};
+        const layout = {}; // Stores events for each cell: { Monday: { "9:00 AM": [event1, event2], ... } }
+        const maxClashesByTime = {}; // Stores max rows needed for each hour: { "9:00 AM": 2 }
 
         schedule.timeSlots.forEach(time => {
-            maxClashesByTime[time] = 1; // Default to 1 row
+            maxClashesByTime[time] = 1; // Default to 1 row per hour
         });
 
+        // Step 1: Unroll all selected events into a simple layout grid
         schedule.days.forEach(day => {
             layout[day] = {};
             const dayEvents = schedule.events[day] || {};
-
             Object.entries(dayEvents).forEach(([time, eventsInSlot]) => {
-                // Filter events to only include those that are selected
                 const selectedEvents = eventsInSlot.filter(event => selectedCourses.has(event.code));
                 
-                if (selectedEvents.length > 0) {
-                     // Unroll spanned events
-                    const mainEvent = selectedEvents[0];
-                    if (mainEvent.span > 1) {
+                selectedEvents.forEach(event => {
+                    if (event.span > 1) { // This is a multi-hour event (like a lab)
                         const startIndex = schedule.timeSlots.indexOf(time);
-                        for (let i = 0; i < mainEvent.span; i++) {
+                        for (let i = 0; i < event.span; i++) {
                             const currentTimeSlot = schedule.timeSlots[startIndex + i];
                             if (currentTimeSlot) {
                                 if (!layout[day][currentTimeSlot]) layout[day][currentTimeSlot] = [];
-                                // Add all clashing events to each spanned slot
-                                layout[day][currentTimeSlot].push(...selectedEvents.map(se => ({...se, isContinuation: i > 0})));
+                                layout[day][currentTimeSlot].push(event);
                             }
                         }
-                    } else {
+                    } else { // This is a single-hour event
                         if (!layout[day][time]) layout[day][time] = [];
-                        layout[day][time].push(...selectedEvents);
+                        layout[day][time].push(event);
                     }
-                }
-            });
-
-            // Calculate max clashes for each time slot based on the filtered layout
-            Object.entries(layout[day]).forEach(([time, events]) => {
-                if (events.length > maxClashesByTime[time]) {
-                    maxClashesByTime[time] = events.length;
-                }
+                });
             });
         });
 
+        // Step 2: Calculate the maximum number of clashing events for each hour
+        schedule.timeSlots.forEach(time => {
+            let maxForThisHour = 1;
+            schedule.days.forEach(day => {
+                const eventsCount = layout[day]?.[time]?.length || 0;
+                if (eventsCount > maxForThisHour) {
+                    maxForThisHour = eventsCount;
+                }
+            });
+            maxClashesByTime[time] = maxForThisHour;
+        });
+
         return { layout, maxClashesByTime };
-    }, [selectedCourses]); // This recalculates every time the selection changes
+    }, [selectedCourses]);
     
     const { layout, maxClashesByTime } = processedLayout;
 
@@ -132,17 +132,17 @@ const Timetable = () => {
                                         {schedule.days.map(day => {
                                             const eventsForSlot = layout[day]?.[time] || [];
                                             const event = eventsForSlot[rowIndex];
-                                            if (!event || event.isContinuation) {
+                                            if (!event) {
                                                 return <td key={`${day}-${time}-${rowIndex}`} className="border-t border-border-color"></td>;
                                             }
                                             const course = courseMap.get(event.code);
                                             if (!course) return <td key={`${day}-${time}-${rowIndex}`} className="border-t border-border-color"></td>;
                                             
                                             return (
-                                                <td key={`${day}-${time}-${rowIndex}`} rowSpan={numRowsForTime} className="p-1 border-t border-border-color align-top">
+                                                <td key={`${day}-${time}-${rowIndex}`} className="p-1 border-t border-border-color">
                                                     <div
                                                         style={{ backgroundColor: course.color, textShadow: '0px 1px 3px rgba(0, 0, 0, 0.4)' }}
-                                                        className="p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center h-full"
+                                                        className="p-1.5 rounded text-white text-xs font-semibold flex flex-col justify-center items-center text-center h-12"
                                                     >
                                                         <span>{event.code}</span>
                                                         <span className="font-normal opacity-90 hidden sm:block">{course.title}</span>
