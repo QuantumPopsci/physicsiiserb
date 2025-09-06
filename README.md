@@ -1,4 +1,4 @@
-# A HitcHhiker's Guide to Physics @ IISERB
+# A Hitchhiker's Guide to Physics @ IISERB
 Hey everyone! 👋 Check out this new website I've been working on, made just for us:
 
 A Hitchhiker's Guide to Physics - IISERB
