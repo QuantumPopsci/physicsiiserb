@@ -49,7 +49,7 @@ const SharedResources = () => {
     }, [user]);
 
     if (!user) {
-        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Access Restricted</h1><p className="text-text-secondary">You must be signed in with an @iiserb.ac.in account in Discussions Forum to access this feature.</p></div>;
+        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Access Restricted</h1><p className="text-text-secondary">You must be signed in with an @iiserb.ac.in account in the Discussion Forum to access this feature.</p></div>;
     }
 
     return (
@@ -90,23 +90,25 @@ const ApprovedResourcesView = ({ resources }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {resources.map((res, index) => (
-                // FIX: Redesigned card layout
-                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 flex flex-col hover:border-accent-primary transform hover:-translate-y-1 transition-all">
-                    <div className="flex-grow">
-                        <p className="font-semibold text-text-primary mb-3">{res.Caption}</p>
+                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 flex flex-col justify-between hover:border-accent-primary transform hover:-translate-y-1 transition-all">
+                    {/* Main content: Caption */}
+                    <div>
+                        <p className="font-semibold text-text-primary mb-4">{res.Caption}</p>
+                    </div>
+                    {/* Footer: File info and Date */}
+                    <div className="mt-auto">
                         <div className="flex items-center gap-2 bg-background-primary p-2 rounded-md border border-border-color">
                             <FaFileAlt className="text-accent-primary flex-shrink-0" />
                             <span className="text-xs text-text-secondary truncate">{res.FileName}</span>
                         </div>
-                    </div>
-                    <div className="mt-4 pt-4 border-t border-border-color">
-                         <p className="text-xs text-text-secondary">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
+                         <p className="text-xs text-text-secondary mt-3">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
                     </div>
                 </a>
             ))}
         </div>
     );
 };
+
 
 const ResourceRequestsView = ({ user, requests }) => {
     const [newRequest, setNewRequest] = useState('');
