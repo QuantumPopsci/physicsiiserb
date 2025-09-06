@@ -26,6 +26,14 @@ export const resources = {
       videoId: 'qJZ1Ez28C-A'
     },
     {
+      title: 'I finally find least action principle satisfying-Mathemaniac',
+      videoId: 'Ohrl3S2wcBU'
+    },
+    {
+      title: 'The Fourth Dimension by Carl Sagan',
+      videoId: 'UnURElCzGc0'
+    },
+    {
       title: 'Maxwell, Divergence and Fields',
       videoId: 'rB83DpBJQsE'
     }
