@@ -5,19 +5,19 @@ export const courses = [
 
   { type: 'Core', title: 'General Physics Laboratory I', courseCode: 'PHY103', slot: 'N/A', hall: 'UG Lab', instructor: 'Ravi Shankar Singh, Sukanta Panda', color: '#4682b4' },
 
-  { type: 'PreMajor', title: 'Waves and Optics', courseCode: 'PHY201X', slot: 'C', hall: 'L1', instructor: 'Adarsh K V', color: '#32cd32' },
+  { type: 'PreMajor', title: 'Waves and Optics', courseCode: 'PHY201', slot: 'C', hall: 'L1', instructor: 'Adarsh K V', color: '#32cd32' },
 
   { type: 'PreMajor', title: 'General Physics Laboratory II', courseCode: 'PHY205', slot: 'N/A', hall: 'UG Lab', instructor: 'Surajit Saha', color: '#ffd700' },
 
   { type: 'PreMajor', title: 'Electromagnetism', courseCode: 'PHY209', slot: 'X', hall: 'L1', instructor: 'Sunil Pratap Singh', color: '#ff4500' },
 
-  { type: 'Mandatory', title: 'Mathematical Methods I', courseCode: 'PHY301N', slot: 'C', hall: 'A2', instructor: 'Nirmal Ganguli', color: '#da70d6' },
+  { type: 'Mandatory', title: 'Mathematical Methods I', courseCode: 'PHY301', slot: 'C', hall: 'A2', instructor: 'Nirmal Ganguli', color: '#da70d6' },
 
-  { type: 'Mandatory', title: 'Introduction to Quantum Mechanics', courseCode: 'PHY303N', slot: 'A', hall: 'A2', instructor: 'Nabamita Banerjee', color: '#00ced1' },
+  { type: 'Mandatory', title: 'Introduction to Quantum Mechanics', courseCode: 'PHY303', slot: 'A', hall: 'A2', instructor: 'Nabamita Banerjee', color: '#00ced1' },
 
   { type: 'Mandatory', title: 'Classical Mechanics', courseCode: 'PHY305', slot: 'J', hall: 'A2', instructor: 'Chandan Samanta', color: '#8a2be2' },
 
-  { type: 'Mandatory', title: 'Physics Laboratory I', courseCode: 'PHY307N', slot: 'N/A', hall: 'PG Lab', instructor: 'Rohan Singh', color: '#ff1493' },
+  { type: 'Mandatory', title: 'Physics Laboratory I', courseCode: 'PHY307', slot: 'N/A', hall: 'PG Lab', instructor: 'Rohan Singh', color: '#ff1493' },
 
   { type: 'Elective', title: 'Thermal Physics', courseCode: 'PHY309', slot: 'D', hall: 'A2', instructor: 'Snigdha Thakur', color: '#20b2aa' },
 
