@@ -1,15 +1,15 @@
 export const courses = [
 
   
-   { type: 'Core', title: 'Mechanics', courseCode: 'PHY101', slot: 'X', hall: 'L-5', instructor: 'Suhas Gangadharaiah, Mayuresh Surnis', color: '#ff6347' },
+   { type: 'Mandatory', title: 'Mechanics', courseCode: 'PHY101', slot: 'X', hall: 'L-5', instructor: 'Suhas Gangadharaiah, Mayuresh Surnis', color: '#ff6347' },
 
-  { type: 'Core', title: 'General Physics Laboratory I', courseCode: 'PHY103', slot: 'N/A', hall: 'UG Lab', instructor: 'Ravi Shankar Singh, Sukanta Panda', color: '#4682b4' },
+  { type: 'Mandatory', title: 'General Physics Laboratory I', courseCode: 'PHY103', slot: 'N/A', hall: 'UG Lab', instructor: 'Ravi Shankar Singh, Sukanta Panda', color: '#4682b4' },
 
-  { type: 'PreMajor', title: 'Waves and Optics', courseCode: 'PHY201', slot: 'C', hall: 'L1', instructor: 'Adarsh K V', color: '#32cd32' },
+  { type: 'Mandatory', title: 'Waves and Optics', courseCode: 'PHY201', slot: 'C', hall: 'L1', instructor: 'Adarsh K V', color: '#32cd32' },
 
-  { type: 'PreMajor', title: 'General Physics Laboratory II', courseCode: 'PHY205', slot: 'N/A', hall: 'UG Lab', instructor: 'Surajit Saha', color: '#ffd700' },
+  { type: 'Mandatory', title: 'General Physics Laboratory II', courseCode: 'PHY205', slot: 'N/A', hall: 'UG Lab', instructor: 'Surajit Saha', color: '#ffd700' },
 
-  { type: 'PreMajor', title: 'Electromagnetism', courseCode: 'PHY209', slot: 'X', hall: 'L1', instructor: 'Sunil Pratap Singh', color: '#ff4500' },
+  { type: 'Mandatory', title: 'Electromagnetism', courseCode: 'PHY209', slot: 'X', hall: 'L1', instructor: 'Sunil Pratap Singh', color: '#ff4500' },
 
   { type: 'Mandatory', title: 'Mathematical Methods I', courseCode: 'PHY301', slot: 'C', hall: 'A2', instructor: 'Nirmal Ganguli', color: '#da70d6' },
 
@@ -57,53 +57,53 @@ export const schedule = {
     "Monday": {
       "9:00 AM": [{ code: "PHY 405", span: 4 }, { code: "PHY101", span: 1 },  { code: "PHY303", span: 1 }],
       "10:00 AM": [{ code: "PHY 201", span: 1 },  { code: "PHY301", span: 1 }],
-      "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY 309", span: 1 }],
+      "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY309", span: 1 }],
       "2:00 PM": [{ code: "PHY 205", span: 3 }],
-      "3:00 PM": [{ code: "PHY 407", span: 1 }, { code: "PHY 311", span: 1 }],
-      "4:00 PM": [{ code: "PHY 601", span: 1 }, { code: "PHY 305", span: 1 }],
+      "3:00 PM": [{ code: "PHY 407", span: 1 }, { code: "PHY311", span: 1 }],
+      "4:00 PM": [{ code: "PHY 601", span: 1 }, { code: "PHY305", span: 1 }],
       "5:00 PM": [{ code: "PHY 415", span: 1 }], // Clash
       "6:00 PM": [{ code: "PHY 442", span: 1 }],
     },
     "Tuesday": {
-      "8:00 AM": [{ code: "PHY 425", span: 1 }, { code: "PHY 209", span: 1 }],
-      "9:00 AM": [{ code: "PHY 303", span: 1 }],
-      "10:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY 309", span: 1 }],
+      "8:00 AM": [{ code: "PHY 425", span: 1 }, { code: "PHY209", span: 1 }],
+      "9:00 AM": [{ code: "PHY303", span: 1 }],
+      "10:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY309", span: 1 }],
       "11:00 AM": [{ code: "PHY 435", span: 1 }], // Clash
       "12:00 PM": [{ code: "PHY 416", span: 1 }], // Lab
-      "2:00 PM": [{ code: "PHY 405", span: 4 }, { code: "PHY 103", span: 3 }],// Clash
-      "3:00 PM": [{ code: "PHY 311", span: 1 }],
-      "4:00 PM": [{ code: "PHY 601", span: 1 }, { code: "PHY 305", span: 1 }],
+      "2:00 PM": [{ code: "PHY 405", span: 4 }, { code: "PHY103", span: 3 }],// Clash
+      "3:00 PM": [{ code: "PHY311", span: 1 }],
+      "4:00 PM": [{ code: "PHY 601", span: 1 }, { code: "PHY305", span: 1 }],
     },
     "Wednesday": {
       "8:00 AM": [{ code: "PHY 425", span: 1 }],
-      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY101", span: 1 }, { code: "PHY 201", span: 1 },  { code: "PHY301", span: 1 }],
+      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY101", span: 1 }, { code: "PHY201", span: 1 },  { code: "PHY301", span: 1 }],
       "10:00 AM": [{ code: "PHY 403", span: 1 }],
-      "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY 309", span: 1 }],// Clash
+      "11:00 AM": [{ code: "PHY 639", span: 1 }, { code: "PHY309", span: 1 }],// Clash
       "12:00 PM": [{ code: "PHY 416", span: 1 }],
-      "2:00 PM": [{ code: "PHY 419", span: 1 }, { code: "PHY 103", span: 3 }],// Clash
-      "3:00 PM": [{ code: "PHY 311", span: 1 }],
-      "4:00 PM": [{ code: "PHY 601", span: 1 }, { code: "PHY 305", span: 1 }],
+      "2:00 PM": [{ code: "PHY 419", span: 1 }, { code: "PHY103", span: 3 }],// Clash
+      "3:00 PM": [{ code: "PHY311", span: 1 }],
+      "4:00 PM": [{ code: "PHY 601", span: 1 }, { code: "PHY305", span: 1 }],
       "5:00 PM": [{ code: "PHY 634", span: 1 }],
       
     },
     "Thursday": {
-      "8:00 AM": [{ code: "PHY 209", span: 1 }],
-      "9:00 AM": [{ code: "PHY 303", span: 1 }],
+      "8:00 AM": [{ code: "PHY209", span: 1 }],
+      "9:00 AM": [{ code: "PHY303", span: 1 }],
       "10:00 AM": [{ code: "PHY 403", span: 1 }],
       "11:00 AM": [{ code: "PHY 435", span: 1 }], // Clash
       "12:00 PM": [{ code: "PHY 416", span: 1 }, { code: "PHY101", span: 1 }],
-      "2:00 PM": [{ code: "PHY 419", span: 1 }, { code: "PHY 205", span: 3 }, { code: "PHY 307", span: 3 }],
+      "2:00 PM": [{ code: "PHY 419", span: 1 }, { code: "PHY205", span: 3 }, { code: "PHY307", span: 3 }],
       "3:00 PM": [{ code: "PHY 415", span: 1 }],
       "4:00 PM": [{ code: "PHY 407", span: 1 }],
       "5:00 PM": [{ code: "PHY 634", span: 1 }],
     },
     "Friday": {
       "8:00 AM": [{ code: "PHY 425", span: 1 }],
-      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY 201", span: 1 },  { code: "PHY301", span: 1 }],
+      "9:00 AM": [{ code: "PHY 442", span: 1 }, { code: "PHY201", span: 1 },  { code: "PHY301", span: 1 }],
       "10:00 AM": [{ code: "PHY 403", span: 1 }],
-      "11:00 AM": [{ code: "PHY 435", span: 1 }, { code: "PHY 209", span: 1 }],
+      "11:00 AM": [{ code: "PHY 435", span: 1 }, { code: "PHY209", span: 1 }],
       "12:00 PM": [{ code: "PHY 419", span: 1 }],
-      "2:00 PM": [{ code: "PHY 415", span: 1 }, { code: "PHY 103", span: 3 },  { code: "PHY 307", span: 3 }],
+      "2:00 PM": [{ code: "PHY 415", span: 1 }, { code: "PHY103", span: 3 },  { code: "PHY307", span: 3 }],
       "4:00 PM": [{ code: "PHY 407", span: 1 }],
       "5:00 PM": [{ code: "PHY 634", span: 1 }],
     }
