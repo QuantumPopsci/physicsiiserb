@@ -90,20 +90,19 @@ const ApprovedResourcesView = ({ resources }) => {
     return (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {resources.map((res, index) => (
-                <a key={index} href={res.FileURL} target="_blank" rel="noopener noreferrer" className="card-base p-6 flex flex-col justify-between hover:border-accent-primary transform hover:-translate-y-1 transition-all">
-                    {/* Main content: Caption */}
-                    <div>
-                        <p className="font-semibold text-text-primary mb-4">{res.Caption}</p>
+                <div key={index} className="card-base p-6 flex flex-col justify-between hover:border-accent-primary transform hover:-translate-y-1 transition-all">
+                    {/* FIX: Redesigned card layout to group caption and file info together */}
+                    <div className="flex-grow">
+                        <p className="font-semibold text-text-primary mb-3">{res.Caption}</p>
                     </div>
-                    {/* Footer: File info and Date */}
-                    <div className="mt-auto">
-                        <div className="flex items-center gap-2 bg-background-primary p-2 rounded-md border border-border-color">
+                    <div className="mt-4">
+                         <a href={res.FileURL} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 bg-background-primary p-3 rounded-md border border-border-color hover:bg-opacity-80">
                             <FaFileAlt className="text-accent-primary flex-shrink-0" />
                             <span className="text-xs text-text-secondary truncate">{res.FileName}</span>
-                        </div>
+                        </a>
                          <p className="text-xs text-text-secondary mt-3">Shared on: {new Date(res.Timestamp).toLocaleDateString()}</p>
                     </div>
-                </a>
+                </div>
             ))}
         </div>
     );
