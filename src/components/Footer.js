@@ -12,7 +12,7 @@ const Footer = () => {
                 Terms of Use
             </Link>
         </div>
-        <p className="text-xs mt-2">Crafted for the love of Physics.</p>
+        <p className="text-xs mt-2">Crafted for the love of Physics by Samriddha.</p>
       </div>
     </footer>
   );
