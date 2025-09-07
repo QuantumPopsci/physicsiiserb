@@ -54,26 +54,26 @@ export const mathResources = {
     {
       title: 'Mathematical Methods for Physicists',
       description: 'A classic, comprehensive textbook by Arfken, Weber, and Harris. A must-have reference.',
-      link: '#', // Placeholder for a link to buy or find the book
+      link: 'https://www.barnesandnoble.com/w/mathematical-methods-for-physicists-george-b-arfken/1100697658?utm_source=chatgpt.com', // Placeholder for a link to buy or find the book
       type: 'web'
     },
     {
       title: 'Div, Grad, Curl, and All That',
       description: 'An informal text on vector calculus that is highly praised for its intuitive approach.',
-      link: '#', // Placeholder
+      link: 'https://www.amazon.com/Div-Grad-Curl-All-That/dp/0393925161', // Placeholder
       type: 'web'
     },
      {
       title: 'The Road to Reality by Roger Penrose',
       description: 'A complete and comprehensive guide to the laws of the universe, with a deep dive into the required mathematics.',
-      link: '#', // Placeholder
+      link: 'https://en.wikipedia.org/wiki/The_Road_to_Reality', // Placeholder
       type: 'web'
     },
   ],
   videos: [
     {
       title: 'The Map of Mathematics | Domain of Science',
-      videoId: 's_orc52_o_0'
+      videoId: 'OmJ-4B-mS-Y'
     },
     {
       title: 'But what is a Fourier series? | 3Blue1Brown',
@@ -92,16 +92,16 @@ export const mathResources = {
       videoId: 'p_di4Zn4wz4'
     },
     {
-      title: 'Why is Group Theory important? | PBS Space Time',
-      videoId: '_HlS-T_RRg4'
+      title: 'Noether\'s Theorem and The Symmetries of Reality | PBS Space Time',
+      videoId: '04ERSb06dOg'
     },
     {
       title: 'Who cares about topology? (Inscribed rectangle problem) | 3Blue1Brown',
       videoId: 'AmgkSdhK4K8'
     },
     {
-      title: 'Lie groups and Lie algebras for physicists | Michael Penn',
-      videoId: 'N2zd_b_3_48'
+      title: 'Why study Lie theory? | Lie groups, algebras, brackets #1 | Mathemaniac',
+      videoId: 'IlqVo3sJFLE'
     }
   ]
 };
