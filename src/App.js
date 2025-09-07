@@ -14,6 +14,7 @@ import SharedResources from './pages/SharedResources';
 import Research from './pages/Research'; // 1. Import the new page
 import Terms from './pages/Terms'; // 1. Import the new page
 import ContactUs from './pages/ContactUs';
+import MathForPhysics from './pages/MathForPhysics'; // 1. Import the new page
 
 
 function App() {
@@ -47,6 +48,7 @@ function App() {
           <Route path="/courses/:courseId" element={<CourseDetail />} />
           <Route path="/timetable" element={<Timetable />} />
           <Route path="/research" element={<Research />} /> {/* 2. Add the new route */}
+          <Route path="/math-for-physics" element={<MathForPhysics />} />
           <Route path="/shared-resources" element={<SharedResources />} /> {/* 2. Add the new route */}
           <Route path="/resources" element={<Resources />} />
           <Route path="/contacts" element={<Contacts />} />
