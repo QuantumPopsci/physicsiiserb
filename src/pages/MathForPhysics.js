@@ -10,18 +10,19 @@ const MathForPhysics = () => {
 
             {/* Mathematical Fields Section */}
             <section className="mb-16">
-                 <h2 className="text-3xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-8">Mathematical Fields in Physics</h2>
+                 <h2 className="text-3xl font-bold text-text-primary border-l-4 border-accent-primary pl-4 mb-8">Mathematical Fields & Their Applications</h2>
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
                     {mathTopics.map((topic, index) => (
                         <div key={index} className="card-base p-6 flex flex-col">
                             <h3 className="text-xl font-bold text-text-primary mb-2">{topic.field}</h3>
                             <p className="text-text-secondary text-sm mb-4 flex-grow">{topic.description}</p>
                             <div>
-                                <h4 className="font-semibold text-text-primary mb-2">Key Topics:</h4>
+                                <h4 className="font-semibold text-text-primary mb-2">Applications in Physics:</h4>
                                 <div className="flex flex-wrap gap-2">
-                                    {topic.courses.map((course, i) => (
+                                    {/* FIX: Changed 'topic.courses' to 'topic.applications' to match the data file */}
+                                    {topic.applications.map((app, i) => (
                                         <span key={i} className="bg-background-primary text-accent-primary text-xs font-medium px-3 py-1 rounded-full border border-border-color">
-                                            {course}
+                                            {app}
                                         </span>
                                     ))}
                                 </div>
@@ -77,3 +78,4 @@ const MathForPhysics = () => {
 };
 
 export default MathForPhysics;
+
