@@ -106,7 +106,7 @@ const SubmissionForm = ({ scriptUrl }) => {
 const Contacts = () => {
     const [showForm, setShowForm] = useState(false);
     // IMPORTANT: Make sure this is the URL from your LATEST script deployment.
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxsfouI5IFrfupAp3l4WOaurBS7ExHRB7x7DBCYNv4HCSRw5bIqK4qMDVg1KZFuTELUlg/exec"; 
+    const SCRIPT_URL = process.env.REACT_APP_CONTACTS_SCRIPT_URL; 
 
     return (
         <div className="animate-fadeInUp">
