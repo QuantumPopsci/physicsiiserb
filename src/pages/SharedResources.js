@@ -12,6 +12,7 @@ const SharedResources = () => {
     const [activeTab, setActiveTab] = useState('resources'); 
     const [approvedResources, setApprovedResources] = useState([]);
     const [resourceRequests, setResourceRequests] = useState([]);
+    const [fulfillments, setFulfillments] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
 
@@ -39,6 +40,7 @@ const SharedResources = () => {
                 if (result.result !== 'success') throw new Error(result.error || "Script returned an error.");
                 setApprovedResources(result.data.approvedResources || []);
                 setResourceRequests(result.data.resourceRequests || []);
+                setFulfillments(result.data.fulfillments || []);
             } catch (err) {
                 setError(err.message);
                 console.error("Error fetching sheet data:", err);
@@ -70,7 +72,7 @@ const SharedResources = () => {
                 {!loading && !error && (
                     <>
                         {activeTab === 'resources' && <ApprovedResourcesView resources={approvedResources} />}
-                        {activeTab === 'requests' && <ResourceRequestsView user={user} requests={resourceRequests} />}
+                        {activeTab === 'requests' && <ResourceRequestsView user={user} requests={resourceRequests} fulfillments={fulfillments} />}
                         {activeTab === 'submit' && <SubmitResourceView user={user} />}
                     </>
                 )}
@@ -108,11 +110,17 @@ const ApprovedResourcesView = ({ resources }) => {
     );
 };
 
-const ResourceRequestsView = ({ user, requests }) => {
+const ResourceRequestsView = ({ user, requests, fulfillments }) => {
     const [newRequest, setNewRequest] = useState('');
     const [status, setStatus] = useState({ type: '', message: '' });
+    const [uploading, setUploading] = useState(null);
 
-    const handleSubmit = async (e) => {
+    const fulfillmentsByRequest = requests.reduce((acc, req) => {
+        acc[req.Timestamp] = fulfillments.filter(f => f.RequestId == req.Timestamp);
+        return acc;
+    }, {});
+
+    const handleRequestSubmit = async (e) => {
         e.preventDefault();
         if (newRequest.trim() === '') return;
         setStatus({ type: 'submitting', message: 'Posting...' });
@@ -122,7 +130,6 @@ const ResourceRequestsView = ({ user, requests }) => {
                 method: 'POST',
                 headers: { 'Content-Type': 'text/plain;charset=utf-8' },
                 body: JSON.stringify({ action: 'postRequest', text: newRequest, userEmail: user.email }),
-                redirect: 'follow'
             });
             const result = await response.json();
             if (result.result !== 'success') throw new Error(result.error);
@@ -133,12 +140,47 @@ const ResourceRequestsView = ({ user, requests }) => {
             setStatus({ type: 'error', message: 'Failed to post request.' });
         }
     };
-    
+
+    const handleFulfillSubmit = (e, req) => {
+        e.preventDefault();
+        const file = e.target.file.files[0];
+        const caption = e.target.caption.value;
+        if (!file) return;
+        setUploading(req.Timestamp);
+
+        const reader = new FileReader();
+        reader.readAsDataURL(file);
+        reader.onload = async (event) => {
+            try {
+                const response = await fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                    body: JSON.stringify({
+                        action: 'fulfillRequest',
+                        requestId: req.Timestamp,
+                        caption: caption,
+                        fileData: event.target.result,
+                        fileName: file.name,
+                        fileType: file.type,
+                        userEmail: user.email,
+                    }),
+                });
+                const result = await response.json();
+                if (result.result !== 'success') throw new Error(result.error);
+                alert("Fulfillment uploaded! Refresh to see updates.");
+            } catch (error) {
+                alert("Upload failed");
+            } finally {
+                setUploading(null);
+            }
+        };
+    };
+
     return (
         <div>
             <div className="card-base p-6 mb-8">
                 <h2 className="text-2xl font-bold text-text-primary mb-4">Post a New Request</h2>
-                <form onSubmit={handleSubmit} className="flex gap-3">
+                <form onSubmit={handleRequestSubmit} className="flex gap-3">
                     <input type="text" value={newRequest} onChange={(e) => setNewRequest(e.target.value)} placeholder="What resource are you looking for?"
                         className="flex-grow bg-background-primary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"/>
                     <button type="submit" disabled={status.type === 'submitting'} className="px-4 py-2 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold flex items-center gap-2 transition-colors disabled:bg-gray-500">
@@ -147,15 +189,35 @@ const ResourceRequestsView = ({ user, requests }) => {
                 </form>
                 {status.message && <p className={`mt-4 text-sm ${status.type === 'success' ? 'text-green-500' : 'text-red-500'}`}>{status.message}</p>}
             </div>
-            <div className="space-y-4">
-                <h2 className="text-2xl font-bold text-text-primary mb-4">Current Requests</h2>
-                {requests.length > 0 ? requests.map((req, index) => (
-                    <div key={index} className="card-base p-4">
-                        <p className="text-text-primary">{req.RequestText}</p>
-                        <p className="text-sm text-text-secondary mt-2">Requested by a user on {new Date(req.Timestamp).toLocaleDateString()}</p>
+
+            <h2 className="text-2xl font-bold text-text-primary mb-4">Current Requests</h2>
+            {requests.length > 0 ? requests.map((req, index) => (
+                <div key={index} className="card-base p-4 mb-6">
+                    <p className="text-text-primary">{req.RequestText}</p>
+                    <p className="text-sm text-text-secondary mt-2">Requested by {req.RequesterEmail} on {new Date(req.Timestamp).toLocaleDateString()}</p>
+                    
+                    {/* Fulfillments */}
+                    <div className="mt-4">
+                        <h3 className="font-semibold mb-2">Fulfilled Files:</h3>
+                        {fulfillmentsByRequest[req.Timestamp]?.length > 0 ? (
+                            fulfillmentsByRequest[req.Timestamp].map((f, i) => (
+                                <a key={i} href={f.FileURL} target="_blank" rel="noopener noreferrer" className="block text-blue-500">
+                                    {f.Caption || f.FileName}
+                                </a>
+                            ))
+                        ) : <p className="text-text-secondary">No files yet.</p>}
                     </div>
-                )) : <p className="text-text-secondary text-center">No active resource requests.</p>}
-            </div>
+
+                    {/* Fulfill form */}
+                    <form onSubmit={(e) => handleFulfillSubmit(e, req)} className="mt-4 space-y-2">
+                        <input name="caption" type="text" placeholder="Add a caption" className="w-full border rounded p-2" required />
+                        <input name="file" type="file" accept=".pdf,.png,.jpg,.jpeg" required />
+                        <button type="submit" disabled={uploading === req.Timestamp} className="px-3 py-2 bg-accent-primary text-white rounded">
+                            {uploading === req.Timestamp ? "Uploading..." : "Fulfill Request"}
+                        </button>
+                    </form>
+                </div>
+            )) : <p>No active resource requests.</p>}
         </div>
     );
 };
@@ -192,7 +254,6 @@ const SubmitResourceView = ({ user }) => {
                         fileType: file.type,
                         userEmail: user.email,
                     }),
-                    redirect: 'follow'
                 });
                 const result = await response.json();
                 if (result.result !== 'success') throw new Error(result.error);
@@ -242,4 +303,3 @@ const SubmitResourceView = ({ user }) => {
 };
 
 export default SharedResources;
-
