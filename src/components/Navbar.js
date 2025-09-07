@@ -12,10 +12,11 @@ const Navbar = ({ theme, toggleTheme }) => {
     { to: "/", text: "Home" },
     { to: "/courses", text: "Courses" },
     { to: "/timetable", text: "Timetable" },
-    { to: "/research", text: "Research" },
+    { to: "/research", text: "Research Areas" },
+    { to: "/math-for-physics", text: "Math for Physics" }, // New Link
     { to: "/shared-resources", text: "Shared Resources" },
-    { to: "/resources", text: "Resources" },
-    { to: "/contacts", text: "Contacts" },
+    { to: "/resources", text: "Links & Videos" },
+    { to: "/contacts", text: "Directory" },
     { to: "/chat", text: "Discussion Forum" },
     { to: "/contact-us", text: "Contact Us" }, // New link
   ];
