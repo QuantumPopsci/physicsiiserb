@@ -14,10 +14,10 @@ const Navbar = ({ theme, toggleTheme }) => {
     { to: "/timetable", text: "Timetable" },
     { to: "/research", text: "Research Areas" },
     { to: "/math-for-physics", text: "Math for Physics" }, // New Link
-    { to: "/shared-resources", text: "Shared Resources" },
+    { to: "/shared-resources", text: "Request & Share" },
     { to: "/resources", text: "Links & Videos" },
+    { to: "/chat", text: "Discussion Forum" }, 
     { to: "/contacts", text: "Directory" },
-    { to: "/chat", text: "Discussion Forum" },
     { to: "/contact-us", text: "Contact Us" }, // New link
   ];
 
