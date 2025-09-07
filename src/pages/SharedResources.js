@@ -210,7 +210,14 @@ const ResourceRequestsView = ({ user, requests, fulfillments }) => {
 
                     {/* Fulfill form */}
                     <form onSubmit={(e) => handleFulfillSubmit(e, req)} className="mt-4 space-y-2">
-                        <input name="caption" type="text" placeholder="Add a caption" className="w-full border rounded p-2" required />
+                        <input
+  name="caption"
+  type="text"
+  placeholder="Add a caption"
+  className="w-full border rounded p-2 
+             bg-white text-black placeholder-gray-500 
+             dark:bg-gray-800 dark:text-white dark:placeholder-gray-400"
+/>
                         <input name="file" type="file" accept=".pdf,.png,.jpg,.jpeg" required />
                         <button type="submit" disabled={uploading === req.Timestamp} className="px-3 py-2 bg-accent-primary text-white rounded">
                             {uploading === req.Timestamp ? "Uploading..." : "Fulfill Request"}
