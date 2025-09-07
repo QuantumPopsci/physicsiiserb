@@ -4,7 +4,7 @@ import { auth } from '../firebase';
 import { FaFileUpload, FaQuestionCircle, FaFileAlt } from 'react-icons/fa';
 
 // IMPORTANT: Make sure this is the URL from your LATEST script deployment
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyVtG4XtpwjYXPjRD5elwTvdausBioL3G33mHhaloeMW2UN_dOnboMbpQSyBH2EbIvd/exec";
+const SCRIPT_URL = process.env.REACT_APP_RESOURCES_SCRIPT_URL;
 
 // --- Main Component ---
 const SharedResources = () => {
