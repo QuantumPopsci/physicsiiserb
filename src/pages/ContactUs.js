@@ -8,7 +8,7 @@ const ContactUs = () => {
     });
     const [status, setStatus] = useState({ type: '', message: '' });
     // This URL should be correct from your latest deployment
-    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbz80oaJFOfamGZKiowRBBJvpnCz_Q-NO0QlUCsf6ACb0bLEmSOw1cAHrt9O5xebVTouOA/exec";
+    const SCRIPT_URL = process.env.REACT_APP_CONTACT_US_SCRIPT_URL;
 
     const handleChange = (e) => {
         const { name, value } = e.target;
