@@ -1,58 +1,39 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Correct Image Path</title>
+  <head>
+    <meta charset="utf-8" />
+    <link rel="icon" href="%PUBLIC_URL%/favicon.ico" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#000000" />
+    
+    <!-- === Main SEO & OG Tags === -->
+    <title>A Hitchhiker's Guide to Physics - IISERB</title>
+    <meta
+      name="description"
+      content="A one-stop hub for IISERB Physics students, featuring course guides, timetables, shared resources, and a discussion forum."
+    />
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://physicsiiserb.vercel.app/" />
+    <meta property="og:title" content="A Hitchhiker's Guide to Physics - IISERB" />
+    <meta property="og:description" content="A one-stop hub for IISERB Physics students, featuring course guides, timetables, shared resources, and a discussion forum." />
+    <!-- IMPORTANT: Make sure 'og-image.png' is in your /public folder -->
+    <meta property="og:image" content="/og-image.png" />
 
-    <!--
-      FIX: Open Graph (OG) Image Meta Tag
-      The path should be absolute from the root of your website.
-      Since 'public' is the root, the path is simply '/og-image.png'.
-      It's best practice to provide the full URL for OG tags, but a root-relative path often works.
-    -->
-    <meta property="og:title" content="My Awesome Page">
-    <meta property="og:description" content="Check out this page with a working image!">
-    <meta property="og:image" content="/og-image.png">
-    <meta property="og:url" content="https://example.com">
-    <meta name="twitter:card" content="summary_large_image">
-
-
-    <!-- Basic Styling with Tailwind CSS -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-        }
-    </style>
-</head>
-<body class="bg-gray-50 flex items-center justify-center min-h-screen">
-
-    <main class="bg-white rounded-xl shadow-lg p-8 max-w-lg w-full text-center">
-        <h1 class="text-3xl font-bold text-gray-800 mb-4">Image Path Fix</h1>
-        <p class="text-gray-600 mb-6">
-            If your image `og-image.png` is in a `public` folder, the correct path to use in your HTML is <code>/og-image.png</code>.
-        </p>
-
-        <div class="border-2 border-dashed border-gray-300 rounded-lg p-4">
-            <!--
-              FIX: Image Tag
-              The 'src' attribute should point to '/og-image.png'.
-              The browser will request the image from the root of your domain.
-              I've also added an 'onerror' handler to show a helpful message if it still fails.
-            -->
-            <img
-                src="/og-image.png"
-                alt="My OG Image"
-                class="rounded-lg shadow-md mx-auto max-w-full h-auto"
-                onerror="this.onerror=null; this.src='https://placehold.co/1200x630/fecaca/991b1b?text=Still+Not+Working...%0A(Check+filename+%26+location)'; this.alt='Failed to load image. Check path and filename.'"
-            >
-        </div>
-        <p class="mt-4 text-sm text-gray-500">
-            Current path being used: <code>&lt;img src="/og-image.png"&gt;</code>
-        </p>
-    </main>
-
-</body>
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image" />
+    <meta property="twitter:url" content="https://physicsiiserb.vercel.app/" />
+    <meta property="twitter:title" content="A Hitchhiker's Guide to Physics - IISERB" />
+    <meta property="twitter:description" content="A one-stop hub for IISERB Physics students, featuring course guides, timetables, shared resources, and a discussion forum." />
+    <!-- IMPORTANT: Make sure 'og-image.png' is in your /public folder -->
+    <meta property="twitter:image" content="/og-image.png" />
+    
+    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png" />
+    <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+  </head>
+  <body>
+    <noscript>You need to enable JavaScript to run this app.</noscript>
+    <div id="root"></div>
+  </body>
 </html>
