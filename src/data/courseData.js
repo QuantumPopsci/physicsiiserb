@@ -104,6 +104,42 @@ export const courses = [
     relevantFields: ['Theoretical Physics', 'Quantum Mechanics', 'Electrodynamics']
   },
   {
+  id: 'ecs203',
+  code: 'ECS 203/PHY 311',
+  title: 'Basic Electronics',
+  description: 'Introduces fundamental concepts of analog and digital circuits using simple models. Covers diodes, BJTs, op-amps, logic gates, and sequential circuits, with emphasis on circuit behavior rather than detailed device physics.',
+  syllabus: [
+    'Thevenin’s theorem, RC circuits (single capacitor).',
+    'Diodes and diode circuits: Vo–Vi relation, clipper, peak detector, clamper, voltage doubler.',
+    'Zener diodes and voltage limiter circuits.',
+    'Half-wave and full-wave rectifier circuits.',
+    'BJT: basic functionality and common-emitter amplifier (mid-band region).',
+    'Introduction to operational amplifiers (op-amps).',
+    'Linear op-amp circuits: inverting, non-inverting, summer, integrator.',
+    'Oscillator based on Schmitt trigger, Schmitt trigger circuits.',
+    'Boolean logic, basic digital gates and truth tables.',
+    'Function minimisation using Karnaugh maps.',
+    'Combinatorial circuit blocks: multiplexers, demultiplexers, encoders, decoders.',
+    'Introduction to sequential circuits: NAND/NOR latch, flip-flops, shift registers, counters.',
+    'Review of DAC and ADC.'
+  ],
+  labs: [
+    'Diode clipper, clamper, voltage doubler.',
+    'BJT common-emitter amplifier.',
+    'Op-amp circuits: inverting/non-inverting amplifiers, integrator, summer.',
+    'Op-amp oscillator based on Schmitt trigger.',
+    'Binary counter.',
+    'Synchronous counter.'
+  ],
+  texts: [
+    { title: 'Engineering Circuit Analysis', author: 'William H. Hayt and Jack E. Kemmerly', link: 'https://drive.google.com/file/d/1lHNfNNdiUUrFMn8Kdxoqo2Qh_ZXka3xx/view?usp=sharing' },
+    { title: 'Electronic Devices and Circuit Theory', author: 'R.L. Boylstead', link: 'https://drive.google.com/file/d/107l2uTLOYAT4er5_tb39PCdLZUDJJ7nX/view?usp=drive_link'},
+    { title: 'The Art of Electronics', author: 'Paul Horowitz and Winfield Hill', link: 'https://drive.google.com/file/d/15ELWi6YytSbLmG1nZ9C7YzDA7j-_Uorg/view?usp=drive_link'}
+  ],
+  notesLink: 'https://drive.google.com/drive/folders/1hJIcgBEsAv2yBsM8DUKyyhEkUsp6yWgp?usp=drive_link',
+  relevantFields: ['Communications', 'Embedded Systems', 'Hardware Engineering', 'Semiconductors']
+},
+  {
     id: 'phy303',
     code: 'PHY 303',
     title: 'Quantum Mechanics I',
@@ -119,12 +155,11 @@ export const courses = [
       'Foundational Issues: Measurements, interpretations, Bell\'s inequality; EPR paradox.'
     ],
     texts: [
-      { title: 'Introduction to Quantum Mechanics', author: 'D. J. Griffiths', link: '/#' },
-      { title: 'Quantum Mechanics: Concepts and Applications', author: 'N. Zettili', link: '/#' },
-      { title: 'Principles of Quantum Mechanics, 2nd Ed', author: 'R. Shankar', link: '/#' },
-      { title: 'Modern Quantum Mechanics', author: 'J. J. Sakurai', link: '/#' }
+      { title: 'Introduction to Quantum Mechanics', author: 'D. J. Griffiths', link: 'https://archive.org/details/griffiths-introduction-to-quantum-mechanics_202503' },
+      { title: 'Mastering Quantum Mechanics', author: 'B. Zwiebach', link: 'https://drive.google.com/file/d/169GAQh4EJd-M8RRhTvISs1oLlsyxVBvW/view?usp=drive_link' },
+      { title: 'Modern Quantum Mechanics', author: 'J. J. Sakurai', link: 'https://drive.google.com/file/d/1s_-q3FrzFqE1E9e1vgpCRD0PcVgIqiC5/view?usp=drive_link' }
     ],
-    notesLink: '/#',
+    notesLink: 'https://drive.google.com/drive/folders/1Dmt6H5iJBesGiHL76hpSHOwTGU117Fj3?usp=drive_link',
     relevantFields: ['Particle Physics', 'Condensed Matter', 'Quantum Computing']
   },
   {
@@ -149,6 +184,25 @@ export const courses = [
     notesLink: 'https://drive.google.com/drive/folders/1DUqWWZFaowc_n3477wCC_SBgMtGu04Co?usp=drive_link',
     relevantFields: ['High Energy Physics', 'Cosmology', 'Dynamical Systems']
   },
+  {
+  id: 'phy309',
+  code: 'PHY 309',
+  title: 'Thermal Physics',
+  description: 'Lays the foundations of thermodynamics, kinetic theory, and statistical mechanics, with emphasis on phase transitions, critical phenomena, and applications of entropy in physics and information theory.',
+  syllabus: [
+    'Kinetic theory of gases: Statistical definition of temperature, Boltzmann function, Maxwell-Boltzmann distribution, molecular distribution, molecular effusion, mean free path, collisions, transport and thermal diffusion, viscosity, thermal conductivity, diffusion, Prandtl number. (8)',
+    'Review of basic thermodynamics: Thermodynamic systems, first and second laws, Clausius theorem, entropy (thermodynamic and statistical definitions), entropy of mixing (Gibbs paradox), entropy and probability, internal energy and heat capacity relations with applications. (6)',
+    'Thermodynamics in action: Entropy and information theory (Shannon entropy), thermodynamic potential functions and applications, Maxwell relations, Joule-Thomson expansion, liquefaction of gases, adiabatic demagnetization to milli/micro Kelvin temperatures, entropy of elastic rods, third law of thermodynamics and implications, chemical potential, extremum principles, Gibbs-Duhem relation. (10)',
+    'Phase transitions: Clausius-Clapeyron equation, stability and metastability, Le Chatelier principles, latent heat, chemical potential and phase changes, classification and order of phase transitions, order parameter, Gibbs phase rule, colligative properties, single and multi-component phase transitions, eutectic point, Landau theory, universality and scaling, renormalization (introductory). (13)',
+    'Special topics: Brownian motion and fluctuations, Johnson noise, fluctuations and availability. (3)'
+  ],
+  texts: [
+    { title: 'An Introduction to Thermal Physics', author: 'D. V. Schroeder' , link: 'https://drive.google.com/file/d/1rZ-Hlc_0HVpn47RGw0b_5fwGuqbNg5jy/view?usp=drive_link' },
+  ],
+  notesLink: 'https://drive.google.com/drive/folders/1s-7SJUlRWoRlJoCU7-zsC9OBC8pN5JIL?usp=drive_link',
+  relevantFields: ['Statistical Mechanics', 'Condensed Matter Physics', 'Thermodynamics']
+},
+
   {
     id: 'phy401',
     code: 'PHY 401',
