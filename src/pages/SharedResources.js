@@ -241,8 +241,8 @@ const SubmitResourceView = ({ user }) => {
             setStatus({type: 'error', message: 'Please fill all fields and agree to the terms. Please name the file as per the contents.'});
             return;
         }
-        if (file.size > 5 * 1024 * 1024) {
-            setStatus({type: 'error', message: 'File is too large. Please select a file under 5MB.'});
+        if (file.size > 50 * 1024 * 1024) {
+            setStatus({type: 'error', message: 'File is too large. Please select a file under 50MB.'});
             return;
         }
         setStatus({ type: 'uploading', message: 'Preparing file...'});
