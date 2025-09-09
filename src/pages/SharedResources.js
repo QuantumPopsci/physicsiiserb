@@ -291,8 +291,8 @@ const SubmitResourceView = ({ user }) => {
                     <input id="caption" type="text" value={caption} onChange={(e) => setCaption(e.target.value)} required className="mt-1 w-full bg-background-primary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary"/>
                 </div>
                 <div>
-                    <label htmlFor="file" className="block text-sm font-medium text-text-secondary">File (PDF, PNG, JPG - max 5MB)</label>
-                    <input id="file" type="file" onChange={(e) => setFile(e.target.files[0])} required accept=".pdf,.png,.jpg,.jpeg" className="mt-1 block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent-primary file:text-white hover:file:bg-accent-secondary"/>
+                    <label htmlFor="file" className="block text-sm font-medium text-text-secondary">File (PDF, PNG, JPG, ZIP - max 50MB)</label>
+                    <input id="file" type="file" onChange={(e) => setFile(e.target.files[0])} required accept=".pdf,.png,.jpg,.jpeg,.zip" className="mt-1 block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent-primary file:text-white hover:file:bg-accent-secondary"/>
                 </div>
                 <div className="flex items-center">
                     <input id="agree" type="checkbox" checked={agreed} onChange={(e) => setAgreed(e.target.checked)} required className="h-4 w-4 rounded border-gray-300 text-accent-primary focus:ring-accent-primary"/>
