@@ -270,6 +270,213 @@ export const courses = [
     relevantFields: ['Quantum Optics', 'Chemical Physics', 'Spectroscopy']
   },
   {
+  id: 'phy637',
+  code: 'PHY 637',
+  title: 'Decoherence and Open Quantum Systems',
+  prerequisites: ['PHY 303 QM I', 'PHY 304 QM II'],
+  description: 'Provides practical skills in the formalism of open quantum systems (OQS), including density matrices, Master equations, and stochastic methods. Explores canonical models such as decaying atoms, two-level systems in baths, and quantum Brownian motion, with emphasis on decoherence, dissipation, and the quantum-to-classical transition.',
+  syllabus: [
+    'Motivation, Review and Preparations: context, applicability, decoherence is everywhere, review of single-particle quantum mechanics, statistical physics, and classical stochastic processes.',
+    'Basic Formalism and Interpretation of Decoherence: quantum entanglement, density matrices, measurement problem, environmental monitoring, decoherence, dissipation, and classical noise.',
+    'Master-Equation Formulation of Decoherence: Born-Markov master equation, Lindblad form, Non-Markovian dynamics, introduction to stochastic methods.',
+    'Applications and Canonical Models: two-level systems, spontaneous decay, bath of harmonic oscillators, spin-Boson model, quantum Brownian motion, fluctuation-dissipation theorem.',
+    'Interpretations and Quantum-to-Classical Transition: interpretations of quantum mechanics, collapse theories, Bohmian mechanics.'
+  ],
+  texts: [
+    { title: 'Decoherence and the Quantum-to-Classical Transition', author: 'Maximilian Schlosshauer', link: '/#' },
+    { title: 'The Theory of Open Quantum Systems', author: 'H.-P. Breuer and F. Petruccione', link: '/#' },
+    { title: 'Charge and Energy Transfer Dynamics in Molecular Systems', author: 'Volkhard May and Oliver Kühn', link: '/#' },
+    { title: 'Quantum Optics', author: 'G. S. Agarwal', link: '/#' },
+    { title: 'Quantum Noise', author: 'C. W. Gardiner and P. Zoller', link: '/#' }
+  ],
+  notesLink: '/#',
+  relevantFields: ['Quantum Information', 'Quantum Optics', 'Condensed Matter Theory'],
+},
+{
+  id: 'phy642',
+  code: 'PHY 642',
+  title: 'Special Topics in Quantum Mechanics',
+  prerequisites: ['PHY303', 'PHY304'],
+  description: 'Covers advanced non-perturbative aspects of quantum mechanics. Topics include limitations of perturbation theory, WKB and instantons, path integrals, resurgence and resummation, Berry phases, constrained systems, fermionic quantum mechanics, supersymmetric quantum mechanics, geometry of quantum states, and the bootstrap method.',
+  syllabus: [
+    'Non-perturbative Quantum Mechanics: limitations of perturbation theory, asymptotic expansion, WKB approximation and tunneling, instantons in double-well and periodic potentials, decay of false vacuum and first-order phase transitions.',
+    'Path integral approach: derivation of path integrals in phase space and position space, free particle and harmonic oscillator examples, instanton contributions.',
+    'Resurgence and resummation: non-convergence of perturbation theory, Borel summability, application to anharmonic oscillators with x^4 potential.',
+    'Berry Phase and Topological Phases: Berry phase, Berry connection and curvature.',
+    'Quantization of constrained systems: first- and second-class constraints, Dirac bracket quantization, examples such as particles on surfaces.',
+    'Fermionic Quantum Mechanics: Majorana quantum mechanics, fermionic parity, Grassmann variables, path integrals, Kitaev’s mod 2 and mod 8 classification.',
+    'Supersymmetric Quantum Mechanics: definition, Witten index, topological invariance.',
+    'Geometry of Quantum States: projective Hilbert space, complex projective space, Fubini–Study metric.',
+    'Bootstrap method in Quantum Mechanics: finding wavefunctions and eigenstates, numerical implementation.'
+  ],
+  texts: [
+    { title: 'Advanced Topics in Quantum Mechanics', author: 'Marcos Marino', link: '/#' },
+    { title: 'Geometry of Quantum States', author: 'Ingemar Bengtsson', link: '/#' },
+    { title: 'Instantons and Large N', author: 'Marcos Marino', link: '/#' },
+    { title: 'Quantum Mechanics and Path Integrals', author: 'R. P. Feynman and A. R. Hibbs', link: '/#' },
+    { title: 'Techniques and Applications of Path Integration', author: 'L. S. Schulman', link: '/#' },
+    { title: 'Path Integrals in Quantum Mechanics', author: 'Jean Zinn-Justin', link: '/#' }
+  ],
+  notesLink: '/#',
+  relevantFields: ['Quantum Mechanics', 'Quantum Field Theory', 'Mathematical Physics'],
+},
+{
+  id: 'phy634',
+  code: 'PHY 634',
+  title: 'Advanced Statistical Mechanics',
+  prerequisites: ['PHY306'],
+  description: 'Explores the theoretical understanding of phases of matter and phase transitions using statistical mechanics. Covers phenomenological models, mean field theory, renormalization group, and introduces non-equilibrium statistical mechanics including kinetic theory, transport, and stochastic processes.',
+  syllabus: [
+    'Revision of statistical mechanics: ensembles, partition function properties, Lee–Yang theorem.',
+    'Thermodynamics of phase transitions: metastable states, first- and second-order transitions, phenomenology of liquid–gas and paramagnetic–ferromagnetic transitions, Van der Waals equation and critical exponents.',
+    'Classical mean-field theories: Ising model mean-field theory, Landau theory, transfer matrix method, free energy and correlation functions, exact results in 1D and 2D Ising models.',
+    'Critical phenomena: fluctuations near second-order transitions, scaling hypothesis, critical exponents, universality classes, Ginzburg–Landau free-energy functional, renormalization group in momentum space.',
+    'Non-equilibrium statistical mechanics: kinetic theory of gases, approach to equilibrium, H-theorem, Boltzmann equation and transport, Brownian motion, Langevin equation, fluctuation–dissipation theorem, Einstein relation, Fokker–Planck equation.'
+  ],
+  texts: [
+    { title: 'Statistical Mechanics', author: 'K. Huang', link: '/#' },
+    { title: 'Statistical Mechanics', author: 'R. K. Pathria', link: '/#' },
+    { title: 'Physical Kinetics', author: 'E. M. Lifshitz and L. P. Pitaevskii', link: '/#' },
+    { title: 'Statistical Mechanics', author: 'D. A. McQuarrie', link: '/#' },
+    { title: 'Statistical Physics: Statistics, Dynamics and Renormalization', author: 'L. P. Kadanoff', link: '/#' },
+    { title: 'Principles of Condensed Matter Physics', author: 'P. M. Chaikin and T. C. Lubensky', link: '/#' },
+    { title: 'Introduction to Phase Transitions and Critical Phenomena', author: 'H. E. Stanley', link: '/#' }
+  ],
+  notesLink: '/#',
+  relevantFields: ['Condensed Matter Physics', 'Statistical Mechanics', 'Non-Equilibrium Physics'],
+},
+{
+  id: 'phy625',
+  code: 'PHY 625',
+  title: 'Quantum Information Theory',
+  prerequisites: [],
+  description: 'Introduces the principles of quantum information theory, covering classical and quantum probabilities, qubits, mixed and multipartite states, entanglement, quantum measurements and dynamics, the circuit model, entropy and correlations, and elements of quantum computing.',
+  syllabus: [
+    'Probabilities and classical information theory.',
+    'Review of quantum mechanics relevant to information theory.',
+    'From bits to qubits: quantum states including mixed states, multipartite states, superposition, and entanglement.',
+    'Quantum measurements and their role in information processing.',
+    'Quantum dynamics: closed and open system evolution.',
+    'The quantum circuit model for computation.',
+    'Quantum entropy, mutual information, and quantum correlations.',
+    'Introduction to elements of quantum computing.'
+  ],
+  texts: [
+    { title: 'Quantum Computation and Quantum Information', author: 'M. A. Nielsen and I. L. Chuang', link: '/#' },
+    { title: 'Quantum Information and Quantum Computation', author: 'J. Preskill (Caltech Online Notes)', link: '/#' },
+    { title: 'Modern Quantum Mechanics', author: 'J. J. Sakurai', link: '/#' }
+  ],
+  notesLink: '/#',
+  relevantFields: ['Quantum Information', 'Quantum Computing', 'Quantum Mechanics'],
+},
+{
+  id: 'phy616',
+  code: 'PHY 616',
+  title: 'General Theory of Relativity',
+  prerequisites: [],
+  description: 'Covers the fundamental principles of Einstein’s general theory of relativity, including tensor algebra, equivalence principle, Einstein field equations, black holes, neutron stars, and gravitational waves.',
+  syllabus: [
+    'Review of special theory of relativity. (3)',
+    'Mathematical aspects: tensor algebra, coordinate transformations, Lie derivative, covariant derivative, affine connections, Riemann tensor, curvature tensor. (12)',
+    'Inertial frames, gravitational mass and inertial mass, equivalence principle (weak and strong forms), principle of general covariance. (2)',
+    'Einstein field equations: geodesic deviation, vacuum Einstein equations. (6)',
+    'Action formulation of general relativity. (3)',
+    'Solutions of Einstein equations and applications: tests of general relativity, Schwarzschild and Kerr black holes, neutron stars, gravitational waves. (13)'
+  ],
+  texts: [
+    { title: 'A First Course in General Relativity', author: 'Bernard Schutz', link: '/#' },
+    { title: 'Spacetime and Geometry: An Introduction to General Relativity', author: 'Sean Carroll', link: '/#' },
+    { title: 'Gravity: An Introduction to Einstein’s General Relativity', author: 'James B. Hartle', link: '/#' },
+    { title: 'Gravitation and Cosmology', author: 'Steven Weinberg', link: '/#' }
+  ],
+  notesLink: '/#',
+  relevantFields: ['Quantum Gravity', 'Astrophysics', 'Gravitational Physics'],
+},
+{
+  id: 'phy615',
+  code: 'PHY 615',
+  title: 'Quantum Field Theory I',
+  prerequisites: [],
+  description: 'Introduces the foundations of quantum field theory, covering classical and quantum fields, canonical quantization, interacting fields, Dirac fields, and quantum electrodynamics. Emphasis on Lorentz invariance, Noether’s theorem, Feynman diagrams, and applications to scattering and decay processes.',
+  syllabus: [
+    'Classical Field Theory: introduction, Lagrangian field theory, Lorentz invariance, Noether’s theorem and conserved currents, Hamiltonian field theory. (8)',
+    'Canonical Quantization: Klein-Gordon equation, harmonic oscillator, free quantum fields, vacuum energy, particles, complex scalar fields, Heisenberg picture, causality and propagators, applications, non-relativistic field theory. (8)',
+    'Interacting Fields: interaction types, interaction picture, Dyson’s formula, scattering, Wick’s theorem, Feynman diagrams, Feynman rules, amplitudes, decays and cross sections, Green’s functions, connected diagrams and vacuum bubbles, reduction formula. (10)',
+    'Quantizing the Dirac Field: spin-statistics theorem, fermionic quantization, Fermi-Dirac statistics, propagators, particles and anti-particles, Dirac’s hole interpretation, Feynman rules. (6)',
+    'Quantum Electrodynamics: gauge field and gauge invariance, quantization, inclusion of matter, Lorentz-invariant propagators, Feynman rules, QED processes. (8)'
+  ],
+  texts: [
+    { title: 'Quantum Field Theory', author: 'Markus Schwartz', link: '/#' },
+    { title: 'An Introduction to Quantum Field Theory', author: 'Michael E. Peskin and Daniel V. Schroeder', link: '/#' },
+    { title: 'Quantum Field Theory', author: 'Lewis H. Ryder', link: '/#' },
+    { title: 'Quantum Theory of Fields, Vol. I', author: 'Steven Weinberg', link: '/#' }
+  ],
+  notesLink: '/#',
+  relevantFields: ['High Energy Physics', 'Quantum Field Theory', 'Theoretical Physics'],
+},
+{
+  id: 'phy619',
+  code: 'PHY 619',
+  title: 'Experimental Techniques',
+  prerequisites: [],
+  description: 'Introduces the fundamentals of experimental methods in physics, including vacuum systems, cryogenics, diffraction techniques, spectroscopy, particle detection, magnetometry, electrical and thermal transport measurements, and ultrafast spectroscopies.',
+  syllabus: [
+    'Vacuum technique: vacuum generation and gauging.',
+    'Cryogenics: generation of low temperatures and measurement methods.',
+    'Structure and composition analysis: X-ray diffraction, energy dispersive X-ray (EDX), transmission electron microscopy (TEM), X-ray fluorescence (XRF).',
+    'Electronic structure of solids: X-ray and ultraviolet photoemission spectroscopy, angle-resolved photoemission spectroscopy, Auger electron spectroscopy, X-ray absorption techniques.',
+    'Radiation and particle detectors: gas detectors, scintillator detectors, semiconductor detectors.',
+    'Sample preparation techniques: thin film, polycrystalline, and single crystal growth.',
+    'Magnetometry and electrotransport: AC and DC magnetization techniques, two-probe and four-probe resistivity, magnetoresistance, Hall effect, thermal conductivity, thermopower, heat capacity.',
+    'Ultrafast spectroscopy: transient absorption, two-photon absorption, terahertz spectroscopy.',
+    'Neutrons and muons in condensed matter research.'
+  ],
+  texts: [
+    { title: 'Scientific Foundations of Vacuum Technique', author: 'S. Dushman', link: '/#' },
+    { title: 'Experimental Techniques in Low-Temperature Physics', author: 'G. White and P. J. Meeson', link: '/#' },
+    { title: 'Elements of X-Ray Diffraction', author: 'B. D. Cullity', link: '/#' },
+    { title: 'Physical Principles of Electron Microscopy: An Introduction to TEM, SEM, and AEM', author: 'R. F. Egerton', link: '/#' },
+    { title: 'Handbook of Thin-Film Deposition Processes and Techniques', author: 'K. K. Schuegraf', link: '/#' },
+    { title: 'Crystal Growth Technology', author: 'K. Byrappa and T. Ohac', link: '/#' },
+    { title: 'Photoelectron Spectroscopy: Principles and Applications', author: 'S. Hüfner', link: '/#' },
+    { title: 'Introduction to Magnetic Materials', author: 'B. D. Cullity', link: '/#' },
+    { title: 'Terahertz Optoelectronics', author: 'K. Sakai', link: '/#' },
+    { title: 'X-Rays, Neutrons and Muons', author: 'W. E. Fischer and R. Morf', link: '/#' }
+  ],
+  notesLink: '/#',
+  relevantFields: ['Condensed Matter Physics', 'Experimental Physics', 'Materials Science'],
+},
+  {
+  id: 'phy639',
+  code: 'PHY 639',
+  title: 'Standard Model of Particle Physics',
+  prerequisites: ['PHY415/615: QFT-I', 'PHY421/621: QFT-II'],
+  description: 'Introduces the Standard Model of Particle Physics with emphasis on mathematical foundations. Covers weak interactions before gauge theory, unified electroweak theory, spontaneous symmetry breaking and the Higgs mechanism, strong interactions and Quantum Chromodynamics. Ends with limitations of the Standard Model and an introduction to Beyond Standard Model physics.',
+  syllabus: [
+    'Introduction: Particle content of the Standard Model.',
+    'Fermi’s theory of beta decay and weak interactions before gauge theory.',
+    'Electroweak unification: SU(2)_L × U(1)_Y gauge theory, Lagrangian, massive vector bosons, charged and neutral currents.',
+    'Spontaneous symmetry breaking: Goldstone bosons and Higgs mechanism.',
+    'Three generations of matter fields: flavour mixing, GIM mechanism, CP violation, K- and B-meson systems.',
+    'Electroweak precision measurements.',
+    'Strong interactions: Yukawa interaction, deep inelastic scattering, parton model, chiral Lagrangians, heavy quark effective field theories, Quantum Chromodynamics (QCD).',
+    'Beyond Standard Model topics: neutrino mass, dark matter, supersymmetry, grand unified theories.'
+  ],
+  texts: [],
+  referenceBooks: [
+    { title: 'Introduction to Elementary Particles', author: 'David Griffiths', link: '/#' },
+    { title: 'Quarks and Leptons: An Introductory Course in Modern Particle Physics', author: 'F. Halzen and A. Martin', link: '/#' },
+    { title: 'Quantum Field Theory', author: 'Franz Mandl and Graham Shaw', link: '/#' },
+    { title: 'Gauge Theory of Weak Interactions', author: 'Walter Greiner and Berndt Müller', link: '/#' },
+    { title: 'Quantum Chromodynamics', author: 'Walter Greiner and Andreas Schäfer', link: '/#' },
+    { title: 'Gauge Theory of Elementary Particle Physics', author: 'Ta-Pei Cheng and Ling-Fong Li', link: '/#' },
+    { title: 'Particle Physics', author: 'Brian R. Martin and Graham Shaw', link: '/#' }
+  ],
+  notesLink: '/#',
+  relevantFields: ['Particle Physics', 'Quantum Field Theory', 'High Energy Physics'],
+},
+  
+  {
     id: 'phy404',
     code: 'PHY 404',
     title: 'Nuclear and Particle Physics',
