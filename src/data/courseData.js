@@ -80,7 +80,7 @@ export const courses = [
         { title: 'Electricity and Magnetism (Berkeley Physics course) 2nd Ed.', author: 'E. M. Purcell', link: 'https://drive.google.com/file/d/1zX0AsI3fE2w4hpnZ66rRmLIvc98zni1p/view?usp=drive_link' },
         { title: 'The Feynman Lectures on Physics Vol 2', author: 'R. P. Feynman, R. B. Leighton and M. Sands', link: 'https://www.feynmanlectures.caltech.edu/II_toc.html' }
     ],
-    notesLink: '/#',
+    notesLink: 'https://drive.google.com/drive/folders/1x8nGDSbhgTPttq6c4xu0byOFjwxz0pRX',
     relevantFields: ['Plasma Physics', 'Optics', 'Particle Physics']
   },
   {
