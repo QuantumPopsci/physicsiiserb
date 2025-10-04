@@ -17,7 +17,7 @@ const Home = () => {
           <DashboardCard to="/courses" icon={<FaBookOpen />} title="Explore Courses" description="Dive into detailed guides for every course in the curriculum." />
           <DashboardCard to="/timetable" icon={<FaCalendarAlt />} title="Semester Timetable" description="View the weekly class schedule, venues, and instructors." />
           <DashboardCard to="/resources" icon={<FaRocket />} title="Interesting Resources" description="Discover curated papers, articles, and videos to fuel your curiosity." />
-          <DashboardCard to="/contacts" icon={<FaUsers />} title="Connect with People" description="Find and connect with alumni and current students in the field." />
+          //<DashboardCard to="/contacts" icon={<FaUsers />} title="Connect with People" description="Find and connect with alumni and current students in the field." />
           <DashboardCard to="/chat" icon={<FaComments />} title="Physics Discussion Forum" description="Ask questions and chat with peers in a moderated, exclusive forum." />
         </div>
       </div>
