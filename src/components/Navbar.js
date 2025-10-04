@@ -14,6 +14,7 @@ const Navbar = ({ theme, toggleTheme }) => {
     { to: "/timetable", text: "Timetable" },
     { to: "/research", text: "Research Areas" },
     { to: "/math-for-physics", text: "Math for Physics" }, // New Link
+    { to: "/opportunities", text: "Opportunities" },
     { to: "/shared-resources", text: "Request & Share" },
     { to: "/resources", text: "Links & Videos" },
     { to: "/chat", text: "Discussion Forum" }, 
