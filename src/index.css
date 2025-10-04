@@ -58,13 +58,20 @@ body {
   .card-base {
     background-color: var(--background-secondary);
     border-color: var(--border-color);
-    @apply bg-opacity-80 backdrop-blur-sm border rounded-xl shadow-lg transition-colors duration-300;
+    @apply bg-opacity-80 backdrop-blur-sm border rounded-xl shadow-lg transition-all duration-300;
   }
+  .card-base:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+    border-color: var(--accent-primary);
+  }
+
   .gradient-text {
     background-image: linear-gradient(to right, var(--gradient-from), var(--gradient-to));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
+    animation: gradient-shine 5s linear infinite;
   }
 
   /* Form Input Styles */
@@ -74,17 +81,42 @@ body {
     color: var(--text-primary);
     @apply w-full border rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-2 focus:border-transparent;
   }
-  /* FIX: Apply the focus ring color using a standard CSS rule */
   .form-input:focus {
     --tw-ring-color: var(--accent-primary);
   }
   .form-file-input {
      @apply block w-full text-sm text-text-secondary file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-accent-primary file:text-white hover:file:bg-accent-secondary;
   }
+  
+  /* Button Hover Effect */
+  .button-pulse:hover {
+    animation: pulse-sm 1.5s infinite;
+  }
 }
 
 @layer utilities {
+  /* --- KEYFRAME ANIMATIONS --- */
   @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
   .animate-fadeInUp { animation: fadeInUp 0.8s ease-out forwards; }
+
+  @keyframes gradient-shine {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+  }
+  
+  @keyframes pulse-sm {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.03); }
+  }
+
+  /* Atom Animation for Navbar */
+  @keyframes rotate-atom {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+  }
+  .animate-atom-nucleus {
+    animation: rotate-atom 20s linear infinite;
+  }
 }
 
