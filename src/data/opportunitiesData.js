@@ -9,7 +9,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.jncasr.ac.in/academic/fandeprogrammes/srfp",
-    imageUrl: "https://www.jncasr.ac.in/sites/default/files/j1.jpg",
+    imageUrl: "https://static.careers360.mobi/media/presets/720X480/colleges/social-media/media-gallery/772/2018/10/25/Campus%20view%20of%20Jawaharlal%20Nehru%20Centre%20for%20Advanced%20Scientific%20Research%20Bangalore_Campus-view.jpg",
     location: "Domestic",
     eligibleYears: [1, 2, 3, 4]
   },
@@ -39,7 +39,7 @@ export const programs = [
     type: "Internship",
     time: "TBD",
     link: "https://www.hri.res.in/academics/physics/phy-vsp/",
-    imageUrl: "https://placehold.co/600x400/dc2626/ffffff?text=HRI",
+    imageUrl: "https://th.bing.com/th/id/R.a724adfe4055db82a96f3ea36689761b?rik=SbRLLsmWcAtTpQ&riu=http%3a%2f%2f4.bp.blogspot.com%2f_3erfUD9U_oE%2fS_i5WG61LwI%2fAAAAAAAADHw%2fuE684WhaSJs%2fw1200-h630-p-k-no-nu%2fHRI.1.jpg&ehk=6%2bmKowAHoRxIHSqxE5SCidwiuhuJNM2dVtxEhKEoJC4%3d&risl=&pid=ImgRaw&r=0",
     location: "Domestic",
     eligibleYears: [3, 4, 5]
   },
@@ -49,7 +49,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.iiap.res.in/opportunities/visiting-students/internships/",
-    imageUrl: "https://placehold.co/600x400/f59e0b/ffffff?text=IIA",
+    imageUrl: "https://tse3.mm.bing.net/th/id/OIP.ybIH_Q6wUo6a3o9_rIEL0wHaDr?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3",
     location: "Domestic",
     eligibleYears: [4, 5]
   },
@@ -59,7 +59,7 @@ export const programs = [
     type: "Internship",
     time: "Summer (May-July)",
     link: "https://www.saha.ac.in/web/summer-home",
-    imageUrl: "https://placehold.co/600x400/6b7280/ffffff?text=SINP",
+    imageUrl: "https://tse4.mm.bing.net/th/id/OIP.KnspZmL-77JBMUSUKjMQ2QHaFP?cb=12&rs=1&pid=ImgDetMain&o=7&rm=3",
     location: "Domestic",
     eligibleYears: [4, 5]
   },
@@ -69,7 +69,7 @@ export const programs = [
     type: "Internship",
     time: "Year-round",
     link: "https://www.rri.res.in/careers/visiting-students",
-    imageUrl: "https://placehold.co/600x400/ef4444/ffffff?text=RRI",
+    imageUrl: "https://vajiramandravi.com/current-affairs/wp-content/uploads/2025/04/rri.webp",
     location: "Domestic",
     eligibleYears: [2, 3, 4, 5]
   },
@@ -79,7 +79,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.imsc.res.in/summer_research_programmer",
-    imageUrl: "https://placehold.co/600x400/3b82f6/ffffff?text=IMSc",
+    imageUrl: "https://cdn.thewire.in/wp-content/uploads/2019/12/24083911/matscience-chennai.jpg",
     location: "Domestic",
     eligibleYears: [2, 3, 4]
   },
@@ -89,7 +89,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.iucaa.in/en/education/summer-winter-programmes",
-    imageUrl: "https://placehold.co/600x400/f97316/ffffff?text=IUCAA",
+    imageUrl: "https://i0.wp.com/www.tusktravel.com/blog/wp-content/uploads/2023/06/IUCAA-Pune-Maharashtra.jpg?w=1200&ssl=1",
     location: "Domestic",
     eligibleYears: [3, 4]
   },
@@ -99,7 +99,7 @@ export const programs = [
     type: "Internship",
     time: "Summer (May-July)",
     link: "https://www.gw.iucaa.in/ligo-surf-program/",
-    imageUrl: "https://placehold.co/600x400/a855f7/ffffff?text=LIGO+SURF",
+    imageUrl: "https://www.sciencenews.org/wp-content/uploads/2017/08/080117_EV_ticker_virgo_free.jpg",
     location: "International",
     eligibleYears: [2, 3, 4]
   },
@@ -110,7 +110,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.s.u-tokyo.ac.jp/en/utrip/",
-    imageUrl: "https://placehold.co/600x400/ec4899/ffffff?text=U+Tokyo",
+    imageUrl: "https://www.kanpai-japan.com/sites/default/files/styles/gallery_square_sm/public/uploads/2024/03/tokyo-daigaku-12.jpg",
     location: "International",
     eligibleYears: [2, 3]
   },
@@ -120,7 +120,7 @@ export const programs = [
     type: "Internship",
     time: "Year-round",
     link: "https://phd.pages.ist.ac.at/scientific-internships/",
-    imageUrl: "https://placehold.co/600x400/14b8a6/ffffff?text=ISTA",
+    imageUrl: "https://www.vindobona.org/images/text/ist-institute-of-science-and-technology-austria-2010-big.jpg",
     location: "International",
     eligibleYears: [1, 2, 3, 4, 5]
   },
@@ -130,7 +130,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.astron.nl/education/summer-research-programme/",
-    imageUrl: "https://placehold.co/600x400/facc15/ffffff?text=ASTRON",
+    imageUrl: "https://www.makeitinthenorth.nl/content/uploads/sites/2/2022/11/astron-1.jpg",
     location: "International",
     eligibleYears: [3, 4, 5]
   },
@@ -141,7 +141,7 @@ export const programs = [
     type: "Masters",
     time: "Year-round",
     link: "https://perimeterinstitute.ca/training/masters-program/psi-how-apply",
-    imageUrl: "https://placehold.co/600x400/10b981/ffffff?text=Perimeter",
+    imageUrl: "https://images.adsttc.com/media/images/500f/1732/28ba/0d0c/c700/1a62/slideshow/stringio.jpg?1414331003",
     location: "International",
     eligibleYears: [4, 5]
   },
@@ -151,7 +151,7 @@ export const programs = [
     type: "Integrated PhD",
     time: "Year-round",
     link: "https://physics.iisc.ac.in/academics/degree-programs/",
-    imageUrl: "https://placehold.co/600x400/dc2626/ffffff?text=IISc",
+    imageUrl: "https://tse2.mm.bing.net/th/id/OIP.5cfjsi0h20OXsPVpuxdpBwHaEK?cb=12&w=1280&h=720&rs=1&pid=ImgDetMain&o=7&rm=3",
     location: "Domestic",
     eligibleYears: [3, 4]
   },
@@ -171,7 +171,7 @@ export const programs = [
     type: "Post-Graduate Diploma",
     time: "Year-round",
     link: "https://www.ictp.it/opportunity/ictp-postgraduate-diploma-programme",
-    imageUrl: "https://placehold.co/600x400/2563eb/ffffff?text=ICTP",
+    imageUrl: "https://th.bing.com/th/id/R.9ec32cfb09a2f03d44846a3ed66ca809?rik=keO9BsQrUEByWw&riu=http%3a%2f%2f4.bp.blogspot.com%2f-Ox-onUqL6yA%2fTefPgr18s1I%2fAAAAAAAAAVk%2foftq8FS6zwE%2fs1600%2fictp%252Baerialview.jpg&ehk=D%2bvSFfvet0PAf2xXxIB5MTyMHEZNS8SVZTdwdPg6Qcs%3d&risl=&pid=ImgRaw&r=0",
     location: "International",
     eligibleYears: [4, 5]
   }
