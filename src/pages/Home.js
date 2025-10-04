@@ -1,6 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { FaRocket, FaBookOpen, FaUsers, FaCalendarAlt, FaComments } from 'react-icons/fa';
+import { FaShareAlt, FaEnvelope } from 'react-icons/fa';
 
 const Home = () => {
   return (
