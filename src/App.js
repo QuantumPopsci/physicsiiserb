@@ -49,9 +49,12 @@ function App() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col bg-background-primary relative">
+  <div className="min-h-screen relative">
+      {/* The particle background is now at the root level, fixed to the background */}
       <ParticleBackground />
-      <div className="relative z-20 flex flex-col min-h-screen">
+      
+      {/* This wrapper contains all the visible content and sits on top of the particles */}
+      <div className="relative z-10 flex flex-col min-h-screen bg-background-primary bg-opacity-95 backdrop-blur-sm">
         <Navbar theme={theme} toggleTheme={toggleTheme} />
         <main className="flex-grow container mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <Routes>
