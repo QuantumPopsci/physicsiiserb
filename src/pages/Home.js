@@ -18,6 +18,8 @@ const Home = () => {
           <DashboardCard to="/timetable" icon={<FaCalendarAlt />} title="Semester Timetable" description="View the weekly class schedule, venues, and instructors." />
           <DashboardCard to="/resources" icon={<FaRocket />} title="Interesting Resources" description="Discover curated papers, articles, and videos to fuel your curiosity." />
           <DashboardCard to="/chat" icon={<FaComments />} title="Physics Discussion Forum" description="Ask questions and chat with peers in a moderated, exclusive forum." />
+          <DashboardCard to="/shared-resources" icon={<FaShareAlt />} title="Share & Request Resources" description="Exchange notes, books, and other useful materials with your peers." />
+          <DashboardCard to="/contact-us" icon={<FaEnvelope />} title="Contact Us" description="Send suggestions, improvements, or feedback to help us grow." />
         </div>
       </div>
     </div>
