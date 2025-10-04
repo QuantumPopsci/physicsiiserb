@@ -17,7 +17,6 @@ const Navbar = ({ theme, toggleTheme }) => {
     { to: "/shared-resources", text: "Request & Share" },
     { to: "/resources", text: "Links & Videos" },
     { to: "/chat", text: "Discussion Forum" }, 
-    { to: "/contacts", text: "Directory" },
     { to: "/contact-us", text: "Contact Us" }, // New link
   ];
 
