@@ -9,7 +9,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.jncasr.ac.in/academic/fandeprogrammes/srfp",
-    imageUrl: "https://placehold.co/600x400/1f2937/ffffff?text=JNCASR",
+    imageUrl: "https://www.jncasr.ac.in/sites/default/files/j1.jpg",
     location: "Domestic",
     eligibleYears: [1, 2, 3, 4]
   },
@@ -19,7 +19,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.tifrh.res.in/academics/vsrp/",
-    imageUrl: "https://placehold.co/600x400/8b5cf6/ffffff?text=TIFR+Hyderabad",
+    imageUrl: "https://www.inidesignstudio.com/wp-content/uploads/2024/03/1_22-Photo.jpg",
     location: "Domestic",
     eligibleYears: [2, 3, 4, 5]
   },
@@ -29,7 +29,7 @@ export const programs = [
     type: "Internship",
     time: "Summer",
     link: "https://www.prl.res.in/prl-eng/summer_internship",
-    imageUrl: "https://placehold.co/600x400/10b981/ffffff?text=PRL",
+    imageUrl: "https://www.prl.res.in/prl-eng/sites/default/files/images/slider_images/prl.jpg",
     location: "Domestic",
     eligibleYears: [4, 5]
   },
@@ -161,7 +161,7 @@ export const programs = [
     type: "PhD",
     time: "Year-round",
     link: "https://www.mpg.de/en/imprs",
-    imageUrl: "https://placehold.co/600x400/6b7280/ffffff?text=Max+Planck",
+    imageUrl: "https://www.imprs-trust.mpg.de/files/2017/12/2-Geb%C3%A4ude-1024x683.jpg",
     location: "International",
     eligibleYears: [5]
   },
