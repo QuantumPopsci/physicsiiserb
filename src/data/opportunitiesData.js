@@ -171,7 +171,7 @@ export const programs = [
     type: "Post-Graduate Diploma",
     time: "Year-round",
     link: "https://www.ictp.it/opportunity/ictp-postgraduate-diploma-programme",
-    imageUrl: "https://th.bing.com/th/id/R.9ec32cfb09a2f03d44846a3ed66ca809?rik=keO9BsQrUEByWw&riu=http%3a%2f%2f4.bp.blogspot.com%2f-Ox-onUqL6yA%2fTefPgr18s1I%2fAAAAAAAAAVk%2foftq8FS6zwE%2fs1600%2fictp%252Baerialview.jpg&ehk=D%2bvSFfvet0PAf2xXxIB5MTyMHEZNS8SVZTdwdPg6Qcs%3d&risl=&pid=ImgRaw&r=0",
+    imageUrl: "https://www.intrieste.com/w/wp-content/uploads/2020/05/ictp.jpg",
     location: "International",
     eligibleYears: [4, 5]
   }
