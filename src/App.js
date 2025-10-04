@@ -15,6 +15,7 @@ import Research from './pages/Research';
 import Terms from './pages/Terms';
 import ContactUs from './pages/ContactUs';
 import MathForPhysics from './pages/MathForPhysics';
+import Opportunities from './pages/Opportunities'; 
 
 function App() {
   // A safer way to initialize state from localStorage, preventing crashes if it's unavailable.
@@ -60,6 +61,7 @@ function App() {
             <Route path="/timetable" element={<Timetable />} />
             <Route path="/shared-resources" element={<SharedResources />} />
             <Route path="/research" element={<Research />} />
+            <Route path="/opportunities" element={<Opportunities />} />
             <Route path="/math-for-physics" element={<MathForPhysics />} />
             <Route path="/resources" element={<Resources />} />
             <Route path="/chat" element={<Chat />} />
