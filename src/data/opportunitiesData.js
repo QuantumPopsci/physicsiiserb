@@ -65,16 +65,6 @@ export const programs = [
   },
   // International Internships
   {
-    name: "DAAD WISE",
-    institute: "German Universities",
-    type: "Internship",
-    time: "Summer",
-    link: "https://www.daad.in/en/find-funding/funding-programmes-for-india/wise-working-internships-in-science-and-engineering/",
-    imageUrl: "https://placehold.co/600x400/ef4444/ffffff?text=DAAD+WISE",
-    location: "International",
-    eligibleYears: [3]
-  },
-  {
     name: "Charpak Research Internship Program",
     institute: "French Laboratories",
     type: "Internship",
