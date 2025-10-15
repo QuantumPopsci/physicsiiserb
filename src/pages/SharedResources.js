@@ -179,7 +179,7 @@ const ResourceRequestsView = ({ user, requests, fulfillments }) => {
     return (
         <div>
             <div className="card-base p-6 mb-8">
-                <h2 className="text-2xl font-bold text-text-primary mb-4">Post a New Request</h2>
+                <h2 className="text-2xl font-bold text-text-primary mb-4">Post a New Request, State clearly what level of resource you are looking for</h2>
                 <form onSubmit={handleRequestSubmit} className="flex gap-3">
                     <input type="text" value={newRequest} onChange={(e) => setNewRequest(e.target.value)} placeholder="What resource are you looking for?"
                         className="flex-grow bg-background-primary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"/>
