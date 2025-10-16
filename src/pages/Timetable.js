@@ -1,9 +1,11 @@
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, useRef } from 'react';
+import html2canvas from 'html2canvas';
 import { schedule, courses } from '../data/timetableData';
-import { FaCheckSquare, FaRegSquare } from 'react-icons/fa';
+import { FaCheckSquare, FaRegSquare, FaDownload } from 'react-icons/fa';
 
 const Timetable = () => {
     const [selectedCourses, setSelectedCourses] = useState(new Set());
+    const tableRef = useRef(null); // 👈 create a reference
 
     const handleCourseToggle = (courseCode) => {
         setSelectedCourses(prevSelected => {
@@ -28,24 +30,22 @@ const Timetable = () => {
         return map;
     }, []);
 
-    // Rebuilt logic to correctly handle labs and clashes
     const processedLayout = useMemo(() => {
-        const layout = {}; // Stores events for each cell: { Monday: { "9:00 AM": [event1, event2], ... } }
-        const maxClashesByTime = {}; // Stores max rows needed for each hour: { "9:00 AM": 2 }
+        const layout = {};
+        const maxClashesByTime = {};
 
         schedule.timeSlots.forEach(time => {
-            maxClashesByTime[time] = 1; // Default to 1 row per hour
+            maxClashesByTime[time] = 1;
         });
 
-        // Step 1: Unroll all selected events into a simple layout grid
         schedule.days.forEach(day => {
             layout[day] = {};
             const dayEvents = schedule.events[day] || {};
             Object.entries(dayEvents).forEach(([time, eventsInSlot]) => {
                 const selectedEvents = eventsInSlot.filter(event => selectedCourses.has(event.code));
-                
+
                 selectedEvents.forEach(event => {
-                    if (event.span > 1) { // This is a multi-hour event (like a lab)
+                    if (event.span > 1) {
                         const startIndex = schedule.timeSlots.indexOf(time);
                         for (let i = 0; i < event.span; i++) {
                             const currentTimeSlot = schedule.timeSlots[startIndex + i];
@@ -54,7 +54,7 @@ const Timetable = () => {
                                 layout[day][currentTimeSlot].push(event);
                             }
                         }
-                    } else { // This is a single-hour event
+                    } else {
                         if (!layout[day][time]) layout[day][time] = [];
                         layout[day][time].push(event);
                     }
@@ -62,7 +62,6 @@ const Timetable = () => {
             });
         });
 
-        // Step 2: Calculate the maximum number of clashing events for each hour
         schedule.timeSlots.forEach(time => {
             let maxForThisHour = 1;
             schedule.days.forEach(day => {
@@ -79,10 +78,31 @@ const Timetable = () => {
     
     const { layout, maxClashesByTime } = processedLayout;
 
+    // ✅ Step 3: Download timetable as PNG
+    const handleDownload = async () => {
+        if (!tableRef.current) return;
+        const canvas = await html2canvas(tableRef.current, { scale: 2 });
+        const dataUrl = canvas.toDataURL('image/png');
+        const link = document.createElement('a');
+        link.href = dataUrl;
+        link.download = 'My_Timetable.png';
+        link.click();
+    };
+
     return (
         <div className="animate-fadeInUp">
-            <h1 className="text-4xl font-bold mb-2 gradient-text">Timetable Builder</h1>
-            <p className="text-lg text-text-secondary mb-8">Select courses from the list to build your personalized schedule.</p>
+            <div className="flex items-center justify-between mb-4">
+                <h1 className="text-4xl font-bold gradient-text">Timetable Builder</h1>
+                <button 
+                    onClick={handleDownload}
+                    className="flex items-center gap-2 bg-accent-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-accent-hover transition-colors"
+                >
+                    <FaDownload /> Download PNG
+                </button>
+            </div>
+            <p className="text-lg text-text-secondary mb-8">
+                Select courses from the list to build your personalized schedule.
+            </p>
 
             <div className="lg:flex lg:gap-8">
                 {/* Course Selection Panel */}
@@ -109,7 +129,7 @@ const Timetable = () => {
                 </div>
 
                 {/* Timetable Grid */}
-                <div className="lg:w-2/3 xl:w-3/4 card-base p-4 overflow-x-auto">
+                <div ref={tableRef} className="lg:w-2/3 xl:w-3/4 card-base p-4 overflow-x-auto bg-white">
                     <table className="w-full min-w-[800px] border-collapse">
                         <thead>
                             <tr>
@@ -162,4 +182,3 @@ const Timetable = () => {
 };
 
 export default Timetable;
-
