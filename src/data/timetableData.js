@@ -30,7 +30,7 @@ export const courses = [
 
   { type: 'Elective', title: 'Quantum Information Theory', courseCode: 'PHY 425', slot: 'A', hall: 'A1', instructor: 'Phani Kumar Peddibhotla', color: '#9333ea' },
 
-  { type: 'Elective', title: 'Decoherence and Open Quantum Systems', courseCode: 'PHY 435', slot: 'E', hall: 'A1', instructor: 'Subhash Chaturvedi', color: '#f97316' },
+  { type: 'Elective', title: 'Decoherence & Open Quantum Systems', courseCode: 'PHY 435', slot: 'E', hall: 'A1', instructor: 'Subhash Chaturvedi', color: '#f97316' },
 
   { type: 'Elective', title: 'General Relativity', courseCode: 'PHY 416', slot: 'F', hall: 'A1', instructor: 'Ritam Mallick', color: '#0d9488' },
 
