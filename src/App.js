@@ -16,6 +16,7 @@ import Terms from './pages/Terms';
 import ContactUs from './pages/ContactUs';
 import MathForPhysics from './pages/MathForPhysics';
 import Opportunities from './pages/Opportunities'; 
+import { Analytics } from '@vercel/analytics/react';
 
 function App() {
   // A safer way to initialize state from localStorage, preventing crashes if it's unavailable.
