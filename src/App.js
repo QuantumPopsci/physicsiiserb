@@ -4,6 +4,7 @@ import Navbar from './components/Navbar';
 import Footer from './components/Footer';
 import ParticleBackground from './components/ParticleBackground';
 import Home from './pages/Home';
+import FAQ from './pages/FAQ';
 import Courses from './pages/Courses';
 import CourseDetail from './pages/CourseDetail';
 import Timetable from './pages/Timetable';
@@ -70,6 +71,7 @@ function App() {
             <Route path="/resources" element={<Resources />} />
             <Route path="/chat" element={<Chat />} />
             <Route path="/terms" element={<Terms />} />
+            <Route path="/faq" element={<FAQ />} />
             <Route path="/contact-us" element={<ContactUs />} />
           </Routes>
         </main>
