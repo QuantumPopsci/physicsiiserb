@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import { faqs } from '../data/faqData';
 import { motion, AnimatePresence } from 'framer-motion';
+import { db } from '../firebase';
+import { addDoc, collection, serverTimestamp } from 'firebase/firestore';
 
 // Convert /docs/... links to clickable anchors
 const renderTextWithLinks = (text) => {
