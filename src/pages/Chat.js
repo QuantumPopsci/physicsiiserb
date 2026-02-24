@@ -93,7 +93,7 @@ const InitialTermsModal = ({ onAccept }) => (
     </h1>
 
     <div className="bg-background-secondary p-6 rounded-lg border border-border-color text-left">
-      <p>Be respectful. No spam. Stay on topic.</p>
+      <p>Be respectful. No spam. Stay on topic. Use @bot to speak with bot</p>
 
       <p className="text-xs mt-4">
         You agree to the
@@ -229,35 +229,58 @@ const Chat = () => {
   };
 
   // SEND MESSAGE
-  const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (!newMessage.trim() || !user) return;
+const handleSendMessage = async (e) => {
+  e.preventDefault();
+  if (!newMessage.trim() || !user) return;
 
-    const messageText = newMessage;
-    setNewMessage('');
+  const messageText = newMessage.trim();
+  setNewMessage('');
 
-    // USER MESSAGE
+  // Always store user message
+  await addDoc(collection(db, 'messages'), {
+    text: messageText,
+    timestamp: serverTimestamp(),
+    uid: user.uid,
+    email: user.email,
+    displayName: userDisplayName,
+  });
+
+  // 🧠 BOT ACTIVATION CONDITION
+  const lower = messageText.toLowerCase();
+
+  if (!lower.startsWith("@bot")) return;
+
+  // Remove "@bot" from query
+  const queryText = messageText.replace(/^@bot/i, "").trim();
+
+  if (!queryText) {
     await addDoc(collection(db, 'messages'), {
-      text: messageText,
+      text: "Please ask a question after @bot",
       timestamp: serverTimestamp(),
-      uid: user.uid,
-      email: user.email,
-      displayName: userDisplayName,
+      uid: "bot",
+      displayName: "Physics Guide Bot",
     });
+    return;
+  }
 
-    // BOT RESPONSE
-    const match = getLocalAnswer(messageText);
+  const match = getLocalAnswer(queryText);
 
-    if (match) {
-      await addDoc(collection(db, 'messages'), {
-        text: match.answerText,
-        timestamp: serverTimestamp(),
-        uid: "bot",
-        email: "bot@system",
-        displayName: "Physics Guide Bot",
-      });
-    }
-  };
+  if (match) {
+    await addDoc(collection(db, 'messages'), {
+      text: match.answerText,
+      timestamp: serverTimestamp(),
+      uid: "bot",
+      displayName: "Physics Guide Bot",
+    });
+  } else {
+    await addDoc(collection(db, 'messages'), {
+      text: "Sorry, I couldn't find an answer. Try asking about MS thesis, QT minor, or electives.",
+      timestamp: serverTimestamp(),
+      uid: "bot",
+      displayName: "Physics Guide Bot",
+    });
+  }
+};
 
   // DELETE MESSAGE
   const handleDeleteMessage = async (messageId) => {
@@ -351,7 +374,7 @@ const Chat = () => {
         <input
           value={newMessage}
           onChange={(e) => setNewMessage(e.target.value)}
-          placeholder="Ask about thesis, QT minor, electives..."
+          placeholder="Ask about thesis, QT minor, electives by @bot or speak with other Physics Majors"
           className="flex-grow p-2 rounded border border-border-color bg-background-secondary text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-primary"
         />
 
