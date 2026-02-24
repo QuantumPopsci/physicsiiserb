@@ -6,274 +6,222 @@ import { faqs } from '../data/faqData';
 import { FaPaperPlane, FaGoogle, FaSignOutAlt, FaTrash, FaUserShield, FaChevronDown } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-// --- Helper Functions ---
+// ---------- HELPERS ----------
+
 const anonymousNames = ["Curious Quark", "Anonymous Atom", "Clever Photon", "Bold Boson", "Wise Wavefunction"];
+
 const generateConsistentName = (uid) => {
     let hash = 0;
     for (let i = 0; i < uid.length; i++) {
         hash = uid.charCodeAt(i) + ((hash << 5) - hash);
     }
-    const index = Math.abs(hash % anonymousNames.length);
-    return anonymousNames[index];
+    return anonymousNames[Math.abs(hash % anonymousNames.length)];
 };
-const getLocalAnswer = (query) => {
-    const q = query.toLowerCase();
 
-    return faqs.find(faq =>
-        faq.question.toLowerCase().includes(q) ||
-        q.split(" ").some(word =>
-            word.length > 3 && faq.question.toLowerCase().includes(word)
+const clean = (text) => text.toLowerCase().replace(/[^\w\s]/g, "");
+
+// smart matching
+const getLocalAnswer = (query) => {
+    const q = clean(query);
+
+    return faqs.find(faq => {
+        const question = clean(faq.question);
+
+        if (question.includes(q)) return true;
+
+        const words = q.split(" ").filter(w => w.length > 3);
+
+        return words.some(word => question.includes(word));
+    });
+};
+
+// convert /docs/... into clickable links
+const renderTextWithLinks = (text) => {
+    return text.split(/(\/docs\/[^\s]+)/g).map((part, i) =>
+        part.startsWith("/docs/") ? (
+            <a
+                key={i}
+                href={part}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-accent-primary underline"
+            >
+                📄 Open PDF
+            </a>
+        ) : (
+            part
         )
     );
 };
-// --- Sub-Components ---
-// --- Sub-Components ---
+
+// ---------- COMPONENTS ----------
+
 const InitialTermsModal = ({ onAccept }) => (
-    <div className="text-center animate-fadeInUp max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4 gradient-text">Community Guidelines</h1>
-        <div className="bg-background-secondary p-6 rounded-lg border border-border-color text-left text-text-primary space-y-4">
-            <p className="text-text-secondary">Welcome! To ensure this remains a safe and productive space, please agree to the following terms:</p>
-            <ul className="list-disc list-inside space-y-2 text-text-secondary">
-                {/* ... list items ... */}
-            </ul>
-            <p className="font-bold text-red-500">Violation of these terms will result in a permanent block of your account. Moderators reserve the right to remove any content or user.</p>
-            {/* --- NEWLY ADDED LINK --- */}
-            <p className="text-xs text-text-secondary mt-4">
-                By clicking "I Understand and Agree", you also confirm you have read and accept the full 
-                <Link to="/terms" className="text-accent-primary hover:underline ml-1">Terms of Use & Disclaimer</Link>.
-            </p>
-        </div>
-        <button onClick={onAccept} className="mt-6 w-full px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold transition-colors">
-            I Understand and Agree
+    <div className="text-center max-w-2xl mx-auto">
+        <h1 className="text-3xl font-bold mb-4">Community Guidelines</h1>
+        <p className="mb-4">Be respectful. No spam. Stay on topic.</p>
+        <button onClick={onAccept} className="px-6 py-3 bg-accent-primary text-white rounded">
+            I Agree
         </button>
     </div>
 );
 
 const CommunityGuidelines = () => {
-    const [isOpen, setIsOpen] = useState(false);
+    const [open, setOpen] = useState(false);
     return (
-        <div className="mb-4 bg-background-secondary/80 backdrop-blur-sm rounded-lg border border-border-color shadow-sm">
-            <button onClick={() => setIsOpen(!isOpen)} className="w-full flex justify-between items-center p-4 text-left">
-                <span className="font-semibold text-text-primary">Community Guidelines</span>
-                <FaChevronDown className={`text-text-secondary transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`} />
+        <div className="mb-4 border rounded">
+            <button onClick={() => setOpen(!open)} className="w-full flex justify-between p-3">
+                <span>Community Guidelines</span>
+                <FaChevronDown className={open ? "rotate-180" : ""} />
             </button>
-            {isOpen && (
-                <div className="p-4 border-t border-border-color text-sm text-text-secondary space-y-2">
-                    <p><strong>Be Respectful:</strong> No harassment or bullying.</p>
-                    <p><strong>Stay On Topic:</strong> Keep discussions related to physics.</p>
-                    <p><strong>No Inappropriate Content:</strong> No offensive posts, spam, or illegal content.</p>
-                    <p className="font-semibold text-red-500">Violations will lead to a permanent block.</p>
+            {open && (
+                <div className="p-3 text-sm">
+                    Be respectful. No spam. Stay on topic.
                 </div>
             )}
         </div>
     );
 };
 
+// ---------- MAIN ----------
 
 const Chat = () => {
     const [user, setUser] = useState(null);
-    const [userProfile, setUserProfile] = useState({ role: 'user', termsAccepted: false });
-    const [isBlocked, setIsBlocked] = useState(false);
-    const [isAuthorized, setIsAuthorized] = useState(false);
+    const [profile, setProfile] = useState({ role: 'user', termsAccepted: false });
+    const [blocked, setBlocked] = useState(false);
+    const [authorized, setAuthorized] = useState(false);
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-    const [userDisplayName, setUserDisplayName] = useState('');
-    const messagesEndRef = useRef(null);
+    const [displayName, setDisplayName] = useState('');
+    const endRef = useRef(null);
 
     useEffect(() => {
-        const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-            if (currentUser) {
-                setUser(currentUser);
-                if (currentUser.email && currentUser.email.endsWith('@iiserb.ac.in')) {
-                    setIsAuthorized(true);
-                    setUserDisplayName(generateConsistentName(currentUser.uid));
-                    const blockedDocRef = doc(db, 'blockedUsers', currentUser.uid);
-                    const blockedDocSnap = await getDoc(blockedDocRef);
-                    if (blockedDocSnap.exists()) {
-                        setIsBlocked(true);
-                        return;
-                    }
-                    setIsBlocked(false);
-                    const userDocRef = doc(db, 'users', currentUser.uid);
-                    const docSnap = await getDoc(userDocRef);
-                    if (docSnap.exists()) {
-                        setUserProfile(docSnap.data());
-                    } else {
-                        const newProfile = { email: currentUser.email, role: 'user', termsAccepted: false };
-                        await setDoc(userDocRef, newProfile);
-                        setUserProfile(newProfile);
-                    }
-                } else {
-                    setIsAuthorized(false);
-                }
-            } else {
-                setUser(null);
-                setIsAuthorized(false);
-                setUserProfile({ role: 'user', termsAccepted: false });
+        const unsub = onAuthStateChanged(auth, async (u) => {
+            if (!u) return setUser(null);
+
+            setUser(u);
+
+            if (!u.email.endsWith('@iiserb.ac.in')) return setAuthorized(false);
+
+            setAuthorized(true);
+            setDisplayName(generateConsistentName(u.uid));
+
+            const blockedSnap = await getDoc(doc(db, 'blockedUsers', u.uid));
+            if (blockedSnap.exists()) return setBlocked(true);
+
+            const userRef = doc(db, 'users', u.uid);
+            const snap = await getDoc(userRef);
+
+            if (snap.exists()) setProfile(snap.data());
+            else {
+                const newProfile = { email: u.email, role: 'user', termsAccepted: false };
+                await setDoc(userRef, newProfile);
+                setProfile(newProfile);
             }
         });
-        return () => unsubscribe();
+
+        return () => unsub();
     }, []);
 
     useEffect(() => {
-        if (!isAuthorized || isBlocked || !userProfile.termsAccepted) {
-            setMessages([]);
-            return;
-        }
+        if (!authorized || blocked || !profile.termsAccepted) return;
+
         const q = query(collection(db, 'messages'), orderBy('timestamp'));
-        const unsubscribe = onSnapshot(q, (snapshot) => {
-            setMessages(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() })));
+        return onSnapshot(q, snap => {
+            setMessages(snap.docs.map(d => ({ id: d.id, ...d.data() })));
         });
-        return () => unsubscribe();
-    }, [isAuthorized, isBlocked, userProfile.termsAccepted]);
+    }, [authorized, blocked, profile.termsAccepted]);
 
     useEffect(() => {
-        messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+        endRef.current?.scrollIntoView({ behavior: 'smooth' });
     }, [messages]);
 
-    // --- FIX: Implemented all event handlers ---
-    const handleGoogleSignIn = async () => {
+    const signIn = async () => {
         const provider = new GoogleAuthProvider();
-        try {
-            await signInWithPopup(auth, provider);
-        } catch (error) {
-            console.error("Sign-in error:", error);
-        }
+        await signInWithPopup(auth, provider);
     };
 
-    const handleSignOut = async () => {
-        try {
-            await signOut(auth);
-        } catch (error) {
-            console.error("Sign-out error:", error);
-        }
+    const logout = async () => {
+        await signOut(auth);
     };
 
-    const handleAcceptTerms = async () => {
-        if (user) {
-            const userDocRef = doc(db, 'users', user.uid);
-            await setDoc(userDocRef, { termsAccepted: true }, { merge: true });
-            setUserProfile(prev => ({ ...prev, termsAccepted: true }));
-        }
+    const acceptTerms = async () => {
+        await setDoc(doc(db, 'users', user.uid), { termsAccepted: true }, { merge: true });
+        setProfile(prev => ({ ...prev, termsAccepted: true }));
     };
 
-const handleSendMessage = async (e) => {
-    e.preventDefault();
-    if (newMessage.trim() === '' || !user) return;
+    const sendMessage = async (e) => {
+        e.preventDefault();
+        if (!newMessage.trim()) return;
 
-    const messageText = newMessage;
-    setNewMessage('');
+        const text = newMessage;
+        setNewMessage('');
 
-    // 🔍 Check FAQ first
-    const localAnswer = getLocalAnswer(messageText);
-
-    if (localAnswer) {
-        // Add user message
+        // save user message
         await addDoc(collection(db, 'messages'), {
-            text: messageText,
-            timestamp: serverTimestamp(),
+            text,
             uid: user.uid,
-            email: user.email,
-            displayName: userDisplayName,
+            displayName,
+            timestamp: serverTimestamp()
         });
 
-        // Add bot reply
-        await addDoc(collection(db, 'messages'), {
-            text: localAnswer.answer,
-            timestamp: serverTimestamp(),
-            uid: "bot",
-            email: "bot@system",
-            displayName: "Physics Guide Bot",
-        });
+        const match = getLocalAnswer(text);
 
-        return;
-    }
-
-    // ❗ If no FAQ match, just send normally
-    await addDoc(collection(db, 'messages'), {
-        text: messageText,
-        timestamp: serverTimestamp(),
-        uid: user.uid,
-        email: user.email,
-        displayName: userDisplayName,
-    });
-};
-
-    const handleDeleteMessage = async (messageId) => {
-        if (window.confirm("Are you sure you want to delete this message?")) {
-            await deleteDoc(doc(db, 'messages', messageId));
-        }
-    };
-
-    const handleBlockUser = async (msg) => {
-        if (window.confirm(`Are you sure you want to permanently block this user (${msg.displayName} - ${msg.email})? This action cannot be undone.`)) {
-            const blockedDocRef = doc(db, 'blockedUsers', msg.uid);
-            await setDoc(blockedDocRef, {
-                email: msg.email,
-                blockedBy: user.email,
+        if (match) {
+            await addDoc(collection(db, 'messages'), {
+                text: match.answerText,
+                uid: "bot",
+                displayName: "Physics Guide Bot",
                 timestamp: serverTimestamp()
             });
-            await deleteDoc(doc(db, 'messages', msg.id));
         }
     };
 
-    // Conditional Rendering...
-    if (!user) {
-        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 gradient-text">Discussion Forum</h1><p className="text-text-secondary mb-6">Please sign in with your IISERB Google account to access the chat.</p><button onClick={handleGoogleSignIn} className="inline-flex items-center gap-2 px-6 py-3 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold transition-colors"><FaGoogle /> Sign in with Google</button></div>;
-    }
-    if (!isAuthorized) {
-        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 text-red-500">Access Denied</h1><p className="text-text-secondary mb-6">This chat is restricted to users with an <span className="font-bold text-accent-primary">@iiserb.ac.in</span> email address.</p><p className="text-gray-500 mb-6 text-sm">You are signed in as: {user.email}</p><button onClick={handleSignOut} className="inline-flex items-center gap-2 px-6 py-3 bg-background-secondary hover:opacity-80 border border-border-color rounded-md text-text-primary font-semibold transition-colors"><FaSignOutAlt /> Sign Out</button></div>;
-    }
-    if (isBlocked) {
-        return <div className="text-center animate-fadeInUp"><h1 className="text-3xl font-bold mb-4 text-red-500">Account Blocked</h1><p className="text-text-secondary mb-6">Your account has been blocked from accessing this chat due to a violation of the community guidelines.</p><button onClick={handleSignOut} className="inline-flex items-center gap-2 px-6 py-3 bg-background-secondary hover:opacity-80 border border-border-color rounded-md text-text-primary font-semibold transition-colors"><FaSignOutAlt /> Sign Out</button></div>;
-    }
-    if (!userProfile.termsAccepted) {
-        return <InitialTermsModal onAccept={handleAcceptTerms} />;
-    }
+    if (!user) return <button onClick={signIn}>Sign in with Google</button>;
+    if (!authorized) return <div>Access denied</div>;
+    if (blocked) return <div>Blocked</div>;
+    if (!profile.termsAccepted) return <InitialTermsModal onAccept={acceptTerms} />;
 
-    // Main Chat UI
     return (
-        <div className="flex flex-col h-[75vh] max-w-3xl mx-auto animate-fadeInUp bg-background-primary/50 p-4 rounded-xl">
-            <div className="flex justify-between items-center mb-4">
-                <h1 className="text-3xl font-bold gradient-text">Physics Discussion Forum</h1>
-                <button onClick={handleSignOut} className="text-text-secondary hover:text-text-primary text-sm flex items-center gap-2"><FaSignOutAlt /> Sign Out</button>
+        <div className="flex flex-col h-[75vh] max-w-3xl mx-auto">
+            <div className="flex justify-between mb-2">
+                <h1 className="text-xl font-bold">Physics Forum</h1>
+                <button onClick={logout}>Logout</button>
             </div>
+
             <CommunityGuidelines />
-            <div className="flex-grow bg-background-secondary/50 backdrop-blur-sm rounded-lg p-4 border border-border-color overflow-y-auto mb-4">
+
+            <div className="flex-grow overflow-y-auto mb-4 border p-2">
                 {messages.map(msg => (
-                    <div key={msg.id} className={`flex items-end mb-3 group ${msg.uid === user.uid ? 'justify-end' : 'justify-start'}`}>
-                        <div className={`flex items-center opacity-0 group-hover:opacity-100 transition-opacity ${msg.uid === user.uid ? 'mr-2' : 'ml-2 order-2'}`}>
-                            {(userProfile.role === 'moderator' || msg.uid === user.uid) && (<button onClick={() => handleDeleteMessage(msg.id)} className="text-text-secondary hover:text-red-500 p-1"><FaTrash /></button>)}
-                            {userProfile.role === 'moderator' && msg.uid !== user.uid && (<button onClick={() => handleBlockUser(msg)} className="text-text-secondary hover:text-yellow-400 p-1"><FaUserShield /></button>)}
-                        </div>
-                        <div className={`p-3 rounded-lg max-w-xs md:max-w-md ${
-    msg.uid === user.uid
-        ? 'bg-accent-primary text-accent-text'
-        : msg.uid === "bot"
-        ? 'bg-green-600 text-white'
-        : 'bg-background-secondary text-text-primary'
-}`}>
-                            <p className={`text-xs font-bold mb-1 ${msg.uid === user.uid ? 'text-accent-text/80' : 'text-accent-primary'}`}>{msg.uid === user.uid ? 'You' :
-msg.uid === "bot" ? 'Physics Guide Bot' :
-msg.displayName}</p>
-  <div className="text-sm break-words">
-  {msg.text}
-</div>
+                    <div key={msg.id} className={`mb-2 ${msg.uid === user.uid ? 'text-right' : ''}`}>
+                        <div className={`inline-block p-2 rounded ${
+                            msg.uid === user.uid ? 'bg-blue-500 text-white' :
+                            msg.uid === "bot" ? 'bg-green-600 text-white' :
+                            'bg-gray-200'
+                        }`}>
+                            <div className="text-xs font-bold">
+                                {msg.uid === user.uid ? "You" :
+                                 msg.uid === "bot" ? "Physics Guide Bot" :
+                                 msg.displayName}
+                            </div>
+                            <div>{renderTextWithLinks(msg.text)}</div>
                         </div>
                     </div>
                 ))}
-                <div ref={messagesEndRef} />
+                <div ref={endRef} />
             </div>
-            <form onSubmit={handleSendMessage} className="flex gap-3">
-                <input type="text" value={newMessage} onChange={(e) => setNewMessage(e.target.value)} placeholder="Ask a question..."
-                    className="flex-grow bg-background-secondary border border-border-color rounded-md shadow-sm py-2 px-3 text-text-primary focus:outline-none focus:ring-2 focus:ring-accent-primary focus:border-transparent"/>
-                <button type="submit" className="px-4 py-2 bg-accent-primary hover:bg-accent-secondary rounded-md text-white font-semibold flex items-center gap-2 transition-colors">
-                    <FaPaperPlane /> <span className="hidden sm:inline">Send</span>
-                </button>
+
+            <form onSubmit={sendMessage} className="flex gap-2">
+                <input
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    className="flex-grow border p-2"
+                    placeholder="Ask about thesis, minor, electives..."
+                />
+                <button className="bg-blue-500 text-white px-4">Send</button>
             </form>
         </div>
     );
 };
 
 export default Chat;
-
