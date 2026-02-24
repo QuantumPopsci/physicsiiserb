@@ -46,21 +46,65 @@ const generateConsistentName = (uid) => {
   }
   return anonymousNames[Math.abs(hash % anonymousNames.length)];
 };
+const clean = (text) =>
+  text.toLowerCase().replace(/[^\w\s]/g, "");
 
-const clean = (text) => text.toLowerCase().replace(/[^\w\s]/g, "");
+const getAllMatches = (query) => {
+  const q = clean(query);
+  const tokens = q.split(" ").filter(t => t.length > 2);
 
+  return faqs.filter(faq => {
+    const question = clean(faq.question);
+    return tokens.some(t => question.includes(t));
+  });
+};
 // Smart FAQ matching
+const clean = (text) =>
+  text.toLowerCase().replace(/[^\w\s]/g, "");
+
+const stopWords = ["the", "is", "are", "a", "an", "what", "how", "can", "i", "do", "for"];
+
 const getLocalAnswer = (query) => {
   const q = clean(query);
 
-  return faqs.find(faq => {
+  // tokenize and remove stopwords
+  const tokens = q
+    .split(" ")
+    .filter(word => word.length > 2 && !stopWords.includes(word));
+
+  let bestMatch = null;
+  let bestScore = 0;
+
+  faqs.forEach(faq => {
+    let score = 0;
+
     const question = clean(faq.question);
+    const keywords = faq.keywords || [];
 
-    if (question.includes(q)) return true;
+    // 1. keyword match (strong weight)
+    tokens.forEach(token => {
+      if (keywords.includes(token)) score += 3;
+      if (question.includes(token)) score += 1;
+    });
 
-    const words = q.split(" ").filter(w => w.length > 3);
-    return words.some(word => question.includes(word));
+    // 2. phrase match bonus
+    if (question.includes(q)) score += 5;
+
+    // 3. category relevance
+    if (q.includes("minor") && faq.category === "Minor") score += 2;
+    if (q.includes("thesis") && faq.category === "Research") score += 2;
+    if (q.includes("elective") && faq.category === "Academics") score += 2;
+
+    if (score > bestScore) {
+      bestScore = score;
+      bestMatch = faq;
+    }
   });
+
+  // threshold to avoid wrong answers
+  if (bestScore < 2) return null;
+
+  return bestMatch;
 };
 
 // Convert /docs/... → clickable links
@@ -231,12 +275,12 @@ const Chat = () => {
   // SEND MESSAGE
 const handleSendMessage = async (e) => {
   e.preventDefault();
-  if (!newMessage.trim() || !user) return;
+  if (newMessage.trim() === '' || !user) return;
 
-  const messageText = newMessage.trim();
+  const messageText = newMessage;
   setNewMessage('');
 
-  // Always store user message
+  // Save user message
   await addDoc(collection(db, 'messages'), {
     text: messageText,
     timestamp: serverTimestamp(),
@@ -245,41 +289,50 @@ const handleSendMessage = async (e) => {
     displayName: userDisplayName,
   });
 
-  // 🧠 BOT ACTIVATION CONDITION
-  const lower = messageText.toLowerCase();
+  // ONLY trigger bot if message starts with @bot
+  if (!messageText.toLowerCase().startsWith("@bot")) return;
 
-  if (!lower.startsWith("@bot")) return;
+  const queryText = messageText.replace("@bot", "").trim();
 
-  // Remove "@bot" from query
-  const queryText = messageText.replace(/^@bot/i, "").trim();
-
+  // If no query → show help
   if (!queryText) {
     await addDoc(collection(db, 'messages'), {
-      text: "Please ask a question after @bot",
-      timestamp: serverTimestamp(),
+      text:
+        "Try asking:\n- @bot ms thesis outside\n- @bot qt minor\n- @bot electives",
       uid: "bot",
       displayName: "Physics Guide Bot",
+      timestamp: serverTimestamp(),
     });
     return;
   }
 
-  const match = getLocalAnswer(queryText);
+  // 🔍 MULTI MATCH SEARCH
+  const matches = getAllMatches(queryText);
 
-  if (match) {
+  // ✅ If matches found
+  if (matches.length > 0) {
+    const combined = matches
+      .map(m => `• ${m.question}\n${m.answerText}`)
+      .join("\n\n-----------------\n\n");
+
     await addDoc(collection(db, 'messages'), {
-      text: match.answerText,
-      timestamp: serverTimestamp(),
+      text: combined,
       uid: "bot",
       displayName: "Physics Guide Bot",
-    });
-  } else {
-    await addDoc(collection(db, 'messages'), {
-      text: "Sorry, I couldn't find an answer. Try asking about MS thesis, QT minor, or electives.",
       timestamp: serverTimestamp(),
-      uid: "bot",
-      displayName: "Physics Guide Bot",
     });
+
+    return;
   }
+
+  // ❗ FALLBACK RESPONSE
+  await addDoc(collection(db, 'messages'), {
+    text:
+      "I couldn't find a direct answer.\n\nTry asking:\n- @bot ms thesis outside\n- @bot qt minor\n- @bot electives",
+    uid: "bot",
+    displayName: "Physics Guide Bot",
+    timestamp: serverTimestamp(),
+  });
 };
 
   // DELETE MESSAGE
