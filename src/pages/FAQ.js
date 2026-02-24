@@ -55,7 +55,17 @@ export default function FAQ() {
         type="text"
         placeholder="Search FAQs..."
         value={search}
-        onChange={(e) => setSearch(e.target.value)}
+        onChange={async (e) => {
+  const value = e.target.value;
+  setSearch(value);
+
+  if (value.length > 3) {
+    await addDoc(collection(db, "faqSearches"), {
+      query: value,
+      timestamp: serverTimestamp(),
+    });
+  }
+}}
         className="w-full p-3 mb-6 rounded-lg bg-background-secondary border border-border-color text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-primary"
       />
 
@@ -96,7 +106,17 @@ export default function FAQ() {
             >
               {/* QUESTION */}
               <button
-                onClick={() => setOpenIndex(isOpen ? null : index)}
+                onClick={async () => {
+  setOpenIndex(isOpen ? null : index);
+
+  if (!isOpen) {
+    await addDoc(collection(db, "faqClicks"), {
+      question: faq.question,
+      category: faq.category,
+      timestamp: serverTimestamp(),
+    });
+  }
+}}
                 className="w-full text-left p-4 font-semibold text-text-primary flex justify-between items-center"
               >
                 <span>{faq.question}</span>
