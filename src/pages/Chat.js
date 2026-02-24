@@ -2,6 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { db, auth } from '../firebase';
 import { collection, doc, addDoc, getDoc, setDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
 import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import { faqs } from '../data/faqData';
 import { FaPaperPlane, FaGoogle, FaSignOutAlt, FaTrash, FaUserShield, FaChevronDown } from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
@@ -15,7 +16,14 @@ const generateConsistentName = (uid) => {
     const index = Math.abs(hash % anonymousNames.length);
     return anonymousNames[index];
 };
+const getLocalAnswer = (query) => {
+    const q = query.toLowerCase();
 
+    return faqs.find(faq =>
+        faq.question.toLowerCase().includes(q) ||
+        faq.answer.toLowerCase().includes(q)
+    );
+};
 // --- Sub-Components ---
 // --- Sub-Components ---
 const InitialTermsModal = ({ onAccept }) => (
@@ -147,18 +155,47 @@ const Chat = () => {
         }
     };
 
-    const handleSendMessage = async (e) => {
-        e.preventDefault();
-        if (newMessage.trim() === '' || !user) return;
+const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (newMessage.trim() === '' || !user) return;
+
+    const messageText = newMessage;
+    setNewMessage('');
+
+    // 🔍 Check FAQ first
+    const localAnswer = getLocalAnswer(messageText);
+
+    if (localAnswer) {
+        // Add user message
         await addDoc(collection(db, 'messages'), {
-            text: newMessage,
+            text: messageText,
             timestamp: serverTimestamp(),
             uid: user.uid,
             email: user.email,
             displayName: userDisplayName,
         });
-        setNewMessage('');
-    };
+
+        // Add bot reply
+        await addDoc(collection(db, 'messages'), {
+            text: localAnswer.answer,
+            timestamp: serverTimestamp(),
+            uid: "bot",
+            email: "bot@system",
+            displayName: "Physics Guide Bot",
+        });
+
+        return;
+    }
+
+    // ❗ If no FAQ match, just send normally
+    await addDoc(collection(db, 'messages'), {
+        text: messageText,
+        timestamp: serverTimestamp(),
+        uid: user.uid,
+        email: user.email,
+        displayName: userDisplayName,
+    });
+};
 
     const handleDeleteMessage = async (messageId) => {
         if (window.confirm("Are you sure you want to delete this message?")) {
@@ -207,8 +244,16 @@ const Chat = () => {
                             {(userProfile.role === 'moderator' || msg.uid === user.uid) && (<button onClick={() => handleDeleteMessage(msg.id)} className="text-text-secondary hover:text-red-500 p-1"><FaTrash /></button>)}
                             {userProfile.role === 'moderator' && msg.uid !== user.uid && (<button onClick={() => handleBlockUser(msg)} className="text-text-secondary hover:text-yellow-400 p-1"><FaUserShield /></button>)}
                         </div>
-                        <div className={`p-3 rounded-lg max-w-xs md:max-w-md ${msg.uid === user.uid ? 'bg-accent-primary text-accent-text' : 'bg-background-secondary text-text-primary'}`}>
-                            <p className={`text-xs font-bold mb-1 ${msg.uid === user.uid ? 'text-accent-text/80' : 'text-accent-primary'}`}>{msg.uid === user.uid ? 'You' : msg.displayName}</p>
+                        <div className={`p-3 rounded-lg max-w-xs md:max-w-md ${
+    msg.uid === user.uid
+        ? 'bg-accent-primary text-accent-text'
+        : msg.uid === "bot"
+        ? 'bg-green-600 text-white'
+        : 'bg-background-secondary text-text-primary'
+}`}>
+                            <p className={`text-xs font-bold mb-1 ${msg.uid === user.uid ? 'text-accent-text/80' : 'text-accent-primary'}`}>{msg.uid === user.uid ? 'You' :
+msg.uid === "bot" ? 'Physics Guide Bot' :
+msg.displayName}</p>
                             <p className="text-sm break-words">{msg.text}</p>
                         </div>
                     </div>
