@@ -2,6 +2,7 @@ export const faqs = [
   {
     category: "Academics",
     question: "How many Physics electives are required for BS-MS Physics?",
+    keywords: ["electives", "bsms", "bs", "credits", "courses"],
     answerText:
       "For BS-MS Physics, you need 6 Physics electives out of 10 open electives.\n\nFor BS exit, you need 4 Physics electives out of 6 open electives.",
   },
@@ -9,6 +10,7 @@ export const faqs = [
   {
     category: "Research",
     question: "Can I do MS thesis outside IISER Bhopal?",
+    keywords: ["thesis", "outside", "external", "iiserb", "ms"],
     answerText:
       "Yes, but only under specific conditions.\n\nRequirements:\n- Must be under IISERB faculty collaboration\n- External institute must have MoU or research tie\n- Requires department and institute approval\n\nIndependent external thesis without IISERB link is NOT allowed.\n\nView circular: /docs/ms-thesis-outside.pdf",
   },
@@ -23,6 +25,7 @@ export const faqs = [
   {
     category: "Minor",
     question: "What is the Quantum Technologies minor?",
+    keywords: ["qt", "quantum", "minor", "definition"],
     answerText:
       "A minor focused on quantum computing, quantum information, and quantum materials. It is open to BS-MS, BS, and BTech students.",
   },
@@ -30,6 +33,7 @@ export const faqs = [
   {
     category: "Minor",
     question: "What are the credit requirements for QT minor?",
+    keywords: ["credit", "credits", "qt", "minor", "requirement"],
     answerText:
       "You need 18 credits.\n\nRules:\n- No double counting with major\n- Same course cannot count for multiple minors",
   },
