@@ -10,9 +10,11 @@ export default function FAQ() {
   const categories = ["All", "Academics", "Minor", "Research"];
 
   const filteredFaqs = faqs.filter(faq => {
+    const searchText = search.toLowerCase();
+
     const matchesSearch =
-      faq.question.toLowerCase().includes(search.toLowerCase()) ||
-      faq.answer.toLowerCase().includes(search.toLowerCase());
+      faq.question.toLowerCase().includes(searchText) ||
+      (faq.answerText && faq.answerText.toLowerCase().includes(searchText));
 
     const matchesCategory =
       category === "All" || faq.category === category;
@@ -30,7 +32,7 @@ export default function FAQ() {
         placeholder="Search FAQs..."
         value={search}
         onChange={(e) => setSearch(e.target.value)}
-        className="w-full p-3 mb-6 rounded-lg bg-background-secondary border"
+        className="w-full p-3 mb-6 rounded-lg bg-background-secondary border border-border-color text-text-primary"
       />
 
       {/* CATEGORY FILTER */}
@@ -40,7 +42,9 @@ export default function FAQ() {
             key={cat}
             onClick={() => setCategory(cat)}
             className={`px-3 py-1 rounded-full border ${
-              category === cat ? "bg-accent-primary text-white" : ""
+              category === cat
+                ? "bg-accent-primary text-white"
+                : "bg-background-secondary text-text-primary"
             }`}
           >
             {cat}
@@ -58,7 +62,7 @@ export default function FAQ() {
         >
           <button
             onClick={() => setOpenIndex(openIndex === index ? null : index)}
-            className="w-full text-left font-semibold"
+            className="w-full text-left font-semibold text-text-primary"
           >
             {faq.question}
           </button>
@@ -66,13 +70,13 @@ export default function FAQ() {
           <AnimatePresence>
             {openIndex === index && (
               <motion.div
-                initial={{ height: 0 }}
-                animate={{ height: "auto" }}
-                exit={{ height: 0 }}
+                initial={{ height: 0, opacity: 0 }}
+                animate={{ height: "auto", opacity: 1 }}
+                exit={{ height: 0, opacity: 0 }}
+                className="mt-3 text-text-secondary"
               >
-                <p className="mt-2 whitespace-pre-line">
-                  {faq.answer}
-                </p>
+                {/* ✅ IMPORTANT: render JSX directly */}
+                <div>{faq.answer}</div>
               </motion.div>
             )}
           </AnimatePresence>
