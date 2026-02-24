@@ -59,8 +59,7 @@ const getAllMatches = (query) => {
   });
 };
 // Smart FAQ matching
-const clean = (text) =>
-  text.toLowerCase().replace(/[^\w\s]/g, "");
+
 
 const stopWords = ["the", "is", "are", "a", "an", "what", "how", "can", "i", "do", "for"];
 
