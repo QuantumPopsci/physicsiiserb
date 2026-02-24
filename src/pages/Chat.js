@@ -1,227 +1,366 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { db, auth } from '../firebase';
-import { collection, doc, addDoc, getDoc, setDoc, deleteDoc, query, orderBy, onSnapshot, serverTimestamp } from 'firebase/firestore';
-import { GoogleAuthProvider, signInWithPopup, signOut, onAuthStateChanged } from 'firebase/auth';
+import {
+  collection,
+  doc,
+  addDoc,
+  getDoc,
+  setDoc,
+  deleteDoc,
+  query,
+  orderBy,
+  onSnapshot,
+  serverTimestamp
+} from 'firebase/firestore';
+import {
+  GoogleAuthProvider,
+  signInWithPopup,
+  signOut,
+  onAuthStateChanged
+} from 'firebase/auth';
 import { faqs } from '../data/faqData';
-import { FaPaperPlane, FaGoogle, FaSignOutAlt, FaTrash, FaUserShield, FaChevronDown } from 'react-icons/fa';
+import {
+  FaPaperPlane,
+  FaGoogle,
+  FaSignOutAlt,
+  FaTrash,
+  FaUserShield,
+  FaChevronDown
+} from 'react-icons/fa';
 import { Link } from 'react-router-dom';
 
-// ---------- HELPERS ----------
+// ---------------- HELPERS ----------------
 
-const anonymousNames = ["Curious Quark", "Anonymous Atom", "Clever Photon", "Bold Boson", "Wise Wavefunction"];
+const anonymousNames = [
+  "Curious Quark",
+  "Anonymous Atom",
+  "Clever Photon",
+  "Bold Boson",
+  "Wise Wavefunction"
+];
 
 const generateConsistentName = (uid) => {
-    let hash = 0;
-    for (let i = 0; i < uid.length; i++) {
-        hash = uid.charCodeAt(i) + ((hash << 5) - hash);
-    }
-    return anonymousNames[Math.abs(hash % anonymousNames.length)];
+  let hash = 0;
+  for (let i = 0; i < uid.length; i++) {
+    hash = uid.charCodeAt(i) + ((hash << 5) - hash);
+  }
+  return anonymousNames[Math.abs(hash % anonymousNames.length)];
 };
 
 const clean = (text) => text.toLowerCase().replace(/[^\w\s]/g, "");
 
-// smart matching
+// Smart FAQ matching
 const getLocalAnswer = (query) => {
-    const q = clean(query);
+  const q = clean(query);
 
-    return faqs.find(faq => {
-        const question = clean(faq.question);
+  return faqs.find(faq => {
+    const question = clean(faq.question);
 
-        if (question.includes(q)) return true;
+    if (question.includes(q)) return true;
 
-        const words = q.split(" ").filter(w => w.length > 3);
-
-        return words.some(word => question.includes(word));
-    });
+    const words = q.split(" ").filter(w => w.length > 3);
+    return words.some(word => question.includes(word));
+  });
 };
 
-// convert /docs/... into clickable links
+// Convert /docs/... → clickable links
 const renderTextWithLinks = (text) => {
-    return text.split(/(\/docs\/[^\s]+)/g).map((part, i) =>
-        part.startsWith("/docs/") ? (
-            <a
-                key={i}
-                href={part}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-accent-primary underline"
-            >
-                📄 Open PDF
-            </a>
-        ) : (
-            part
-        )
-    );
+  if (!text) return null;
+
+  return text.split(/(\/docs\/[^\s]+)/g).map((part, i) =>
+    part.startsWith("/docs/") ? (
+      <a
+        key={i}
+        href={part}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="text-accent-primary underline"
+      >
+        📄 Open PDF
+      </a>
+    ) : (
+      part
+    )
+  );
 };
 
-// ---------- COMPONENTS ----------
+// ---------------- SUB COMPONENTS ----------------
 
 const InitialTermsModal = ({ onAccept }) => (
-    <div className="text-center max-w-2xl mx-auto">
-        <h1 className="text-3xl font-bold mb-4">Community Guidelines</h1>
-        <p className="mb-4">Be respectful. No spam. Stay on topic.</p>
-        <button onClick={onAccept} className="px-6 py-3 bg-accent-primary text-white rounded">
-            I Agree
-        </button>
+  <div className="text-center animate-fadeInUp max-w-2xl mx-auto">
+    <h1 className="text-3xl font-bold mb-4 gradient-text">
+      Community Guidelines
+    </h1>
+
+    <div className="bg-background-secondary p-6 rounded-lg border border-border-color text-left">
+      <p>Be respectful. No spam. Stay on topic.</p>
+
+      <p className="text-xs mt-4">
+        You agree to the
+        <Link to="/terms" className="text-accent-primary ml-1 underline">
+          Terms
+        </Link>
+      </p>
     </div>
+
+    <button
+      onClick={onAccept}
+      className="mt-6 px-6 py-3 bg-accent-primary text-white rounded"
+    >
+      I Agree
+    </button>
+  </div>
 );
 
 const CommunityGuidelines = () => {
-    const [open, setOpen] = useState(false);
-    return (
-        <div className="mb-4 border rounded">
-            <button onClick={() => setOpen(!open)} className="w-full flex justify-between p-3">
-                <span>Community Guidelines</span>
-                <FaChevronDown className={open ? "rotate-180" : ""} />
-            </button>
-            {open && (
-                <div className="p-3 text-sm">
-                    Be respectful. No spam. Stay on topic.
-                </div>
-            )}
+  const [isOpen, setIsOpen] = useState(false);
+
+  return (
+    <div className="mb-4 bg-background-secondary rounded border border-border-color">
+      <button
+        onClick={() => setIsOpen(!isOpen)}
+        className="w-full flex justify-between p-3"
+      >
+        <span>Community Guidelines</span>
+        <FaChevronDown className={isOpen ? "rotate-180" : ""} />
+      </button>
+
+      {isOpen && (
+        <div className="p-3 text-sm">
+          Be respectful. No spam. Stay on topic.
         </div>
-    );
+      )}
+    </div>
+  );
 };
 
-// ---------- MAIN ----------
+// ---------------- MAIN ----------------
 
 const Chat = () => {
-    const [user, setUser] = useState(null);
-    const [profile, setProfile] = useState({ role: 'user', termsAccepted: false });
-    const [blocked, setBlocked] = useState(false);
-    const [authorized, setAuthorized] = useState(false);
-    const [messages, setMessages] = useState([]);
-    const [newMessage, setNewMessage] = useState('');
-    const [displayName, setDisplayName] = useState('');
-    const endRef = useRef(null);
+  const [user, setUser] = useState(null);
+  const [userProfile, setUserProfile] = useState({ role: 'user', termsAccepted: false });
+  const [isBlocked, setIsBlocked] = useState(false);
+  const [isAuthorized, setIsAuthorized] = useState(false);
+  const [messages, setMessages] = useState([]);
+  const [newMessage, setNewMessage] = useState('');
+  const [userDisplayName, setUserDisplayName] = useState('');
+  const messagesEndRef = useRef(null);
 
-    useEffect(() => {
-        const unsub = onAuthStateChanged(auth, async (u) => {
-            if (!u) return setUser(null);
+  // AUTH
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      if (!currentUser) {
+        setUser(null);
+        return;
+      }
 
-            setUser(u);
+      setUser(currentUser);
 
-            if (!u.email.endsWith('@iiserb.ac.in')) return setAuthorized(false);
+      if (!currentUser.email.endsWith('@iiserb.ac.in')) {
+        setIsAuthorized(false);
+        return;
+      }
 
-            setAuthorized(true);
-            setDisplayName(generateConsistentName(u.uid));
+      setIsAuthorized(true);
+      setUserDisplayName(generateConsistentName(currentUser.uid));
 
-            const blockedSnap = await getDoc(doc(db, 'blockedUsers', u.uid));
-            if (blockedSnap.exists()) return setBlocked(true);
+      // BLOCK CHECK
+      const blockedDoc = await getDoc(doc(db, 'blockedUsers', currentUser.uid));
+      if (blockedDoc.exists()) {
+        setIsBlocked(true);
+        return;
+      }
 
-            const userRef = doc(db, 'users', u.uid);
-            const snap = await getDoc(userRef);
+      // USER PROFILE
+      const userRef = doc(db, 'users', currentUser.uid);
+      const snap = await getDoc(userRef);
 
-            if (snap.exists()) setProfile(snap.data());
-            else {
-                const newProfile = { email: u.email, role: 'user', termsAccepted: false };
-                await setDoc(userRef, newProfile);
-                setProfile(newProfile);
-            }
-        });
+      if (snap.exists()) {
+        setUserProfile(snap.data());
+      } else {
+        const newProfile = {
+          email: currentUser.email,
+          role: 'user',
+          termsAccepted: false
+        };
+        await setDoc(userRef, newProfile);
+        setUserProfile(newProfile);
+      }
+    });
 
-        return () => unsub();
-    }, []);
+    return () => unsubscribe();
+  }, []);
 
-    useEffect(() => {
-        if (!authorized || blocked || !profile.termsAccepted) return;
+  // MESSAGES LISTENER
+  useEffect(() => {
+    if (!isAuthorized || isBlocked || !userProfile.termsAccepted) {
+      setMessages([]);
+      return;
+    }
 
-        const q = query(collection(db, 'messages'), orderBy('timestamp'));
-        return onSnapshot(q, snap => {
-            setMessages(snap.docs.map(d => ({ id: d.id, ...d.data() })));
-        });
-    }, [authorized, blocked, profile.termsAccepted]);
+    const q = query(collection(db, 'messages'), orderBy('timestamp'));
+    const unsubscribe = onSnapshot(q, (snapshot) => {
+      setMessages(snapshot.docs.map(doc => ({
+        id: doc.id,
+        ...doc.data()
+      })));
+    });
 
-    useEffect(() => {
-        endRef.current?.scrollIntoView({ behavior: 'smooth' });
-    }, [messages]);
+    return () => unsubscribe();
+  }, [isAuthorized, isBlocked, userProfile.termsAccepted]);
 
-    const signIn = async () => {
-        const provider = new GoogleAuthProvider();
-        await signInWithPopup(auth, provider);
-    };
+  useEffect(() => {
+    messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
+  }, [messages]);
 
-    const logout = async () => {
-        await signOut(auth);
-    };
+  // AUTH ACTIONS
+  const handleGoogleSignIn = async () => {
+    const provider = new GoogleAuthProvider();
+    await signInWithPopup(auth, provider);
+  };
 
-    const acceptTerms = async () => {
-        await setDoc(doc(db, 'users', user.uid), { termsAccepted: true }, { merge: true });
-        setProfile(prev => ({ ...prev, termsAccepted: true }));
-    };
+  const handleSignOut = async () => {
+    await signOut(auth);
+  };
 
-    const sendMessage = async (e) => {
-        e.preventDefault();
-        if (!newMessage.trim()) return;
+  const handleAcceptTerms = async () => {
+    await setDoc(doc(db, 'users', user.uid), { termsAccepted: true }, { merge: true });
+    setUserProfile(prev => ({ ...prev, termsAccepted: true }));
+  };
 
-        const text = newMessage;
-        setNewMessage('');
+  // SEND MESSAGE
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (!newMessage.trim() || !user) return;
 
-        // save user message
-        await addDoc(collection(db, 'messages'), {
-            text,
-            uid: user.uid,
-            displayName,
-            timestamp: serverTimestamp()
-        });
+    const messageText = newMessage;
+    setNewMessage('');
 
-        const match = getLocalAnswer(text);
+    // USER MESSAGE
+    await addDoc(collection(db, 'messages'), {
+      text: messageText,
+      timestamp: serverTimestamp(),
+      uid: user.uid,
+      email: user.email,
+      displayName: userDisplayName,
+    });
 
-        if (match) {
-            await addDoc(collection(db, 'messages'), {
-                text: match.answerText,
-                uid: "bot",
-                displayName: "Physics Guide Bot",
-                timestamp: serverTimestamp()
-            });
-        }
-    };
+    // BOT RESPONSE
+    const match = getLocalAnswer(messageText);
 
-    if (!user) return <button onClick={signIn}>Sign in with Google</button>;
-    if (!authorized) return <div>Access denied</div>;
-    if (blocked) return <div>Blocked</div>;
-    if (!profile.termsAccepted) return <InitialTermsModal onAccept={acceptTerms} />;
+    if (match) {
+      await addDoc(collection(db, 'messages'), {
+        text: match.answerText,
+        timestamp: serverTimestamp(),
+        uid: "bot",
+        email: "bot@system",
+        displayName: "Physics Guide Bot",
+      });
+    }
+  };
 
+  // DELETE MESSAGE
+  const handleDeleteMessage = async (messageId) => {
+    if (window.confirm("Delete this message?")) {
+      await deleteDoc(doc(db, 'messages', messageId));
+    }
+  };
+
+  // BLOCK USER
+  const handleBlockUser = async (msg) => {
+    if (window.confirm(`Block ${msg.displayName}?`)) {
+      await setDoc(doc(db, 'blockedUsers', msg.uid), {
+        email: msg.email,
+        blockedBy: user.email,
+        timestamp: serverTimestamp()
+      });
+
+      await deleteDoc(doc(db, 'messages', msg.id));
+    }
+  };
+
+  // ---------------- UI STATES ----------------
+
+  if (!user) {
     return (
-        <div className="flex flex-col h-[75vh] max-w-3xl mx-auto">
-            <div className="flex justify-between mb-2">
-                <h1 className="text-xl font-bold">Physics Forum</h1>
-                <button onClick={logout}>Logout</button>
-            </div>
-
-            <CommunityGuidelines />
-
-            <div className="flex-grow overflow-y-auto mb-4 border p-2">
-                {messages.map(msg => (
-                    <div key={msg.id} className={`mb-2 ${msg.uid === user.uid ? 'text-right' : ''}`}>
-                        <div className={`inline-block p-2 rounded ${
-                            msg.uid === user.uid ? 'bg-blue-500 text-white' :
-                            msg.uid === "bot" ? 'bg-green-600 text-white' :
-                            'bg-gray-200'
-                        }`}>
-                            <div className="text-xs font-bold">
-                                {msg.uid === user.uid ? "You" :
-                                 msg.uid === "bot" ? "Physics Guide Bot" :
-                                 msg.displayName}
-                            </div>
-                            <div>{renderTextWithLinks(msg.text)}</div>
-                        </div>
-                    </div>
-                ))}
-                <div ref={endRef} />
-            </div>
-
-            <form onSubmit={sendMessage} className="flex gap-2">
-                <input
-                    value={newMessage}
-                    onChange={(e) => setNewMessage(e.target.value)}
-                    className="flex-grow border p-2"
-                    placeholder="Ask about thesis, minor, electives..."
-                />
-                <button className="bg-blue-500 text-white px-4">Send</button>
-            </form>
-        </div>
+      <div className="text-center">
+        <button onClick={handleGoogleSignIn} className="bg-accent-primary text-white px-4 py-2 rounded">
+          <FaGoogle /> Sign in
+        </button>
+      </div>
     );
+  }
+
+  if (!isAuthorized) return <div>Access denied</div>;
+  if (isBlocked) return <div>Account blocked</div>;
+  if (!userProfile.termsAccepted) return <InitialTermsModal onAccept={handleAcceptTerms} />;
+
+  // ---------------- MAIN UI ----------------
+
+  return (
+    <div className="flex flex-col h-[75vh] max-w-3xl mx-auto">
+      <div className="flex justify-between mb-3">
+        <h1 className="text-xl font-bold">Physics Forum</h1>
+        <button onClick={handleSignOut}><FaSignOutAlt /></button>
+      </div>
+
+      <CommunityGuidelines />
+
+      <div className="flex-grow overflow-y-auto mb-4 border p-3 rounded">
+        {messages.map(msg => (
+          <div key={msg.id} className={`mb-3 group ${msg.uid === user.uid ? 'text-right' : ''}`}>
+            <div className={`inline-block p-3 rounded max-w-md ${
+              msg.uid === user.uid
+                ? 'bg-accent-primary text-white'
+                : msg.uid === "bot"
+                ? 'bg-green-600 text-white'
+                : 'bg-background-secondary text-text-primary'
+            }`}>
+
+              <div className="text-xs font-bold mb-1">
+                {msg.uid === user.uid
+                  ? "You"
+                  : msg.uid === "bot"
+                  ? "Physics Guide Bot"
+                  : msg.displayName}
+              </div>
+
+              <div className="text-sm break-words">
+                {renderTextWithLinks(msg.text)}
+              </div>
+
+              {(userProfile.role === 'moderator' || msg.uid === user.uid) && msg.uid !== "bot" && (
+                <button onClick={() => handleDeleteMessage(msg.id)}>
+                  <FaTrash />
+                </button>
+              )}
+
+              {userProfile.role === 'moderator' && msg.uid !== user.uid && msg.uid !== "bot" && (
+                <button onClick={() => handleBlockUser(msg)}>
+                  <FaUserShield />
+                </button>
+              )}
+
+            </div>
+          </div>
+        ))}
+        <div ref={messagesEndRef} />
+      </div>
+
+      <form onSubmit={handleSendMessage} className="flex gap-2">
+        <input
+          value={newMessage}
+          onChange={(e) => setNewMessage(e.target.value)}
+          placeholder="Ask about thesis, QT minor, electives..."
+          className="flex-grow p-2 rounded border border-border-color bg-background-secondary text-text-primary placeholder:text-text-secondary focus:outline-none focus:ring-2 focus:ring-accent-primary"
+        />
+
+        <button className="bg-accent-primary text-white px-4 rounded">
+          <FaPaperPlane />
+        </button>
+      </form>
+    </div>
+  );
 };
 
 export default Chat;
