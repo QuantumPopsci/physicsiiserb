@@ -46,64 +46,32 @@ const generateConsistentName = (uid) => {
   }
   return anonymousNames[Math.abs(hash % anonymousNames.length)];
 };
+
 const clean = (text) =>
   text.toLowerCase().replace(/[^\w\s]/g, "");
 
-const getAllMatches = (query) => {
+// 🔥 FIXED SMART MATCHING
+const getBestMatches = (query) => {
   const q = clean(query);
   const tokens = q.split(" ").filter(t => t.length > 2);
 
-  return faqs.filter(faq => {
-    const question = clean(faq.question);
-    return tokens.some(t => question.includes(t));
-  });
-};
-// Smart FAQ matching
+  let scored = faqs.map(faq => {
+    const text = clean(faq.question + " " + faq.answerText);
 
-
-const stopWords = ["the", "is", "are", "a", "an", "what", "how", "can", "i", "do", "for"];
-
-const getLocalAnswer = (query) => {
-  const q = clean(query);
-
-  // tokenize and remove stopwords
-  const tokens = q
-    .split(" ")
-    .filter(word => word.length > 2 && !stopWords.includes(word));
-
-  let bestMatch = null;
-  let bestScore = 0;
-
-  faqs.forEach(faq => {
     let score = 0;
 
-    const question = clean(faq.question);
-    const keywords = faq.keywords || [];
-
-    // 1. keyword match (strong weight)
-    tokens.forEach(token => {
-      if (keywords.includes(token)) score += 3;
-      if (question.includes(token)) score += 1;
+    tokens.forEach(t => {
+      if (text.includes(t)) score++;
     });
 
-    // 2. phrase match bonus
-    if (question.includes(q)) score += 5;
-
-    // 3. category relevance
-    if (q.includes("minor") && faq.category === "Minor") score += 2;
-    if (q.includes("thesis") && faq.category === "Research") score += 2;
-    if (q.includes("elective") && faq.category === "Academics") score += 2;
-
-    if (score > bestScore) {
-      bestScore = score;
-      bestMatch = faq;
-    }
+    return { faq, score };
   });
 
-  // threshold to avoid wrong answers
-  if (bestScore < 2) return null;
+  scored.sort((a, b) => b.score - a.score);
 
-  return bestMatch;
+  const filtered = scored.filter(item => item.score > 0);
+
+  return filtered.slice(0, 2).map(item => item.faq);
 };
 
 // Convert /docs/... → clickable links
@@ -207,14 +175,12 @@ const Chat = () => {
       setIsAuthorized(true);
       setUserDisplayName(generateConsistentName(currentUser.uid));
 
-      // BLOCK CHECK
       const blockedDoc = await getDoc(doc(db, 'blockedUsers', currentUser.uid));
       if (blockedDoc.exists()) {
         setIsBlocked(true);
         return;
       }
 
-      // USER PROFILE
       const userRef = doc(db, 'users', currentUser.uid);
       const snap = await getDoc(userRef);
 
@@ -271,77 +237,67 @@ const Chat = () => {
     setUserProfile(prev => ({ ...prev, termsAccepted: true }));
   };
 
-  // SEND MESSAGE
-const handleSendMessage = async (e) => {
-  e.preventDefault();
-  if (newMessage.trim() === '' || !user) return;
+  // SEND MESSAGE (FIXED BOT LOGIC)
+  const handleSendMessage = async (e) => {
+    e.preventDefault();
+    if (newMessage.trim() === '' || !user) return;
 
-  const messageText = newMessage;
-  setNewMessage('');
+    const messageText = newMessage;
+    setNewMessage('');
 
-  // Save user message
-  await addDoc(collection(db, 'messages'), {
-    text: messageText,
-    timestamp: serverTimestamp(),
-    uid: user.uid,
-    email: user.email,
-    displayName: userDisplayName,
-  });
-
-  // ONLY trigger bot if message starts with @bot
-  if (!messageText.toLowerCase().startsWith("@bot")) return;
-
-  const queryText = messageText.replace("@bot", "").trim();
-
-  // If no query → show help
-  if (!queryText) {
     await addDoc(collection(db, 'messages'), {
-      text:
-        "Try asking:\n- @bot ms thesis outside\n- @bot qt minor\n- @bot electives",
+      text: messageText,
+      timestamp: serverTimestamp(),
+      uid: user.uid,
+      email: user.email,
+      displayName: userDisplayName,
+    });
+
+    if (!messageText.toLowerCase().startsWith("@bot")) return;
+
+    const queryText = messageText.replace("@bot", "").trim();
+
+    if (!queryText) {
+      await addDoc(collection(db, 'messages'), {
+        text: "Try asking:\n- @bot ms thesis outside\n- @bot qt minor\n- @bot electives",
+        uid: "bot",
+        displayName: "Physics Guide Bot",
+        timestamp: serverTimestamp(),
+      });
+      return;
+    }
+
+    const matches = getBestMatches(queryText);
+
+    if (matches.length > 0) {
+      const combined = matches
+        .map(m => `🔹 ${m.question}\n${m.answerText}`)
+        .join("\n\n");
+
+      await addDoc(collection(db, 'messages'), {
+        text: combined,
+        uid: "bot",
+        displayName: "Physics Guide Bot",
+        timestamp: serverTimestamp(),
+      });
+
+      return;
+    }
+
+    await addDoc(collection(db, 'messages'), {
+      text: "I couldn't find a direct answer.\n\nTry asking:\n- @bot ms thesis outside\n- @bot qt minor\n- @bot electives",
       uid: "bot",
       displayName: "Physics Guide Bot",
       timestamp: serverTimestamp(),
     });
-    return;
-  }
+  };
 
-  // 🔍 MULTI MATCH SEARCH
-  const matches = getAllMatches(queryText);
-
-  // ✅ If matches found
-  if (matches.length > 0) {
-    const combined = matches
-      .map(m => `• ${m.question}\n${m.answerText}`)
-      .join("\n\n-----------------\n\n");
-
-    await addDoc(collection(db, 'messages'), {
-      text: combined,
-      uid: "bot",
-      displayName: "Physics Guide Bot",
-      timestamp: serverTimestamp(),
-    });
-
-    return;
-  }
-
-  // ❗ FALLBACK RESPONSE
-  await addDoc(collection(db, 'messages'), {
-    text:
-      "I couldn't find a direct answer.\n\nTry asking:\n- @bot ms thesis outside\n- @bot qt minor\n- @bot electives",
-    uid: "bot",
-    displayName: "Physics Guide Bot",
-    timestamp: serverTimestamp(),
-  });
-};
-
-  // DELETE MESSAGE
   const handleDeleteMessage = async (messageId) => {
     if (window.confirm("Delete this message?")) {
       await deleteDoc(doc(db, 'messages', messageId));
     }
   };
 
-  // BLOCK USER
   const handleBlockUser = async (msg) => {
     if (window.confirm(`Block ${msg.displayName}?`)) {
       await setDoc(doc(db, 'blockedUsers', msg.uid), {
@@ -353,8 +309,6 @@ const handleSendMessage = async (e) => {
       await deleteDoc(doc(db, 'messages', msg.id));
     }
   };
-
-  // ---------------- UI STATES ----------------
 
   if (!user) {
     return (
@@ -369,8 +323,6 @@ const handleSendMessage = async (e) => {
   if (!isAuthorized) return <div>Access denied</div>;
   if (isBlocked) return <div>Account blocked</div>;
   if (!userProfile.termsAccepted) return <InitialTermsModal onAccept={handleAcceptTerms} />;
-
-  // ---------------- MAIN UI ----------------
 
   return (
     <div className="flex flex-col h-[75vh] max-w-3xl mx-auto">
