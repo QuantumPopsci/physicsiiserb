@@ -17,12 +17,12 @@ const generateConsistentName = (uid) => {
     return anonymousNames[index];
 };
 const getLocalAnswer = (query) => {
-    const q = query.toLowerCase();
+    const q = query.toLowerCase().split(" ");
 
-    return faqs.find(faq =>
-        faq.question.toLowerCase().includes(q) ||
-        faq.answer.toLowerCase().includes(q)
-    );
+    return faqs.find(faq => {
+        const text = (faq.question + " " + faq.answer).toLowerCase();
+        return q.some(word => text.includes(word));
+    });
 };
 // --- Sub-Components ---
 // --- Sub-Components ---
@@ -254,7 +254,15 @@ const handleSendMessage = async (e) => {
                             <p className={`text-xs font-bold mb-1 ${msg.uid === user.uid ? 'text-accent-text/80' : 'text-accent-primary'}`}>{msg.uid === user.uid ? 'You' :
 msg.uid === "bot" ? 'Physics Guide Bot' :
 msg.displayName}</p>
-                            <p className="text-sm break-words">{msg.text}</p>
+                            <p
+  className="text-sm break-words"
+  dangerouslySetInnerHTML={{
+    __html: msg.text.replace(
+      /(\/docs\/[^\s]+)/g,
+      '<a href="$1" target="_blank" class="text-accent-primary underline">$1</a>'
+    )
+  }}
+/>
                         </div>
                     </div>
                 ))}
